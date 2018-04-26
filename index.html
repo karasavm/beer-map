@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>UK Festivals</title>
+
+<!--Set up the CSS styles-->
+<style type="text/css">
+      html { 
+	      height: 100%;
+	  }
+      
+	  body {
+		  height: 100%; 
+		  margin: 0; 
+		  padding: 0;
+		  background: /*url*/('icons/old_paper.jpg') no-repeat 0 0;
+       /*background-size: cover*/
+	  }
+    /*.map-wrapper {
+      background: url(http://placekitten.com/1500/1500) no-repeat 0 0;
+      background-size: cover;
+    }*/
+
+	  /*Adapt the following styling depending on where you want to put your map. If you want a 'full screen' map, then set the width and height to 100 percent and remove the margins.*/
+	  #festival-map { 
+	  	height: 100%;
+		  width: 100%; 
+		  margin-left: auto;
+      margin-right: auto;
+		  border-right-width: 2px;
+		  border-right-color: #ffffff;
+		  border-right-style: solid;
+		  border-left-width: 2px;
+		  border-left-color: #ffffff;
+		  border-left-style: solid;
+	  }
+	  
+	  .pop_up_box_text {
+	 	  font-family: Georgia, 'Times New Roman', Times, serif; 
+		  font-size: 16px; 
+		  line-height: 22px; 
+		  color: #ffffff; 
+		  display: inline; 
+	  }
+
+    .custom-pin {
+        background-image: url('gmaps-marker-clusterer-master/images/cm1.png');
+        background-repeat: no-repeat;
+        background-size: 50px;
+        /*height: 1em;*/
+        /*line-height: 1;*/
+        /*width: 1em;*/
+        width: 50px;
+        height: 40px;
+        padding-top: 1.1em;
+        /*padding-right: 21px;*/
+        text-align: center;
+        cursor: pointer;
+        color: #FEF9E2;
+        /*background-color: black;*/
+        position: absolute;
+        z-index: 10;
+        /*border-radius: .5em;*/
+        font-size: 15px;
+        /*font-weight: bold;*/
+        /*transition: all 500ms;*/
+    }
+
+   /* .custom-pin::after {
+        content: '';
+        border-width: 1em .5em;
+        border-color: black transparent transparent transparent;
+        border-style: solid;
+        position: absolute;
+        top: 99%;
+        left: calc(50% - .5em);
+    }*/
+
+    .custom-pin:hover {
+        transform: scale(1.15);
+
+    }
+
+</style>
+
+
+
+<!--Connect to the google maps api using your api key-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
+<script src="infobox/infobox.js" type="text/javascript"></script>
+<script src="data.js" type="text/javascript"></script>
+<!--Main chunk of javascript that creates and controls the map.-->
+<script type="text/javascript">
+
+//Create the variables that will be used within the map configuration options.
+//The latitude and longitude of the center of the map.
+
+//The degree to which the map is zoomed in. This can range from 0 (least zoomed) to 21 and above (most zoomed).
+var festivalMapZoom = 7;
+//The max and min zoom levels that are allowed.
+var festivalMapZoomMax = 12;
+var festivalMapZoomMin = festivalMapZoom;
+var markersDropped = false;
+// -------------------------------------------------
+var ZINDEX_MARKER = 100;
+var MARKER_CAP_SIZE = 40;
+var MARKER_CAP_HOVER_FACTOR = 2.5;
+// -------------------------------------------------
+//These options configure the setup of the map. 
+var festivalMapOptions = { 
+		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
+          zoom: 6,
+		  maxZoom: 12,
+		  minZoom: 6,
+		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
+		  mapTypeId: google.maps.MapTypeId.ROADMAP,
+		  
+		  panControl: false,
+		  mapTypeControl: false,
+		  streetViewControl: false,
+};
+
+//Create the variable for the main map itself.
+var festivalMap;
+
+//When the page loads, the line below calls the function below called 'loadFestivalMap' to load up the map.
+google.maps.event.addDomListener(window, 'load', loadFestivalMap);
+
+
+
+//THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
+function loadFestivalMap() {
+	
+//The empty map variable ('festivalMap') was created above. The line below creates the map, assigning it to this variable. The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'festivalMapOptions' (above) to configure this map. 
+festivalMap = new google.maps.Map(document.getElementById("festival-map"), festivalMapOptions);	
+
+festivalMap.addListener('zoom_changed', onZoomChanged);
+
+loadStyledMap();
+//Calls the function below to load up all the map markers.
+loadMapMarkers(); // create markers list
+// loadMapMarkers();
+// updateMarkers();
+// 
+// loadClusters();
+// dropClusters();
+dropMarkers(-1);
+
+var clusterStyles = [
+  {
+    textColor: 'white',
+    url: 'gmaps-marker-clusterer-master/images/cap.png',
+    height: 52,
+    width: 52
+  },
+ {
+    textColor: 'white',
+    url: 'gmaps-marker-clusterer-master/images/cap.png',
+    height: 50,
+    width: 50
+  },
+ {
+    textColor: 'white',
+    url: 'gmaps-marker-clusterer-master/images/cap.png',
+    height: 50,
+    width: 50
+  }
+];
+
+function getOffset() {
+
+  var z = festivalMap.getZoom();
+
+  if (z == 6) {
+    return 1.5;
+  }
+
+  if (z == 7) {
+    return 0.75;
+  }
+
+  if (z == 8) {
+    return 0.4;
+  }
+
+  if (z == 9){
+    return 0.2;
+  }
+
+  if (z == 10) {
+    return 0.1;
+  }
+
+  if (z == 11) {
+    return 0.05;
+  }
+
+}
+
+changeOverlayOrder = function(map) {
+    var panes = map.getPanes();
+    var markerOverlayDiv = panes.overlayImage.parentNode;
+    var clusterOverlayDiv = panes.overlayMouseTarget.parentNode;
+    // Make the clusters clickable.
+    if(!markerOverlayDiv.style.pointerEvents) {
+        markerOverlayDiv.style.cssText += ";pointer-events: none;";
+    }
+    // Switch z-indexes
+    if(markerOverlayDiv.style.zIndex < clusterOverlayDiv.style.zIndex) {
+        var tmp = markerOverlayDiv.style.zIndex;
+        markerOverlayDiv.style.zIndex = clusterOverlayDiv.style.zIndex;
+        clusterOverlayDiv.style.zIndex = tmp;
+    }
+};
+
+var testMarkers = [];
+var options = {
+              imagePath: 'gmaps-marker-clusterer-master/images/m',
+              onMouseoverCluster: function (clusterIcon, event) {
+                // console.log(clusterIcon.cluster_.markers_, event)
+                console.log("mouse in", clusterIcon.cluster_.markers_[0]);
+
+
+
+                // changeOverlayOrder(festivalMap);
+                for(let i=0; i < clusterIcon.cluster_.markers_.length; i++) {
+                  var curMarker = clusterIcon.cluster_.markers_[i]
+                  console.log(Math.floor(i/5));
+                  testMarkers.push(createImageMarker(
+                    clusterIcon.cluster_.center_.lat()+getOffset() + 0.7*getOffset()*Math.floor(i/5),
+                    clusterIcon.cluster_.center_.lng()-2*getOffset() + getOffset()*(i%5),
+                    curMarker.icon.url.split('/')[curMarker.icon.url.split('/').length - 1])
+                  );
+                  
+                  testMarkers[i].setMap(festivalMap);
+                }
+
+                // for(let i=0; i < markerCluster.clusters_.length; i++ ) {
+                //   markerCluster.clusters_[i].setMap(null)
+                // }
+                // markerCluster.clusters_[0].markerClusterer_.setMap(null)
+                
+
+              },
+              onMouseoutCluster: function (clusterIcon, event) {
+                console.log("mouse out");
+
+                for(let i=0; i < testMarkers.length; i++) {
+                  testMarkers[i].setMap(null);
+                }
+                testMarkers = []
+              },
+              __styles: clusterStyles,
+              cssClass: 'custom-pin'
+
+            };
+
+ // var markerCluster = new MarkerClusterer(festivalMap, markers,options);
+// loadBanner();
+// console.log(markerCluster);
+
+}
+
+
+
+
+var markers = [];
+var infoBoxes = [];
+
+function createXMarker(lat, log) {
+  
+    var position = new google.maps.LatLng(lat, log);
+
+    // Origins, anchor positions and coordinates of the marker increase in the X
+    // direction to the right and in the Y direction down.
+
+    var image = {
+      origin: new google.maps.Point(0, 0),
+      url: 'icons/pins/x.png',
+      scaledSize: new google.maps.Size(20, 20),
+      anchor: new google.maps.Point(10, 10),
+    };
+
+    // todo: set coords
+    var shape = {
+      coords: [1, 1, 1, 45, 45, 45, 45, 1],
+      type: 'poly'
+    };
+
+    var marker = new google.maps.Marker({
+      position: position,
+      title: 'X',
+      animation: google.maps.Animation.DROP,
+      draggable: false,
+      shape: shape,
+      icon: image,
+      zIndex: 10
+    });
+
+    return marker;
+}
+
+function convertFromLatLngToPoint(latlng, map, elementContainingMap)
+{
+  console.log(elementContainingMap)
+  var worldMapWidth = 256*map.getZoom();
+
+  var mapWidth = elementContainingMap.clientWidth ;
+  var mapHeight = elementContainingMap.clientWidth ;
+
+  var mapLonRight = map.getBounds().getNorthEast().lng();
+  var mapLonLeft = map.getBounds().getSouthWest().lng();
+  var mapLonDelta= mapLonRight-mapLonLeft;
+
+  var mapLatBottom = map.getBounds().getSouthWest().lat();
+  var mapLatBottomDegree = mapLatBottom * Math.PI / 180;
+
+  var longitude = latlng.lng();
+  var latitude = latlng.lat();
+
+  var x = (longitude - mapLonLeft) * (mapWidth / mapLonDelta);
+
+  latitude = latitude * Math.PI / 180;
+  worldMapWidth = ((mapWidth / mapLonDelta) * 360) / (2 * Math.PI);
+  var mapOffsetY = (worldMapWidth / 2 * Math.log((1 + Math.sin(mapLatBottomDegree)) / (1 - Math.sin(mapLatBottomDegree))));
+  var y = mapHeight - ((worldMapWidth / 2 * Math.log((1 + Math.sin(latitude)) / (1 - Math.sin(latitude)))) - mapOffsetY);
+
+  
+
+  return [x,y];
+}
+
+function getImageObj(url, size) {
+  var image = {
+      origin: new google.maps.Point(0, 0),
+      url: url,
+      // scaledSize: new google.maps.Size(60, 88), // short pin
+      scaledSize: new google.maps.Size(size, size), // cap
+      // anchor: new google.maps.Point(31, 88), // short pin
+      anchor: new google.maps.Point(size/2, size/2), // cap
+    };
+
+  return image;
+}
+function createImageMarker(lat, log, imageUrl) {
+  
+    var position = new google.maps.LatLng(lat, log);
+
+    // Origins, anchor positions and coordinates of the marker increase in the X
+    // direction to the right and in the Y direction down.
+    if (imageUrl == '') {
+      imageUrl = 'cap.png'
+    }
+    
+
+    // todo: set coords
+    var shape = {
+      coords: [1, 1, 1, 80, 80, 80, 80, 1],
+      type: 'poly'
+    };
+
+    var marker = new google.maps.Marker({
+      position: position,
+      title: 'X',
+      // animation: google.maps.Animation.DROP,
+      draggable: false,
+      shape: shape,
+      icon: getImageObj('icons/pins/'+ imageUrl, MARKER_CAP_SIZE),
+      zIndex: ZINDEX_MARKER
+    });
+
+    return marker;
+}
+
+function createDefaultMarker(lat, log) {
+  
+    var position = new google.maps.LatLng(lat, log);
+
+    // Origins, anchor positions and coordinates of the marker increase in the X
+    // direction to the right and in the Y direction down.
+
+    var marker = new google.maps.Marker({
+      position: position,
+      title: '',
+      animation: google.maps.Animation.DROP,
+      draggable: false,
+      // shape: markerShapeGlastonbury,
+      // icon: markerIconGlastonbury
+    });
+
+    return marker;
+}
+
+//Function that loads the map markers.
+function loadMapMarkers (){
+
+	for(var i=0; i < markersRaw.length; i++) {
+    // console.log(markersRaw[i].lat, markersRaw[i].log)
+		// markers.push(createXMarker(markersRaw[i].lat, markersRaw[i].log));
+    var marker = createImageMarker(markersRaw[i].lat, markersRaw[i].log, markersRaw[i].icon)
+    markers.push(marker);
+
+    google.maps.event.addListener(markers[i], "mouseover", function() {
+           
+           this.setIcon(
+            getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
+            );
+           this.setZIndex(ZINDEX_MARKER + 1);
+      });
+    google.maps.event.addListener(markers[i], "mouseout", function() {
+       // marker.setIcon(this.icon);
+       
+       this.setIcon(
+            getImageObj(this.getIcon().url, MARKER_CAP_SIZE)
+            );
+       this.setZIndex(ZINDEX_MARKER);
+    });
+
+    // markers.push(createDefaultMarker(markersRaw[i].lat, markersRaw[i].log));
+
+        //Creates the information to go in the pop-up info box.
+    // var pop_up_info = "border: 0px solid black; background-color: #ffffff; padding:15px; margin-top: 8px; border-radius:10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; box-shadow: 1px 1px #888;";
+
+    // var boxText = document.createElement("div");
+    // boxText.style.cssText = pop_up_info;
+    // boxText.innerHTML = '<span class="pop_up_box_text"><img src="icons/pins/'+markersRaw[i].image+'" width="400" height="285" border="0" /></span>';
+     
+    // //Sets up the configuration options of the pop-up info box.
+    // var infoboxOptions = {
+    //  content: boxText
+    //  ,disableAutoPan: false
+    //  ,maxWidth: 0
+    //  ,pixelOffset: new google.maps.Size(-241, 0)
+    //  ,zIndex: null
+    //  ,boxStyle: {
+    //  background: "url('infobox/pop_up_box_top_arrow.png') no-repeat"
+    //  ,opacity: 1
+    //  ,width: "430px"
+    //  }
+    //  ,closeBoxMargin: "10px 2px 2px 2px"
+    //  ,closeBoxURL: "icons/button_close.png"
+    //  ,infoBoxClearance: new google.maps.Size(1, 1)
+    //  ,isHidden: false
+    //  ,pane: "floatPane"
+    //  ,enableEventPropagation: false
+    // };
+
+    // //Creates the pop-up infobox for Glastonbury, adding the configuration options set above.
+    // infobox = new InfoBox(infoboxOptions);
+    // infoBoxes.push(infobox);
+    // onMarkerClickListener(marker, infobox);
+    
+    
+	}
+
+	// for (var i=0; i < markers.length; i++) {
+	// 	// console.log(markers[i])
+
+	// 	// dropMarkers(markers, i);
+ //    markers[i].setMap(festivalMap); 
+
+	// }
+}
+
+function unDropMarkers() {
+  markersDropped = false;
+  for (let i=0; i < markers.length; i++){
+    console.log("delete")
+    markers[i].setMap(null);
+  }
+}
+
+function unDropCurMarkers() {
+  // markersDropped = false;
+  console.log("Undropping current markers.")
+  for (let i=0; i < curLines.length; i++){
+    curLines[i].setMap(null);
+  }
+
+  for (let i=0; i < curMarkers.length; i++){
+    curMarkers[i].setMap(null);
+  }
+
+  
+}
+
+function dropMarkers(clusterId) {
+  // dropClusters();
+  
+  markersDropped = true;
+
+  if (clusterId == -1) {
+    for (let i=0; i < markers.length; i++){
+      markers[i].setMap(festivalMap);
+    }
+  }
+
+  if (clusterId == 1) {
+   for (let i=0; i < markers.length; i+=2){
+      markers[i].setMap(festivalMap);
+    } 
+  }
+
+  if (clusterId == 2) {
+   for (let i=1; i < markers.length; i+=2){
+      markers[i].setMap(festivalMap);
+    } 
+  }
+}
+
+function setZoomWhenMarkerClicked(){
+  var currentZoom = festivalMap.getZoom();
+   if (currentZoom < 7) {
+    festivalMap.setZoom(7);
+   }
+}
+
+function onMarkerClickListener(marker, infobox) {
+  google.maps.event.addListener(marker, "click", function (e) {
+     //Open the Glastonbury info box.
+     
+     for(var i=0; i < infoBoxes.length; i++) {
+      infoBoxes[i].close()
+     }
+     infobox.open(festivalMap, this);
+
+    
+     this.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
+     
+     setZoomWhenMarkerClicked();
+     
+     festivalMap.setCenter(marker.getPosition());
+    });
+}
+
+// function dropMarkers(markers, i) {
+//   setTimeout(function() {
+
+//   	markers[i].setMap(festivalMap);
+//   }, i*50);
+// }
+
+function updateMarkers() {
+  var currentZoom = festivalMap.getZoom();
+  // if (currentZoom < 6) {
+  //   unDropMarkers();
+  // } else {
+  //   if (!markersDropped) {
+  //     dropMarkers();
+  //   }
+  // }
+  if (!markersDropped) {
+    dropMarkers();
+  }
+}
+// -------------------------- CLUSTERS -----------------
+var clusters = [];
+var curMarkers = [];
+var curLines = [];
+function loadClusters() {
+
+  for (let i=0; i < clustersRaw.length; i ++) {
+    var clusterMarker = createImageMarker(clustersRaw[i].lat, clustersRaw[i].log, 'cap.png');
+     clusters.push(clusterMarker);
+
+     clusterMarker.addListener('mouseover', function() {
+      console.log('mouseover')
+      var lineCoord = {};
+      var path = {};
+      var lat = clusters[i].getPosition().lat();
+      var lng = clusters[i].getPosition().lng();
+
+      var marker = createImageMarker(lat + 2, lng, 'cap.png')
+      curMarkers.push(marker);
+      marker.setMap(festivalMap);
+
+
+      lineCoord = [
+          {lat: lat, lng: lng},
+          {lat: lat + 2, lng: lng}
+        ];
+      path = new google.maps.Polyline({
+        path: lineCoord,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      path.setMap(festivalMap);
+
+      marker = createImageMarker(lat - 2, lng, 'cap.png')
+      curMarkers.push(marker);
+      marker.setMap(festivalMap);
+      curLines.push(path);
+
+      lineCoord = [
+          {lat: lat, lng: lng},
+          {lat: lat -2, lng: lng}
+        ];
+      path = new google.maps.Polyline({
+        path: lineCoord,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      path.setMap(festivalMap);
+      curLines.push(path);
+
+      marker = createImageMarker(lat, lng + 2.5, 'cap.png')
+      curMarkers.push(marker);
+      marker.setMap(festivalMap);
+
+
+      lineCoord = [
+          {lat: lat, lng: lng},
+          {lat: lat, lng: lng + 2.5}
+        ];
+      path = new google.maps.Polyline({
+        path: lineCoord,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      path.setMap(festivalMap);
+      curLines.push(path);
+
+      marker = createImageMarker(lat, lng - 2.5, 'cap.png')
+      curMarkers.push(marker);
+      marker.setMap(festivalMap);
+
+      lineCoord = [
+          {lat: lat, lng: lng},
+          {lat: lat, lng: lng - 2.5}
+        ];
+      path = new google.maps.Polyline({
+        path: lineCoord,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+
+      curLines.push(path);
+      path.setMap(festivalMap);
+     })
+
+     clusterMarker.addListener('mouseout', function(e) {
+      console.log('mouseout', clusters[i].getPosition().lng())
+      unDropCurMarkers();
+     })
+     
+  }
+}
+
+function dropClusters() {
+  for (let i=0; i < clustersRaw.length; i ++) {
+     clusters[i].setMap(festivalMap);
+  }
+}
+
+function unDropClusters() {
+ for (let i=0; i < clustersRaw.length; i ++) {
+     clusters[i].setMap(null);
+  };
+}
+
+
+// -------------------------- EVENT HANDLERS -------------
+
+function onZoomChanged() {
+
+  updateMarkers();
+
+}
+// ------------------------- MAP STYLE ---------------------
+function loadStyledMap() {
+
+  var styledMapType = new google.maps.StyledMapType(map_style);
+
+  festivalMap.mapTypes.set('styled_map', styledMapType);
+  festivalMap.setMapTypeId('styled_map');
+}
+
+// ------------------------- BANNER ----------------------------
+//Function that creates the control panel area, ie. the map title and the 2 buttons just beneath it.
+function loadBanner() {
+
+
+  function createControlPanel (controlPanelDiv){
+   controlPanelDiv.style.padding = '0px';
+   controlUI = document.createElement('div');
+   controlUI.style.border='0px solid white';
+   controlUI.style.margin='10px';
+   controlUI.style.paddingTop='11px';
+   controlUI.style.paddingBottom='5px';
+   controlUI.style.paddingLeft='0px';
+   controlUI.style.paddingRight='0px';
+   controlUI.style.width='245px';
+   controlUI.style.height='419px';
+   controlPanelDiv.appendChild(controlUI);
+   
+   //Map title
+   titleBar = document.createElement('div');
+   titleBar.style.backgroundColor = '#89CBED';
+   titleBar.style.height='255px';
+   titleBar.style.width='245px';
+   titleBar.style.marginTop='0px';
+   titleBar.style.marginBottom='0px';
+   titleBar.style.marginLeft='0px';
+   titleBar.style.marginRight='0px';
+   titleBar.style.paddingTop='6px';
+   titleBar.style.paddingBottom='2px';
+   titleBar.style.paddingLeft='0px';
+   titleBar.style.paddingRight='0px';
+   titleBar.style.borderTopLeftRadius='5px';
+   titleBar.style.borderTopRightRadius='5px';
+   titleBar.style.borderBottomLeftRadius='0px';
+   titleBar.style.borderBottomLeftRadius='0px';
+   titleBar.style.cssFloat='left';
+   titleBar.innerHTML = '<div align="center"><img src="icons/map_title.png" width="230" height="252" border="0"/></div>';
+   controlUI.appendChild(titleBar);
+   
+   yellowStripe = document.createElement('div');
+   yellowStripe.style.backgroundColor = '#FFFF00';
+   yellowStripe.style.height='2px';
+   yellowStripe.style.width='245px';
+   yellowStripe.style.marginTop='3px';
+   yellowStripe.style.marginBottom='3px';
+   yellowStripe.style.marginLeft='0px';
+   yellowStripe.style.marginRight='0px';
+   yellowStripe.style.paddingTop='0px';
+   yellowStripe.style.paddingBottom='0px';
+   yellowStripe.style.paddingLeft='0px';
+   yellowStripe.style.paddingRight='0px';
+   yellowStripe.style.cssFloat='left';
+   yellowStripe.style.fontFamily='Georgia, serif';
+   yellowStripe.style.fontSize='14px';
+   controlUI.appendChild(yellowStripe);
+   
+   //'Smaller' events button.
+   smallEvents = document.createElement('div');
+   smallEvents.style.height='108px';
+   smallEvents.style.width='129px';
+   smallEvents.style.marginTop='0px';
+   smallEvents.style.marginBottom='0px';
+   smallEvents.style.marginLeft='0px';
+   smallEvents.style.marginRight='0px';
+   smallEvents.style.paddingTop='0px';
+   smallEvents.style.paddingBottom='2px';
+   smallEvents.style.paddingLeft='0px';
+   smallEvents.style.paddingRight='0px';
+   smallEvents.style.cssFloat='left';
+   smallEvents.innerHTML = '<div align="center" onClick="handelRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
+   controlUI.appendChild(smallEvents);
+   
+   //Umbrella button
+   brolly = document.createElement('div');
+   brolly.style.height='149px';
+   brolly.style.width='94px';
+   brolly.style.marginTop='0px';
+   brolly.style.marginBottom='0px';
+   brolly.style.marginLeft='0px';
+   brolly.style.marginRight='0px';
+   brolly.style.paddingTop='0px';
+   brolly.style.paddingBottom='2px';
+   brolly.style.paddingLeft='0px';
+   brolly.style.paddingRight='0px';
+   brolly.style.cssFloat='left';
+   brolly.innerHTML = '<div align="center" onClick="handelRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
+   controlUI.appendChild(brolly);
+   
+  }
+
+  var controlPanelDiv = document.createElement('div');
+  var festivalMapControlPanel = new createControlPanel(controlPanelDiv, festivalMap);
+
+  //Add the control panel and reset button (created previously) to the map.
+  festivalMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
+}
+// --------------------------------------------------------
+var map_style = 
+[
+    {
+        "featureType": "all",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#ff7000"
+            },
+            {
+                "lightness": "69"
+            },
+            {
+                "saturation": "100"
+            },
+            {
+                "weight": "1.17"
+            },
+            {
+                "gamma": "2.04"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#cb8536"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "color": "#ffb471"
+            },
+            {
+                "lightness": "66"
+            },
+            {
+                "saturation": "100"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "gamma": 0.01
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "saturation": -31
+            },
+            {
+                "lightness": -33
+            },
+            {
+                "weight": 2
+            },
+            {
+                "gamma": 0.8
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": "-8"
+            },
+            {
+                "gamma": "0.98"
+            },
+            {
+                "weight": "2.45"
+            },
+            {
+                "saturation": "26"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 30
+            },
+            {
+                "saturation": 30
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": 20
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 20
+            },
+            {
+                "saturation": -20
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 10
+            },
+            {
+                "saturation": -30
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "saturation": 25
+            },
+            {
+                "lightness": 25
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": -20
+            },
+            {
+                "color": "#ecc080"
+            }
+        ]
+    }
+]
+
+
+</script>
+<script src="./gmaps-marker-clusterer-master/src/markerclusterer.js">
+    </script>
+
+</head>
+<body>  
+     <!--Create the div to hold the map.-->
+  
+    <div id="festival-map">
+      
+    </div>
+  
+</body>
+</html>
