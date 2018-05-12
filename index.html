@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+im<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -108,10 +108,10 @@ var MARKER_CAP_SIZE = 40;
 var MARKER_CAP_HOVER_FACTOR = 2.5;
 // -------------------------------------------------
 //These options configure the setup of the map. 
-var festivalMapOptions = { 
+var festivalMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
-		  maxZoom: 12,
+		  maxZoom: 9,
 		  minZoom: 6,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -137,7 +137,35 @@ festivalMap = new google.maps.Map(document.getElementById("festival-map"), festi
 
 festivalMap.addListener('zoom_changed', onZoomChanged);
 
+        // var imageBounds = {
+        //   north: 5395394.332570849,
+        //   south: 3829963.993290439,
+        //   east: 3507961.0140315965,
+        //   west: 1942530.6747511886
+        // };
+
+        // historicalOverlay = new google.maps.GroundOverlay(
+        //     './staticmap.png',
+        //     imageBounds);
+        // historicalOverlay.setMap(festivalMap);
+
+// 1942530.6747511886 3829963.993290439 3507961.0140315965 5395394.332570849
+// 
+// 1942530.6747511886 3829963.993290439 3507961.0140315965 5395394.332570849
 loadStyledMap();
+
+
+
+
+// var rainMapOverlay = new google.maps.ImageMapType({
+//  getTileUrl: function(coord, zoom) {
+//  return 'tiles' + '/' +zoom+ '/' +coord.x+ '/' + coord.y +'.png';
+//  },
+//  tileSize: new google.maps.Size(256, 256)
+// });
+
+// festivalMap.overlayMapTypes.insertAt(0, rainMapOverlay);
+
 //Calls the function below to load up all the map markers.
 loadMapMarkers(); // create markers list
 // loadMapMarkers();
@@ -266,6 +294,7 @@ var options = {
 
 
 var markers = [];
+var markersLines = [];
 var infoBoxes = [];
 
 function createXMarker(lat, log) {
@@ -343,6 +372,7 @@ function getImageObj(url, size) {
 
   return image;
 }
+var tempPinCounter = 1;
 function createImageMarker(lat, log, imageUrl) {
   
     var position = new google.maps.LatLng(lat, log);
@@ -350,7 +380,14 @@ function createImageMarker(lat, log, imageUrl) {
     // Origins, anchor positions and coordinates of the marker increase in the X
     // direction to the right and in the Y direction down.
     if (imageUrl == '') {
-      imageUrl = 'cap.png'
+
+      imageUrl = 'vergina.png';
+      if (tempPinCounter <= 30) {
+        imageUrl = tempPinCounter + '.png';
+        tempPinCounter = tempPinCounter + 1;
+
+      }
+      
     }
     
 

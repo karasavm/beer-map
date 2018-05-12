@@ -192,17 +192,17 @@ markersRaw = [
 {name: 'ΒΑΠ',lat: 36.3818988, log: 28.1978325, icon: 'vap.png'},
 {name: 'ΝΗΣΟΣ',lat: 37.5388756, log: 25.1749806, icon: 'nhsos.png'},
 {name: 'ΧΑΡΜΑ',lat: 35.48685, log: 23.825786, icon: 'charma.png'},
-{name: 'ΒΟΡΕΙΑ',lat: 41.0845604, log: 23.6175281, icon: 'voreia.png'},
+{name: 'ΒΟΡΕΙΑ',lat: 41.0845604, log: 23.6175281, latV: 41.0845604, logV: 23.6175281, icon: 'voreia.png'},
 {name: 'VOLKAN',lat: 36.3931562, log: 25.4615092, icon: 'volkan.png'},
-{name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881, icon: ''},
+{name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881, icon: 'thita-ita.png'},
 {name: 'CANAL DIVE',lat: 37.9234561, log: 22.8797936, icon: 'canal.png'},
 {name: 'SOLO',lat: 35.31229, log: 25.17545, icon: 'solo.png'},
 {name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, icon: ''},
-{name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696, log: 22.9437594, icon: ''},
+{name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696, log: 22.947594, icon: 'plastigga.png'},
 {name: 'ΣΚΝΙΠΑ',lat: 40.5280406, log: 23.0413982, icon: ''},
-{name: 'KEFALLONIAN BEER',lat: 8.2567968, log: 20.6269362, icon: ''},
+{name: 'KEFALLONIAN BEER',lat: 38.2567968, log: 20.6269362, icon: ''},
 {name: 'ΑΛΗ',lat: 40.6859526, log: 22.8171438, icon: ''},
-{name: 'ΟΛΥΜΠΟΣ',lat: 42.8157246, log: -1.6646403, icon: ''},
+{name: 'ΟΛΥΜΠΟΣ',lat: 40.2786946, log: 22.5163753, icon: ''},
 {name: 'ΔΙΩΝΗ-ΟΡΑ',lat: 38.1751188, log: 21.6814406, icon: ''},
 {name: 'ΣΤΑΛΛΑ ΡΟΥΣΣΑ',lat: 39.1579464, log: 20.9818888, icon: ''},
 {name: 'ΣΤΙΛΒΗ',lat: 39.1579464, log: 20.9818888, icon: ''},
@@ -233,6 +233,8 @@ markersRaw = [
 {name: 'SEVEN ISLAND',lat: 39.61847, log: 19.90743, icon: ''},
 {name: 'ΑΡΓΩ',lat: 39.3632214, log: 22.9345136, icon: ''}
 ]
+
+
 var clustersRaw = [
 	{
 		lat: 35.4419203,
