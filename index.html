@@ -383,12 +383,16 @@ function createImageMarker(lat, log, imageUrl) {
 
       imageUrl = 'vergina.png';
       if (tempPinCounter <= 30) {
-        imageUrl = tempPinCounter + '.png';
+        imageUrl = tempPinCounter + ".png";
         tempPinCounter = tempPinCounter + 1;
 
+
       }
+
       
     }
+
+    console.log(imageUrl)
     
 
     // todo: set coords
@@ -407,6 +411,7 @@ function createImageMarker(lat, log, imageUrl) {
       zIndex: ZINDEX_MARKER
     });
 
+    console.log(marker)
     return marker;
 }
 

@@ -198,7 +198,7 @@ markersRaw = [
 {name: 'CANAL DIVE',lat: 37.9234561, log: 22.8797936, icon: 'canal.png'},
 {name: 'SOLO',lat: 35.31229, log: 25.17545, icon: 'solo.png'},
 {name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, icon: ''},
-{name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696, log: 22.947594, icon: 'plastigga.png'},
+{name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696 , log: 22.937594, icon: 'plastigga.png'},
 {name: 'ΣΚΝΙΠΑ',lat: 40.5280406, log: 23.0413982, icon: ''},
 {name: 'KEFALLONIAN BEER',lat: 38.2567968, log: 20.6269362, icon: ''},
 {name: 'ΑΛΗ',lat: 40.6859526, log: 22.8171438, icon: ''},
