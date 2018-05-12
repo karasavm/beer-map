@@ -99,19 +99,19 @@ im<!DOCTYPE html>
 //The degree to which the map is zoomed in. This can range from 0 (least zoomed) to 21 and above (most zoomed).
 var festivalMapZoom = 7;
 //The max and min zoom levels that are allowed.
-var festivalMapZoomMax = 12;
+var festivalMapZoomMax = 9;
 var festivalMapZoomMin = festivalMapZoom;
 var markersDropped = false;
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 40;
+var MARKER_CAP_SIZE = 30;
 var MARKER_CAP_HOVER_FACTOR = 2.5;
 // -------------------------------------------------
 //These options configure the setup of the map. 
 var festivalMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
-		  maxZoom: 9,
+		  maxZoom: 10,
 		  minZoom: 6,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -373,7 +373,7 @@ function getImageObj(url, size) {
   return image;
 }
 var tempPinCounter = 1;
-function createImageMarker(lat, log, imageUrl) {
+function createImageMarker(lat, log, imageUrl, legend) {
   
     var position = new google.maps.LatLng(lat, log);
 
@@ -381,12 +381,10 @@ function createImageMarker(lat, log, imageUrl) {
     // direction to the right and in the Y direction down.
     if (imageUrl == '') {
 
-      imageUrl = 'vergina.png';
+      imageUrl = 'temp.png';
       if (tempPinCounter <= 30) {
         imageUrl = tempPinCounter + ".png";
         tempPinCounter = tempPinCounter + 1;
-
-
       }
 
       
@@ -400,10 +398,10 @@ function createImageMarker(lat, log, imageUrl) {
       coords: [1, 1, 1, 80, 80, 80, 80, 1],
       type: 'poly'
     };
-
+    console.log(legend)
     var marker = new google.maps.Marker({
       position: position,
-      title: 'X',
+      title: legend,
       // animation: google.maps.Animation.DROP,
       draggable: false,
       shape: shape,
@@ -411,7 +409,7 @@ function createImageMarker(lat, log, imageUrl) {
       zIndex: ZINDEX_MARKER
     });
 
-    console.log(marker)
+
     return marker;
 }
 
@@ -440,17 +438,40 @@ function loadMapMarkers (){
 	for(var i=0; i < markersRaw.length; i++) {
     // console.log(markersRaw[i].lat, markersRaw[i].log)
 		// markers.push(createXMarker(markersRaw[i].lat, markersRaw[i].log));
-    var marker = createImageMarker(markersRaw[i].lat, markersRaw[i].log, markersRaw[i].icon)
+    
+    var lat = markersRaw[i].lat;
+    var log = markersRaw[i].log;
+
+    if (markersRaw[i].latV) {
+      lat = markersRaw[i].latV;
+      log = markersRaw[i].logV;
+
+      // line
+      lineCoord = [
+          {lat: markersRaw[i].lat,  lng: markersRaw[i].log},
+          {lat: markersRaw[i].latV, lng: markersRaw[i].logV}
+        ];
+      path = new google.maps.Polyline({
+        path: lineCoord,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      path.setMap(festivalMap);
+    }
+
+    var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name)
     markers.push(marker);
 
-    google.maps.event.addListener(markers[i], "mouseover", function() {
+    google.maps.event.addListener(markers[i], "_mouseover", function() {
            
            this.setIcon(
             getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
             );
            this.setZIndex(ZINDEX_MARKER + 1);
       });
-    google.maps.event.addListener(markers[i], "mouseout", function() {
+    google.maps.event.addListener(markers[i], "_mouseout", function() {
        // marker.setIcon(this.icon);
        
        this.setIcon(
