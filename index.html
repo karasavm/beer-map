@@ -115,7 +115,7 @@ var festivalMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
 		  maxZoom: 12,
-		  minZoom: 6,
+		  minZoom: 7,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
 		  
@@ -453,7 +453,7 @@ function loadMapMarkers (){
 
       // line
       lineCoord = [
-          {lat: markersRaw[i].lat,  lng: markersRaw[i].log},
+          {lat: markersRaw[i].latC,  lng: markersRaw[i].logC},
           {lat: markersRaw[i].latV, lng: markersRaw[i].logV}
         ];
       path = new google.maps.Polyline({
@@ -768,10 +768,32 @@ function onZoomChanged() {
   var currentZoom = festivalMap.getZoom();
 
   // FROM STAR TO ORIGINAL LOCATION
-  if (currentZoom >= 8) {
+  if (currentZoom >= 10) {
     for (var i=0; i < lines.length; i++) {
       lines[i].setMap(null);
     }
+    for (i=0; i < markersRaw.length; i++) {
+      var position = new google.maps.LatLng(markersRaw[i].lat, markersRaw[i].log);
+      markers[i].setPosition(position)
+    }
+  } else {
+
+    for (i=0; i < markersRaw.length; i++) {
+      if (markersRaw[i].latV) {
+        lat = markersRaw[i].latV;
+        log = markersRaw[i].logV;
+      } else {
+        lat = markersRaw[i].lat;
+        log = markersRaw[i].log;
+      }
+      var position = new google.maps.LatLng(lat, log);
+      markers[i].setPosition(position)
+    }
+
+    for (i=0; i < lines.length; i++) {
+      lines[i].setMap(festivalMap);
+    }
+
   }
   // 1. REMOVE LINES
   
