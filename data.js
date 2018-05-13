@@ -195,10 +195,11 @@ markersRaw = [
 {name: 'VOREIA VIRTUAL',lat: 41.0845604, log: 23.6175281, latV: 41.1845604, logV: 23.6175281, icon: 'voreia.png'},
 // {name: 'VOREIA ORIGINAL',lat: 41.0845604, log: 23.6175281, icon: 'voreia.png'},
 {name: 'VOLKAN',lat: 36.3931562, log: 25.4615092, icon: 'volkan.png'},
-{name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881,latV: 38.06838096, logV: 23.8073881 ,  icon: 'thita-ita.png'},
+// {name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881,latV: 38.06838096, logV: 23.8073881 ,  icon: 'thita-ita.png'},
+
 {name: 'CANAL DIVE',lat: 37.9234561, log: 22.8797936, icon: 'canal.png'},
 {name: 'SOLO',lat: 35.31229, log: 25.17545, icon: 'solo.png'},
-{name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, icon: 'stergiou.png'},
+// {name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, icon: 'stergiou.png'},
 {name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696 , log: 22.937594, icon: 'plastigga.png'},
 {name: 'ΣΚΝΙΠΑ',lat: 40.5280406, log: 23.0413982, icon: 'sknipa.png'},
 {name: 'KEFALLONIAN BEER',lat: 38.2567968, log: 20.6269362, icon: 'kefallonian.png'},
@@ -207,8 +208,10 @@ markersRaw = [
 {name: 'ΔΙΩΝΗ-ΟΡΑ',lat: 38.1751188, log: 21.6814406, icon: ''},
 {name: 'ΣΤΑΛΛΑ ΡΟΥΣΣΑ',lat: 39.1579464, log: 20.9818888, icon: ''},
 {name: 'ΣΤΙΛΒΗ',lat: 39.1579464, log: 20.9818888, icon: ''},
-{name: 'ΜΑΡΕΑ ##MAREA',lat: 37.9829262, log: 23.7190463,latV: 37.8753188, logV: 23.7190463, icon: 'marea.png'},
-{name: 'ΑΘΗΝΕΟ',lat: 38.0036015, log: 23.7072896,latV: 38.1009838096, logV: 23.7072896, icon: 'athineo.png'},
+// {name: 'ΜΑΡΕΑ ##MAREA',lat: 37.9829262, log: 23.7190463,latV: 37.8753188, logV: 23.7190463, icon: 'marea.png'},
+
+// {name: 'ΑΘΗΝΕΟ',lat: 38.0036015, log: 23.7072896,latV: 38.1009838096, logV: 23.7072896, icon: 'athineo.png'},
+
 {name: 'ΛΥΡΑ LIRA',lat: 35.4954916, log: 23.6545257, icon: ''},
 {name: 'OLYMPICA MAGNA',lat: 37.7093679, log: 21.5595479, icon: ''},
 {name: 'JOHNNIES BEER',lat: 41.089483, log: 24.224047, icon: ''},
@@ -220,19 +223,35 @@ markersRaw = [
 {name: 'ΗΠΕΙΡΟΣ',lat: 39.7083252, log: 20.7237136, icon: ''},
 {name: 'SPARTA',lat: 36.89304, log: 22.51888, icon: ''},
 {name: 'FONIAS',lat: 40.4732432, log: 25.4807834, icon: 'samothraki.png'},
-{name: 'NOCTUA',lat: 37.9753188, log: 23.7099963, latV: 37.9353188, logV: 23.7099963, icon: 'noctua.png'},
+// {name: 'NOCTUA',lat: 37.9753188, log: 23.7099963, latV: 37.9353188, logV: 23.7099963, icon: 'noctua.png'},
+
 {name: 'VAMBEER',lat: 40.3248556, log: 22.5301856, icon: ''},
 {name: 'MYKONOS',lat: 37.447288, log: 25.344194, icon: ''},
 {name: 'NOTOΣ',lat: 35.3294596, log: 25.114209, icon: ''},
 {name: 'ΚΑΡΜΑ KARMA',lat: 37.819755, log: 22.647712, icon: ''},
-{name: 'ASYLUM BEER',lat: 37.948907, log: 23.743755, latV: 37.9053188, logV: 23.743755 , icon: 'asylum.png'},
+// {name: 'ASYLUM BEER',lat: 37.948907, log: 23.743755, latV: 37.9053188, logV: 23.743755 , icon: 'asylum.png'},
+
 {name: 'LEVANTE',lat: 37.8723145, log: 20.7329456, icon: ''},
 {name: 'ΙΚΑΡΙΩΤΙΣΣΑ',lat: 37.5967227, log: 26.1123078, icon: ''},
 {name: 'ONIRO',lat: 40.51528, log: 22.20358, icon: ''},
-{name: 'ΑΝΑΣΤΑΣΙΟΥ ANASTASIOU',lat: 38.02102, log: 23.80189,latV: 37.9753188, logV: 23.80189, icon: 'anastasiou.png'},
-{name: 'satiros',lat: 37.9838096, log: 23.7275388, latV: 38.03838096, logV: 23.7275388, icon: 'satyr.png'},
+// {name: 'ΑΝΑΣΤΑΣΙΟΥ ANASTASIOU',lat: 38.02102, log: 23.80189,latV: 37.9753188, logV: 23.80189, icon: 'anastasiou.png'},
+
+// {name: 'satiros',lat: 37.9838096, log: 23.7275388, latV: 38.03838096, logV: 23.7275388, icon: 'satyr.png'},
+
+
 {name: 'SEVEN ISLAND',lat: 39.61847, log: 19.90743, icon: ''},
-{name: 'ΑΡΓΩ',lat: 39.3632214, log: 22.9345136, icon: ''}
+{name: 'ΑΡΓΩ',lat: 39.3632214, log: 22.9345136, icon: ''},
+
+
+
+{name: 'ΑΘΗΝΕΟ',lat: 37.9838096, log:23.7275388,latV: 38.3009838096, logV: 23.7072896, icon: 'athineo.png'},
+{name: 'ΑΝΑΣΤΑΣΙΟΥ ANASTASIOU',lat: 37.9838096, log:23.7275388,latV: 37.9753188, logV: 24.00189-0.05, icon: 'anastasiou.png'},
+{name: 'satiros',lat: 37.9838096, log:23.7275388, latV: 38.13838096, logV: 23.6275388, icon: 'satyr.png'},
+{name: 'NOCTUA',lat: 37.9838096, log:23.7275388, latV: 37.7153188, logV: 23.7999963, icon: 'noctua.png'},
+{name: 'ASYLUM BEER',lat: 37.9838096, log:23.7275388, latV: 37.8053188, logV: 23.993755 , icon: 'asylum.png'},
+{name: 'ΜΑΡΕΑ ##MAREA',lat: 37.9838096, log:23.7275388,latV: 37.7753188, logV: 23.6190463, icon: 'marea.png'},
+{name: 'ΣΤΕΡΓΙΟΥ',lat: 37.9838096, log:23.7275388, latV: 37.9838096, logV:23.5275388, icon: 'stergiou.png'},
+{name: 'ZHTA-HTA-ΘΗΤΑ',lat: 37.9838096, log:23.7275388,latV: 38.16838096, logV: 23.9073881 ,  icon: 'thita-ita.png'},
 ]
 
 // markersRaw=[];
