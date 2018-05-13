@@ -115,7 +115,7 @@ var festivalMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
 		  maxZoom: 12,
-		  minZoom: 7,
+		  minZoom: 6,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
 		  
@@ -468,6 +468,7 @@ function loadMapMarkers (){
     }
 
     var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name)
+    marker.rawData = markersRaw[i];
     markers.push(marker);
 
     google.maps.event.addListener(markers[i], "mouseover", function() {
@@ -484,6 +485,22 @@ function loadMapMarkers (){
             getImageObj(this.getIcon().url, get_current_cap_size())
             );
        this.setZIndex(ZINDEX_MARKER);
+    });
+
+    google.maps.event.addListener(markers[i], "click", function() {
+       // marker.setIcon(this.icon);
+      
+      console.log(this.rawData)
+      // console.log(google.maps.LatLng(this.rawData.lat, this.rawData.log))
+
+      var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
+      
+      festivalMap.setCenter(latLng);
+      
+      festivalMap.setZoom(12)
+      
+
+      
     });
 
     // markers.push(createDefaultMarker(markersRaw[i].lat, markersRaw[i].log));
@@ -768,7 +785,7 @@ function onZoomChanged() {
   var currentZoom = festivalMap.getZoom();
 
   // FROM STAR TO ORIGINAL LOCATION
-  if (currentZoom >= 10) {
+  if (currentZoom >= 9) {
     for (var i=0; i < lines.length; i++) {
       lines[i].setMap(null);
     }
