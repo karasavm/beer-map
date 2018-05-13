@@ -105,14 +105,17 @@ var markersDropped = false;
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
 var MARKER_CAP_SIZE = 30;
+
 var MARKER_CAP_HOVER_FACTOR = 2.5;
+var MARKER_CAP_BIG_ZOOM_FACTOR = 1.5;
+
 // -------------------------------------------------
 //These options configure the setup of the map. 
 var festivalMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
-		  maxZoom: 10,
-		  minZoom: 6,
+		  maxZoom: 12,
+		  minZoom: 6  ,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
 		  
@@ -464,18 +467,18 @@ function loadMapMarkers (){
     var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name)
     markers.push(marker);
 
-    google.maps.event.addListener(markers[i], "_mouseover", function() {
+    google.maps.event.addListener(markers[i], "mouseover", function() {
            
            this.setIcon(
             getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
             );
            this.setZIndex(ZINDEX_MARKER + 1);
       });
-    google.maps.event.addListener(markers[i], "_mouseout", function() {
+    google.maps.event.addListener(markers[i], "mouseout", function() {
        // marker.setIcon(this.icon);
        
        this.setIcon(
-            getImageObj(this.getIcon().url, MARKER_CAP_SIZE)
+            getImageObj(this.getIcon().url, get_current_cap_size())
             );
        this.setZIndex(ZINDEX_MARKER);
     });
@@ -604,8 +607,30 @@ function onMarkerClickListener(marker, infobox) {
 //   }, i*50);
 // }
 
-function updateMarkers() {
+function get_current_cap_size() {
   var currentZoom = festivalMap.getZoom();
+  if (currentZoom >= 10) return MARKER_CAP_SIZE*2;
+  if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
+  return MARKER_CAP_SIZE;
+}
+
+function updateMarkers() {
+
+
+  var currentZoom = festivalMap.getZoom();
+  
+  // change cap size
+  
+
+    for (var i=0; i < markers.length; i++) {
+      markers[i].setIcon(
+
+              getImageObj(markers[i].getIcon().url, get_current_cap_size())
+              );  
+    }
+    
+
+  
   // if (currentZoom < 6) {
   //   unDropMarkers();
   // } else {
