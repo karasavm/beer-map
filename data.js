@@ -203,7 +203,7 @@ markersRaw = [
 {name: 'ΠΛΑΣΤΙΓΓΑ',lat: 39.3627696 , log: 22.937594, icon: 'plastigga.png'},
 {name: 'ΣΚΝΙΠΑ',lat: 40.5280406, log: 23.0413982, icon: 'sknipa.png'},
 {name: 'KEFALLONIAN BEER',lat: 38.2567968, log: 20.6269362, icon: 'kefallonian.png'},
-{name: 'ΑΛΗ',lat: 40.6859526, log: 22.8171438, icon: ''},
+{name: 'ΑΛΗ',lat: 40.6859526, log: 22.8171438, icon: 'ali.png'},
 {name: 'ΟΛΥΜΠΟΣ',lat: 40.2786946, log: 22.5163753, icon: ''},
 {name: 'ΔΙΩΝΗ-ΟΡΑ',lat: 38.1751188, log: 21.6814406, icon: ''},
 {name: 'ΣΤΑΛΛΑ ΡΟΥΣΣΑ',lat: 39.1579464, log: 20.9818888, icon: ''},
@@ -232,14 +232,14 @@ markersRaw = [
 // {name: 'ASYLUM BEER',lat: 37.948907, log: 23.743755, latV: 37.9053188, logV: 23.743755 , icon: 'asylum.png'},
 
 {name: 'LEVANTE',lat: 37.8723145, log: 20.7329456, icon: ''},
-{name: 'ΙΚΑΡΙΩΤΙΣΣΑ',lat: 37.5967227, log: 26.1123078, icon: ''},
+{name: 'ΙΚΑΡΙΩΤΙΣΣΑ',lat: 37.5967227, log: 26.1123078, icon: 'ikariotissa.png'},
 {name: 'ONIRO',lat: 40.51528, log: 22.20358, icon: ''},
 // {name: 'ΑΝΑΣΤΑΣΙΟΥ ANASTASIOU',lat: 38.02102, log: 23.80189,latV: 37.9753188, logV: 23.80189, icon: 'anastasiou.png'},
 
 // {name: 'satiros',lat: 37.9838096, log: 23.7275388, latV: 38.03838096, logV: 23.7275388, icon: 'satyr.png'},
 
 
-{name: 'SEVEN ISLAND',lat: 39.61847, log: 19.90743, icon: ''},
+{name: 'SEVEN ISLAND',lat: 39.61847, log: 19.90743, icon: 'seven_island.png'},
 {name: 'ΑΡΓΩ',lat: 39.3632214, log: 22.9345136, icon: ''},
 
 

@@ -106,11 +106,11 @@ var markersDropped = false;
 var ZINDEX_MARKER = 100;
 var MARKER_CAP_SIZE = 30;
 
-var MARKER_CAP_HOVER_FACTOR = 2.5;
-var MARKER_CAP_BIG_ZOOM_FACTOR = 1.5;
+var MARKER_CAP_HOVER_FACTOR = 3.5;
+var MARKER_CAP_BIG_ZOOM_FACTOR = 2.5;
 
 var MAX_ZOOM = 12;
-var MIN_ZOOM = 5;
+var MIN_ZOOM = 2;
 // -------------------------------------------------
 //These options configure the setup of the map. 
 var festivalMapOptions = {
@@ -127,6 +127,7 @@ var festivalMapOptions = {
 };
 //Create the variable for the main map itself.
 var festivalMap;
+var currentCapSize = MARKER_CAP_SIZE;
 
 //When the page loads, the line below calls the function below called 'loadFestivalMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', loadFestivalMap);
@@ -135,165 +136,37 @@ google.maps.event.addDomListener(window, 'load', loadFestivalMap);
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadFestivalMap() {
-	
-//The empty map variable ('festivalMap') was created above. The line below creates the map, assigning it to this variable. The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'festivalMapOptions' (above) to configure this map. 
-festivalMap = new google.maps.Map(document.getElementById("festival-map"), festivalMapOptions);	
+  //The empty map variable ('festivalMap') was created above. The line below creates the map, assigning it to this variable. 
+  //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'festivalMapOptions' (above) to configure this map. 
+  festivalMap = new google.maps.Map(document.getElementById("festival-map"), festivalMapOptions);	
 
-festivalMap.addListener('zoom_changed', onZoomChanged);
+  festivalMap.addListener('zoom_changed', onZoomChanged);
 
-        // var imageBounds = {
-        //   north: 5395394.332570849,
-        //   south: 3829963.993290439,
-        //   east: 3507961.0140315965,
-        //   west: 1942530.6747511886
-        // };
-
-        // historicalOverlay = new google.maps.GroundOverlay(
-        //     './staticmap.png',
-        //     imageBounds);
-        // historicalOverlay.setMap(festivalMap);
-
-// 1942530.6747511886 3829963.993290439 3507961.0140315965 5395394.332570849
-// 
-// 1942530.6747511886 3829963.993290439 3507961.0140315965 5395394.332570849
-loadStyledMap();
+  loadStyledMap();
 
 
 
 
-var rainMapOverlay = new google.maps.ImageMapType({
- getTileUrl: function(coord, zoom) {
- return 'tiles2' + '/' +zoom+ '/' +coord.x+ '/' + coord.y +'.png';
- },
- tileSize: new google.maps.Size(256, 256)
-});
+  var rainMapOverlay = new google.maps.ImageMapType({
+   getTileUrl: function(coord, zoom) {
+   return 'tiles2' + '/' +zoom+ '/' +coord.x+ '/' + coord.y +'.png';
+   },
+   tileSize: new google.maps.Size(256, 256)
+  });
 
-// festivalMap.overlayMapTypes.insertAt(0, rainMapOverlay);
+  // festivalMap.overlayMapTypes.insertAt(0, rainMapOverlay);
 
-//Calls the function below to load up all the map markers.
-loadMapMarkers(); // create markers list
-// loadMapMarkers();
-// updateMarkers();
-// 
-// loadClusters();
-// dropClusters();
-dropMarkers(-1);
+  //Calls the function below to load up all the map markers.
+  loadMapMarkers(); // create markers list
+  updateMarkers();
+  dropMarkers(-1);
 
-var clusterStyles = [
-  {
-    textColor: 'white',
-    url: 'gmaps-marker-clusterer-master/images/cap.png',
-    height: 52,
-    width: 52
-  },
- {
-    textColor: 'white',
-    url: 'gmaps-marker-clusterer-master/images/cap.png',
-    height: 50,
-    width: 50
-  },
- {
-    textColor: 'white',
-    url: 'gmaps-marker-clusterer-master/images/cap.png',
-    height: 50,
-    width: 50
-  }
-];
+  // loadClusters();
+  // loadClusters();
+  // loadBanner();
+  
 
-function getOffset() {
-
-  var z = festivalMap.getZoom();
-
-  if (z == 6) {
-    return 1.5;
-  }
-
-  if (z == 7) {
-    return 0.75;
-  }
-
-  if (z == 8) {
-    return 0.4;
-  }
-
-  if (z == 9){
-    return 0.2;
-  }
-
-  if (z == 10) {
-    return 0.1;
-  }
-
-  if (z == 11) {
-    return 0.05;
-  }
-
-}
-
-changeOverlayOrder = function(map) {
-    var panes = map.getPanes();
-    var markerOverlayDiv = panes.overlayImage.parentNode;
-    var clusterOverlayDiv = panes.overlayMouseTarget.parentNode;
-    // Make the clusters clickable.
-    if(!markerOverlayDiv.style.pointerEvents) {
-        markerOverlayDiv.style.cssText += ";pointer-events: none;";
-    }
-    // Switch z-indexes
-    if(markerOverlayDiv.style.zIndex < clusterOverlayDiv.style.zIndex) {
-        var tmp = markerOverlayDiv.style.zIndex;
-        markerOverlayDiv.style.zIndex = clusterOverlayDiv.style.zIndex;
-        clusterOverlayDiv.style.zIndex = tmp;
-    }
-};
-
-var testMarkers = [];
-var options = {
-              imagePath: 'gmaps-marker-clusterer-master/images/m',
-              onMouseoverCluster: function (clusterIcon, event) {
-                // console.log(clusterIcon.cluster_.markers_, event)
-                console.log("mouse in", clusterIcon.cluster_.markers_[0]);
-
-
-
-                // changeOverlayOrder(festivalMap);
-                for(let i=0; i < clusterIcon.cluster_.markers_.length; i++) {
-                  var curMarker = clusterIcon.cluster_.markers_[i]
-                  console.log(Math.floor(i/5));
-                  testMarkers.push(createImageMarker(
-                    clusterIcon.cluster_.center_.lat()+getOffset() + 0.7*getOffset()*Math.floor(i/5),
-                    clusterIcon.cluster_.center_.lng()-2*getOffset() + getOffset()*(i%5),
-                    curMarker.icon.url.split('/')[curMarker.icon.url.split('/').length - 1])
-                  );
-                  
-                  testMarkers[i].setMap(festivalMap);
-                }
-
-                // for(let i=0; i < markerCluster.clusters_.length; i++ ) {
-                //   markerCluster.clusters_[i].setMap(null)
-                // }
-                // markerCluster.clusters_[0].markerClusterer_.setMap(null)
-                
-
-              },
-              onMouseoutCluster: function (clusterIcon, event) {
-                console.log("mouse out");
-
-                for(let i=0; i < testMarkers.length; i++) {
-                  testMarkers[i].setMap(null);
-                }
-                testMarkers = []
-              },
-              __styles: clusterStyles,
-              cssClass: 'custom-pin'
-
-            };
-
- // var markerCluster = new MarkerClusterer(festivalMap, markers,options);
-// loadBanner();
-// console.log(markerCluster);
-
-}
-
+} // EDN OF loadFestivalMap()
 
 
 
@@ -334,8 +207,7 @@ function createXMarker(lat, log) {
     return marker;
 }
 
-function convertFromLatLngToPoint(latlng, map, elementContainingMap)
-{
+function convertFromLatLngToPoint(latlng, map, elementContainingMap){
   console.log(elementContainingMap)
   var worldMapWidth = 256*map.getZoom();
 
@@ -394,7 +266,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
       
     }
 
-    console.log(imageUrl)
+    
     
     // imageUrl = 'sknipa-min.png'
     // todo: set coords
@@ -402,7 +274,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
       coords: [1, 1, 1, 80, 80, 80, 80, 1],
       type: 'poly'
     };
-    console.log(legend)
+    
     var marker = new google.maps.Marker({
       position: position,
       title: legend,
@@ -417,30 +289,11 @@ function createImageMarker(lat, log, imageUrl, legend) {
     return marker;
 }
 
-function createDefaultMarker(lat, log) {
-  
-    var position = new google.maps.LatLng(lat, log);
-
-    // Origins, anchor positions and coordinates of the marker increase in the X
-    // direction to the right and in the Y direction down.
-
-    var marker = new google.maps.Marker({
-      position: position,
-      title: '',
-      animation: google.maps.Animation.DROP,
-      draggable: false,
-      // shape: markerShapeGlastonbury,
-      // icon: markerIconGlastonbury
-    });
-
-    return marker;
-}
 
 //Function that loads the map markers.
 // markersRaw = markersRaw.slice(1,1)
 var lines = [];
 function loadMapMarkers (){
-
 	for(var i=0; i < markersRaw.length; i++) {
     // console.log(markersRaw[i].lat, markersRaw[i].log)
 		// markers.push(createXMarker(markersRaw[i].lat, markersRaw[i].log));
@@ -483,7 +336,7 @@ function loadMapMarkers (){
        // marker.setIcon(this.icon);
        
        this.setIcon(
-            getImageObj(this.getIcon().url, get_current_cap_size())
+            getImageObj(this.getIcon().url, get_new_cap_size())
             );
        this.setZIndex(ZINDEX_MARKER);
     });
@@ -503,40 +356,6 @@ function loadMapMarkers (){
 
       
     });
-
-    // markers.push(createDefaultMarker(markersRaw[i].lat, markersRaw[i].log));
-
-        //Creates the information to go in the pop-up info box.
-    // var pop_up_info = "border: 0px solid black; background-color: #ffffff; padding:15px; margin-top: 8px; border-radius:10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; box-shadow: 1px 1px #888;";
-
-    // var boxText = document.createElement("div");
-    // boxText.style.cssText = pop_up_info;
-    // boxText.innerHTML = '<span class="pop_up_box_text"><img src="icons/pins/'+markersRaw[i].image+'" width="400" height="285" border="0" /></span>';
-     
-    // //Sets up the configuration options of the pop-up info box.
-    // var infoboxOptions = {
-    //  content: boxText
-    //  ,disableAutoPan: false
-    //  ,maxWidth: 0
-    //  ,pixelOffset: new google.maps.Size(-241, 0)
-    //  ,zIndex: null
-    //  ,boxStyle: {
-    //  background: "url('infobox/pop_up_box_top_arrow.png') no-repeat"
-    //  ,opacity: 1
-    //  ,width: "430px"
-    //  }
-    //  ,closeBoxMargin: "10px 2px 2px 2px"
-    //  ,closeBoxURL: "icons/button_close.png"
-    //  ,infoBoxClearance: new google.maps.Size(1, 1)
-    //  ,isHidden: false
-    //  ,pane: "floatPane"
-    //  ,enableEventPropagation: false
-    // };
-
-    // //Creates the pop-up infobox for Glastonbury, adding the configuration options set above.
-    // infobox = new InfoBox(infoboxOptions);
-    // infoBoxes.push(infobox);
-    // onMarkerClickListener(marker, infobox);
     
     
 	}
@@ -628,7 +447,7 @@ function onMarkerClickListener(marker, infobox) {
 //   }, i*50);
 // }
 
-function get_current_cap_size() {
+function get_new_cap_size() {
   var currentZoom = festivalMap.getZoom();
   if (currentZoom >= 10) return MARKER_CAP_SIZE*2;
   if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
@@ -639,19 +458,22 @@ function updateMarkers() {
 
 
   var currentZoom = festivalMap.getZoom();
-  
-  // change cap size
-  
 
+
+  // we need resize the caps according to new zoom level
+  // maybe we will not resize them
+  var newCapSize = get_new_cap_size();
+  if (currentCapSize != newCapSize) {
+    currentCapSize = newCapSize;
     for (var i=0; i < markers.length; i++) {
       markers[i].setIcon(
-
-              getImageObj(markers[i].getIcon().url, get_current_cap_size())
-              );  
+        getImageObj(markers[i].getIcon().url, newCapSize)
+      );
     }
-    
+  }
 
-  
+
+
   // if (currentZoom < 6) {
   //   unDropMarkers();
   // } else {
@@ -660,127 +482,111 @@ function updateMarkers() {
   //   }
   // }
   if (!markersDropped) {
-    dropMarkers();
+    // dropMarkers();
   }
 }
+
 // -------------------------- CLUSTERS -----------------
-var clusters = [];
-var curMarkers = [];
-var curLines = [];
 function loadClusters() {
+  var clusterStyles = [
+    {
+      textColor: 'white',
+      url: 'gmaps-marker-clusterer-master/images/cap.png',
+      height: 52,
+      width: 52
+    },
+   {
+      textColor: 'white',
+      url: 'gmaps-marker-clusterer-master/images/cap.png',
+      height: 50,
+      width: 50
+    },
+   {
+      textColor: 'white',
+      url: 'gmaps-marker-clusterer-master/images/cap.png',
+      height: 50,
+      width: 50
+    }
+  ];
 
-  for (let i=0; i < clustersRaw.length; i ++) {
-    var clusterMarker = createImageMarker(clustersRaw[i].lat, clustersRaw[i].log, 'cap.png');
-     clusters.push(clusterMarker);
+  function getOffset() {
 
-     clusterMarker.addListener('mouseover', function() {
-      console.log('mouseover')
-      var lineCoord = {};
-      var path = {};
-      var lat = clusters[i].getPosition().lat();
-      var lng = clusters[i].getPosition().lng();
+    var z = festivalMap.getZoom();
 
-      var marker = createImageMarker(lat + 2, lng, 'cap.png')
-      curMarkers.push(marker);
-      marker.setMap(festivalMap);
+    if (z == 6) {
+      return 1.5;
+    }
 
+    if (z == 7) {
+      return 0.75;
+    }
 
-      lineCoord = [
-          {lat: lat, lng: lng},
-          {lat: lat + 2, lng: lng}
-        ];
-      path = new google.maps.Polyline({
-        path: lineCoord,
-        geodesic: true,
-        strokeColor: 'white',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
-      path.setMap(festivalMap);
+    if (z == 8) {
+      return 0.4;
+    }
 
-      marker = createImageMarker(lat - 2, lng, 'cap.png')
-      curMarkers.push(marker);
-      marker.setMap(festivalMap);
-      curLines.push(path);
+    if (z == 9){
+      return 0.2;
+    }
 
-      lineCoord = [
-          {lat: lat, lng: lng},
-          {lat: lat -2, lng: lng}
-        ];
-      path = new google.maps.Polyline({
-        path: lineCoord,
-        geodesic: true,
-        strokeColor: 'white',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
-      path.setMap(festivalMap);
-      curLines.push(path);
+    if (z == 10) {
+      return 0.1;
+    }
 
-      marker = createImageMarker(lat, lng + 2.5, 'cap.png')
-      curMarkers.push(marker);
-      marker.setMap(festivalMap);
+    if (z == 11) {
+      return 0.05;
+    }
 
-
-      lineCoord = [
-          {lat: lat, lng: lng},
-          {lat: lat, lng: lng + 2.5}
-        ];
-      path = new google.maps.Polyline({
-        path: lineCoord,
-        geodesic: true,
-        strokeColor: 'white',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
-      path.setMap(festivalMap);
-      curLines.push(path);
-
-      marker = createImageMarker(lat, lng - 2.5, 'cap.png')
-      curMarkers.push(marker);
-      marker.setMap(festivalMap);
-
-      lineCoord = [
-          {lat: lat, lng: lng},
-          {lat: lat, lng: lng - 2.5}
-        ];
-      path = new google.maps.Polyline({
-        path: lineCoord,
-        geodesic: true,
-        strokeColor: 'white',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
-
-      curLines.push(path);
-      path.setMap(festivalMap);
-     })
-
-     clusterMarker.addListener('mouseout', function(e) {
-      console.log('mouseout', clusters[i].getPosition().lng())
-      unDropCurMarkers();
-     })
-     
   }
-}
 
-function dropClusters() {
-  for (let i=0; i < clustersRaw.length; i ++) {
-     clusters[i].setMap(festivalMap);
-  }
-}
 
-function unDropClusters() {
- for (let i=0; i < clustersRaw.length; i ++) {
-     clusters[i].setMap(null);
-  };
-}
 
+  var testMarkers = [];
+  var options = {
+                imagePath: 'gmaps-marker-clusterer-master/images/m',
+                onMouseoverCluster: function (clusterIcon, event) {
+                  // console.log(clusterIcon.cluster_.markers_, event)
+                  console.log("mouse in", clusterIcon.cluster_.markers_[0]);
+
+                  for(let i=0; i < clusterIcon.cluster_.markers_.length; i++) {
+                    var curMarker = clusterIcon.cluster_.markers_[i]
+                    console.log(Math.floor(i/5));
+                    testMarkers.push(createImageMarker(
+                      clusterIcon.cluster_.center_.lat()+getOffset() + 0.7*getOffset()*Math.floor(i/5),
+                      clusterIcon.cluster_.center_.lng()-2*getOffset() + getOffset()*(i%5),
+                      curMarker.icon.url.split('/')[curMarker.icon.url.split('/').length - 1])
+                    );
+                    
+                    testMarkers[i].setMap(festivalMap);
+                  }
+
+                  // for(let i=0; i < markerCluster.clusters_.length; i++ ) {
+                  //   markerCluster.clusters_[i].setMap(null)
+                  // }
+                  // markerCluster.clusters_[0].markerClusterer_.setMap(null)
+                  
+
+                },
+                onMouseoutCluster: function (clusterIcon, event) {
+                  console.log("mouse out");
+
+                  for(let i=0; i < testMarkers.length; i++) {
+                    testMarkers[i].setMap(null);
+                  }
+                  testMarkers = []
+                },
+                __styles: clusterStyles,
+                cssClass: 'custom-pin'
+
+              };
+
+   var markerCluster = new MarkerClusterer(festivalMap, markers,options);
+}
 
 // -------------------------- EVENT HANDLERS -------------
 
 function onZoomChanged() {
-  return
+  
   updateMarkers();
 
   var currentZoom = festivalMap.getZoom();
@@ -814,7 +620,6 @@ function onZoomChanged() {
 
   }
   // 1. REMOVE LINES
-  
 
 }
 // ------------------------- MAP STYLE ---------------------
@@ -923,8 +728,7 @@ function loadBanner() {
   festivalMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 }
 // --------------------------------------------------------
-var map_style = 
-[
+var map_style = [
     {
         "featureType": "all",
         "elementType": "all",
@@ -1461,7 +1265,6 @@ map_style = [
       
     </div>
 
-    <a rel="stylesheet" type="text/css" href="https://www.google.gr/maps/place/Septem+Microbrewery/@38.5350089,24.1108791,15z/data=!4m2!3m1!1s0x0:0x38bac46c537cb731?sa=X&ved=0ahUKEwjS2MPH_7rbAhWGY1AKHTEXCHIQ_BIIhgEwCg"> sdafdsaf</a>
   
 </body>
 </html>
