@@ -252,7 +252,7 @@ markersRaw = [
 {name: 'ΜΑΡΕΑ ##MAREA',lat: 37.9829262, log: 23.7190463, latC: 37.9838096, logC:23.7275388,latV: 37.7753188, logV: 23.6190463, icon: 'marea.png'},
 {name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, latC: 37.9838096, logC:23.7275388, latV: 37.9838096, logV:23.5275388, icon: 'stergiou.png'},
 {name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881, latC: 37.9838096, logC:23.7275388,latV: 38.16838096, logV: 23.9073881 ,  icon: 'thita-ita.png'},
-]
+].slice(1,5)
 
 // markersRaw=[];
 var clustersRaw = [
