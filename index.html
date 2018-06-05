@@ -97,11 +97,11 @@ im<!DOCTYPE html>
 //The latitude and longitude of the center of the map.
 
 //The degree to which the map is zoomed in. This can range from 0 (least zoomed) to 21 and above (most zoomed).
-var festivalMapZoom = 7;
+var beerMapZoom = 7;
 //The max and min zoom levels that are allowed.
-var festivalMapZoomMax = 9;
-var festivalMapZoomMin = festivalMapZoom;
-var markersDropped = false;
+var beerMapZoomMax = 9;
+var beerMapZoomMin = beerMapZoom;
+
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
 var MARKER_CAP_SIZE = 30;
@@ -111,9 +111,11 @@ var MARKER_CAP_BIG_ZOOM_FACTOR = 2.5;
 
 var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
+
+var STAR_MODE_MAX_ZOOM = 9; 
 // -------------------------------------------------
 //These options configure the setup of the map. 
-var festivalMapOptions = {
+var beerMapOptions = {
 		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
           zoom: 6,
 		  maxZoom: MAX_ZOOM,
@@ -126,25 +128,24 @@ var festivalMapOptions = {
 		  streetViewControl: false,
 };
 //Create the variable for the main map itself.
-var festivalMap;
+var beerMap;
+var isStarMode = true; // start is when markers are in "star" position on map, on virtual positions
 var currentCapSize = MARKER_CAP_SIZE;
 
-//When the page loads, the line below calls the function below called 'loadFestivalMap' to load up the map.
-google.maps.event.addDomListener(window, 'load', loadFestivalMap);
+//When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
+google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
 
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
-function loadFestivalMap() {
-  //The empty map variable ('festivalMap') was created above. The line below creates the map, assigning it to this variable. 
-  //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'festivalMapOptions' (above) to configure this map. 
-  festivalMap = new google.maps.Map(document.getElementById("festival-map"), festivalMapOptions);	
+function loadbeerMap() {
+  //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable. 
+  //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map. 
+  beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);	
 
-  festivalMap.addListener('zoom_changed', onZoomChanged);
+  beerMap.addListener('zoom_changed', onZoomChanged);
 
   loadStyledMap();
-
-
 
 
   var rainMapOverlay = new google.maps.ImageMapType({
@@ -154,19 +155,17 @@ function loadFestivalMap() {
    tileSize: new google.maps.Size(256, 256)
   });
 
-  // festivalMap.overlayMapTypes.insertAt(0, rainMapOverlay);
+  // beerMap.overlayMapTypes.insertAt(0, rainMapOverlay);
 
   //Calls the function below to load up all the map markers.
   loadMapMarkers(); // create markers list
-  updateMarkers();
-  dropMarkers(-1);
-
-  // loadClusters();
-  // loadClusters();
-  // loadBanner();
+  // updateMarkersSize();
   
 
-} // EDN OF loadFestivalMap()
+  // loadClusters();
+  // loadBanner();
+
+} // EDN OF loadbeerMap()
 
 
 
@@ -301,6 +300,7 @@ function loadMapMarkers (){
     var lat = markersRaw[i].lat;
     var log = markersRaw[i].log;
 
+    // draw lines
     if (markersRaw[i].latV) {
       lat = markersRaw[i].latV;
       log = markersRaw[i].logV;
@@ -318,147 +318,49 @@ function loadMapMarkers (){
         strokeWeight: 2
       });
       lines.push(path);
-      path.setMap(festivalMap);
+      path.setMap(beerMap);
     }
 
     var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name)
     marker.rawData = markersRaw[i];
     markers.push(marker);
 
+    marker.setMap(beerMap);
+
+    // MARKERS EVENT HANDLERS
     google.maps.event.addListener(markers[i], "mouseover", function() {
-           
+
            this.setIcon(
             getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
             );
-           this.setZIndex(ZINDEX_MARKER + 1);
-      });
+           this.setZIndex(ZINDEX_MARKER + 1);});
     google.maps.event.addListener(markers[i], "mouseout", function() {
        // marker.setIcon(this.icon);
-       
+
        this.setIcon(
             getImageObj(this.getIcon().url, get_new_cap_size())
             );
-       this.setZIndex(ZINDEX_MARKER);
-    });
-
+       this.setZIndex(ZINDEX_MARKER);});
     google.maps.event.addListener(markers[i], "click", function() {
-       // marker.setIcon(this.icon);
-      
-      console.log(this.rawData)
-      // console.log(google.maps.LatLng(this.rawData.lat, this.rawData.log))
-
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
-      
-      festivalMap.setCenter(latLng);
-      
-      festivalMap.setZoom(MAX_ZOOM)
-      
+      beerMap.setCenter(latLng);
+      beerMap.setZoom(MAX_ZOOM)});
 
-      
-    });
-    
-    
 	}
 
-	// for (var i=0; i < markers.length; i++) {
-	// 	// console.log(markers[i])
-
-	// 	// dropMarkers(markers, i);
- //    markers[i].setMap(festivalMap); 
-
-	// }
 }
 
-function unDropMarkers() {
-  markersDropped = false;
-  for (let i=0; i < markers.length; i++){
-    console.log("delete")
-    markers[i].setMap(null);
-  }
-}
-
-function unDropCurMarkers() {
-  // markersDropped = false;
-  console.log("Undropping current markers.")
-  for (let i=0; i < curLines.length; i++){
-    curLines[i].setMap(null);
-  }
-
-  for (let i=0; i < curMarkers.length; i++){
-    curMarkers[i].setMap(null);
-  }
-
-  
-}
-
-function dropMarkers(clusterId) {
-  // dropClusters();
-  
-  markersDropped = true;
-
-  if (clusterId == -1) {
-    for (let i=0; i < markers.length; i++){
-      markers[i].setMap(festivalMap);
-    }
-  }
-
-  if (clusterId == 1) {
-   for (let i=0; i < markers.length; i+=2){
-      markers[i].setMap(festivalMap);
-    } 
-  }
-
-  if (clusterId == 2) {
-   for (let i=1; i < markers.length; i+=2){
-      markers[i].setMap(festivalMap);
-    } 
-  }
-}
-
-function setZoomWhenMarkerClicked(){
-  var currentZoom = festivalMap.getZoom();
-   if (currentZoom < 7) {
-    festivalMap.setZoom(7);
-   }
-}
-
-function onMarkerClickListener(marker, infobox) {
-  google.maps.event.addListener(marker, "click", function (e) {
-     //Open the Glastonbury info box.
-     
-     for(var i=0; i < infoBoxes.length; i++) {
-      infoBoxes[i].close()
-     }
-     infobox.open(festivalMap, this);
-
-    
-     this.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
-     
-     setZoomWhenMarkerClicked();
-     
-     festivalMap.setCenter(marker.getPosition());
-    });
-}
-
-// function dropMarkers(markers, i) {
-//   setTimeout(function() {
-
-//   	markers[i].setMap(festivalMap);
-//   }, i*50);
-// }
 
 function get_new_cap_size() {
-  var currentZoom = festivalMap.getZoom();
+  var currentZoom = beerMap.getZoom();
   if (currentZoom >= 10) return MARKER_CAP_SIZE*2;
   if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
   return MARKER_CAP_SIZE;
 }
 
-function updateMarkers() {
+function updateMarkersSize() {
 
-
-  var currentZoom = festivalMap.getZoom();
-
+  var currentZoom = beerMap.getZoom();
 
   // we need resize the caps according to new zoom level
   // maybe we will not resize them
@@ -470,19 +372,6 @@ function updateMarkers() {
         getImageObj(markers[i].getIcon().url, newCapSize)
       );
     }
-  }
-
-
-
-  // if (currentZoom < 6) {
-  //   unDropMarkers();
-  // } else {
-  //   if (!markersDropped) {
-  //     dropMarkers();
-  //   }
-  // }
-  if (!markersDropped) {
-    // dropMarkers();
   }
 }
 
@@ -511,7 +400,7 @@ function loadClusters() {
 
   function getOffset() {
 
-    var z = festivalMap.getZoom();
+    var z = beerMap.getZoom();
 
     if (z == 6) {
       return 1.5;
@@ -557,7 +446,7 @@ function loadClusters() {
                       curMarker.icon.url.split('/')[curMarker.icon.url.split('/').length - 1])
                     );
                     
-                    testMarkers[i].setMap(festivalMap);
+                    testMarkers[i].setMap(beerMap);
                   }
 
                   // for(let i=0; i < markerCluster.clusters_.length; i++ ) {
@@ -580,55 +469,61 @@ function loadClusters() {
 
               };
 
-   var markerCluster = new MarkerClusterer(festivalMap, markers,options);
+   var markerCluster = new MarkerClusterer(beerMap, markers,options);
 }
 
 // -------------------------- EVENT HANDLERS -------------
 
 function onZoomChanged() {
-  
-  updateMarkers();
 
-  var currentZoom = festivalMap.getZoom();
+  updateMarkersSize();
+
+  var currentZoom = beerMap.getZoom();
 
   // FROM STAR TO ORIGINAL LOCATION
-  if (currentZoom >= 10) {
+  if (currentZoom > STAR_MODE_MAX_ZOOM && isStarMode) { // currentZoom not in star mode && previous mode was start Mode
+    isStarMode = false;
+
+    // remove lines
     for (var i=0; i < lines.length; i++) {
       lines[i].setMap(null);
     }
-    for (i=0; i < markersRaw.length; i++) {
-      var position = new google.maps.LatLng(markersRaw[i].lat, markersRaw[i].log);
-      markers[i].setPosition(position)
-    }
-  } else {
 
+
+
+    // set oroginal positions to markers
+    for (i=0; i < markersRaw.length; i++) {
+      if (markersRaw[i].latV) { // only if there is apossibility for virtual position
+        var position = new google.maps.LatLng(markersRaw[i].lat, markersRaw[i].log);
+        markers[i].setPosition(position)
+      }
+    }
+  } 
+  else if (!isStarMode && currentZoom <= STAR_MODE_MAX_ZOOM) { // previous mode wasnt start mode and now in star mode
+    isStarMode = true;
     for (i=0; i < markersRaw.length; i++) {
       if (markersRaw[i].latV) {
         lat = markersRaw[i].latV;
         log = markersRaw[i].logV;
-      } else {
-        lat = markersRaw[i].lat;
-        log = markersRaw[i].log;
+        var position = new google.maps.LatLng(lat, log);
+        markers[i].setPosition(position)
       }
-      var position = new google.maps.LatLng(lat, log);
-      markers[i].setPosition(position)
     }
 
+    // redraw lines
     for (i=0; i < lines.length; i++) {
-      lines[i].setMap(festivalMap);
+      lines[i].setMap(beerMap);
     }
 
   }
-  // 1. REMOVE LINES
-
 }
 // ------------------------- MAP STYLE ---------------------
 function loadStyledMap() {
 
   var styledMapType = new google.maps.StyledMapType(map_style);
 
-  festivalMap.mapTypes.set('styled_map', styledMapType);
-  festivalMap.setMapTypeId('styled_map');
+  beerMap.mapTypes.set('styled_map', styledMapType);
+  beerMap.setMapTypeId('styled_map');
 }
 
 // ------------------------- BANNER ----------------------------
@@ -722,10 +617,10 @@ function loadBanner() {
   }
 
   var controlPanelDiv = document.createElement('div');
-  var festivalMapControlPanel = new createControlPanel(controlPanelDiv, festivalMap);
+  var beerMapControlPanel = new createControlPanel(controlPanelDiv, beerMap);
 
   //Add the control panel and reset button (created previously) to the map.
-  festivalMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
+  beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 }
 // --------------------------------------------------------
 var map_style = [
