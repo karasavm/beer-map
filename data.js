@@ -252,37 +252,7 @@ markersRaw = [
 {name: 'ΜΑΡΕΑ ##MAREA',lat: 37.9829262, log: 23.7190463, latC: 37.9838096, logC:23.7275388,latV: 37.7753188, logV: 23.6190463, icon: 'marea.png'},
 {name: 'ΣΤΕΡΓΙΟΥ',lat: 37.8328926, log: 23.8056149, latC: 37.9838096, logC:23.7275388, latV: 37.9838096, logV:23.5275388, icon: 'stergiou.png'},
 {name: 'ZHTA-HTA-ΘΗΤΑ',lat: 38.0231582, log: 23.8073881, latC: 37.9838096, logC:23.7275388,latV: 38.16838096, logV: 23.9073881 ,  icon: 'thita-ita.png'},
-].slice(1,5)
-
-// markersRaw=[];
-var clustersRaw = [
-	{
-		lat: 35.4419203,
-		log: 23.2688681,
-		title: 'lyra',
-		image: '',
-	},
-	{
-		lat: 37.739494,
-		log: 21.4240188,
-		title: 'iliaki',
-		image: '',
-	},
-	{
-		lat: 41.074867,
-		log: 25.492473,
-		title: 'Vergina',
-		id: 1,
-		image: 'vergina.png'
-	},
-	{
-		lat: 40.528886,
-		log: 23.036383,
-		title: 'Sknipa',
-		image: 'sknipa.png',
-		id: 2
-	},
-];
+].slice(1,2)
 
 
 
