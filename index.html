@@ -106,8 +106,7 @@ var beerMapZoomMin = beerMapZoom;
 var ZINDEX_MARKER = 100;
 var MARKER_CAP_SIZE = 30;
 
-var MARKER_CAP_HOVER_FACTOR = 3.5;
-var MARKER_CAP_BIG_ZOOM_FACTOR = 2.5;
+var MARKER_CAP_HOVER_FACTOR = 15.5;
 
 var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
@@ -145,7 +144,7 @@ function loadbeerMap() {
 
   beerMap.addListener('zoom_changed', onZoomChanged);
 
-  loadStyledMap();
+  // loadStyledMap();
 
 
   var rainMapOverlay = new google.maps.ImageMapType({
@@ -236,6 +235,7 @@ function convertFromLatLngToPoint(latlng, map, elementContainingMap){
 }
 
 function getImageObj(url, size) {
+
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
