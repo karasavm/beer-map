@@ -106,7 +106,7 @@ var beerMapZoomMin = beerMapZoom;
 var ZINDEX_MARKER = 100;
 var MARKER_CAP_SIZE = 30;
 
-var MARKER_CAP_HOVER_FACTOR = 4.5;
+var MARKER_CAP_HOVER_FACTOR = 7.5;
 
 var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
@@ -162,7 +162,7 @@ function loadbeerMap() {
   // updateMarkersSize();
   
 
-  // loadClusters();
+  loadClusters();
   // loadBanner();
 
 } // EDN OF loadbeerMap()
@@ -338,10 +338,22 @@ function loadMapMarkers (){
     google.maps.event.addListener(markers[i], "mouseout", function() {
        // marker.setIcon(this.icon);
 
-       this.setIcon(
-            getImageObj(this.getIcon().url, get_new_cap_size())
-            );
-       this.setZIndex(ZINDEX_MARKER);});
+       function test(that) {
+        function callback(){
+          console.log("sjkdhfjkdhkjsdhfjkhdkjfhdskjhfdjkshfkjdshfkjh")
+          that.setIcon(
+            getImageObj(that.getIcon().url, get_new_cap_size())
+            )
+
+          that.setZIndex(ZINDEX_MARKER);
+        }
+        return callback
+
+       };
+       setTimeout(test(this), 1000);
+
+       
+     });
     google.maps.event.addListener(markers[i], "click", function() {
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
       beerMap.setCenter(latLng);
