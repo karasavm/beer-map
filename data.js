@@ -11,7 +11,7 @@ var markersRaw = [];
 
 
 
-testData = [
+var testData = [
 	{id: 1,name: 'ΕΖΑ',icon: 'eza.png', mapUrl: 'https://www.google.gr/maps/place/Hellenic+Breweries+of+Atalanti+S.A./@38.6312018,22.7951828,10z/data=!4m8!1m2!2m1!1seza+microbrewery!3m4!1s0x14a0c199d6eb9d8f:0x82c3c2fa7b0d9dda!8m2!3d38.6312018!4d23.0753342'},
 {id: 2,name: 'ΒΕΡΓΙΝΑ',icon: 'vergina.png', mapUrl: 'https://www.google.gr/maps/place/Vergina+Beer+factory/@41.0226797,25.4495604,12.67z/data=!4m5!3m4!1s0x14adf1c6a5dd8b5d:0x15ac71b26c9bb566!8m2!3d41.0738353!4d25.492092'},
 {id: 3,name: 'SEPTEM',icon: 'septem.png', mapUrl: 'https://www.google.gr/maps/place/Septem+Microbrewery/@38.5350089,24.1108791,15z/data=!4m5!3m4!1s0x0:0x38bac46c537cb731!8m2!3d38.5350089!4d24.1108791'},
