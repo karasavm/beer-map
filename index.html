@@ -6,13 +6,13 @@
 
 <!--Set up the CSS styles-->
 <style type="text/css">
-      html { 
+      html {
 	      height: 100%;
 	  }
-      
+
 	  body {
-		  height: 100%; 
-		  margin: 0; 
+		  height: 100%;
+		  margin: 0;
 		  padding: 0;
 		  background: /*url*/('icons/old_paper.jpg') no-repeat 0 0;
        /*background-size: cover*/
@@ -23,9 +23,9 @@
     }*/
 
 	  /*Adapt the following styling depending on where you want to put your map. If you want a 'full screen' map, then set the width and height to 100 percent and remove the margins.*/
-	  #festival-map { 
+	  #festival-map {
 	  	height: 100%;
-		  width: 100%; 
+		  width: 100%;
 		  margin-left: auto;
       margin-right: auto;
 		  border-right-width: 2px;
@@ -35,13 +35,13 @@
 		  border-left-color: #ffffff;
 		  border-left-style: solid;
 	  }
-	  
+
 	  .pop_up_box_text {
-	 	  font-family: Georgia, 'Times New Roman', Times, serif; 
-		  font-size: 16px; 
-		  line-height: 22px; 
-		  color: #ffffff; 
-		  display: inline; 
+	 	  font-family: Georgia, 'Times New Roman', Times, serif;
+		  font-size: 16px;
+		  line-height: 22px;
+		  color: #ffffff;
+		  display: inline;
 	  }
 
     .custom-pin {
@@ -170,7 +170,7 @@ var testData = [
 ];
 
 for (var i=0; i < testData.length; i ++) {
-  
+
   if (testData[i].mapUrl !== '') {
     console.log("name", testData[i].id);
     var sp = testData[i].mapUrl.split("!3d");
@@ -210,18 +210,18 @@ var MARKER_CAP_HOVER_FACTOR = 7.5;
 var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
 
-var STAR_MODE_MAX_ZOOM = 9; 
+var STAR_MODE_MAX_ZOOM = 9;
 
 // -------------------------------------------------
-//These options configure the setup of the map. 
+//These options configure the setup of the map.
 var beerMapOptions = {
-		  center: new google.maps.LatLng(39.074208, 21.824311999999964), 
+		  center: new google.maps.LatLng(39.074208, 21.824311999999964),
           zoom: 6,
 		  maxZoom: MAX_ZOOM,
 		  minZoom: MIN_ZOOM,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
-		  
+
 		  panControl: false,
 		  mapTypeControl: false,
 		  streetViewControl: false,
@@ -238,9 +238,9 @@ google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
-  //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable. 
-  //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map. 
-  beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);	
+  //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable.
+  //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map.
+  beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);
 
   beerMap.addListener('zoom_changed', onZoomChanged);
 
@@ -259,7 +259,7 @@ function loadbeerMap() {
   //Calls the function below to load up all the map markers.
   loadMapMarkers(); // create markers list
   // updateMarkersSize();
-  
+
 
   // loadClusters();
   // loadBanner();
@@ -273,7 +273,7 @@ var markersLines = [];
 var infoBoxes = [];
 
 function createXMarker(lat, log) {
-  
+
     var position = new google.maps.LatLng(lat, log);
 
     // Origins, anchor positions and coordinates of the marker increase in the X
@@ -329,7 +329,7 @@ function convertFromLatLngToPoint(latlng, map, elementContainingMap){
   var mapOffsetY = (worldMapWidth / 2 * Math.log((1 + Math.sin(mapLatBottomDegree)) / (1 - Math.sin(mapLatBottomDegree))));
   var y = mapHeight - ((worldMapWidth / 2 * Math.log((1 + Math.sin(latitude)) / (1 - Math.sin(latitude)))) - mapOffsetY);
 
-  
+
 
   return [x,y];
 }
@@ -362,18 +362,18 @@ function createImageMarker(lat, log, imageUrl, legend) {
         tempPinCounter = tempPinCounter + 1;
       }
 
-      
+
     }
 
-    
-    
+
+
     // imageUrl = 'sknipa-min.png'
     // todo: set coords
     var shape = {
       coords: [1, 1, 1, 80, 80, 80, 80, 1],
       type: 'poly'
     };
-    
+
     var marker = new google.maps.Marker({
       position: position,
       title: legend,
@@ -393,10 +393,34 @@ function createImageMarker(lat, log, imageUrl, legend) {
 // markersRaw = markersRaw.slice(1,1)
 var lines = [];
 function loadMapMarkers (){
+
+  var contentString = '<div id="content">'+
+            '<div id="bodyContent">'+
+            '<a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">info</a> <br>'+
+
+            '<a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">NAVIGATE</a>'+
+
+
+
+            '</div>';
+
+    // var infowindow = new google.maps.InfoWindow({
+    //   content: contentString
+    // });
+    //
+    // var marker = new google.maps.Marker({
+    //   position: uluru,
+    //   map: map,
+    //   title: 'Uluru (Ayers Rock)'
+    // });
+    // marker.addListener('click', function() {
+    //   infowindow.open(map, marker);
+    // });
+
 	for(var i=0; i < markersRaw.length; i++) {
     // console.log(markersRaw[i].lat, markersRaw[i].log)
 		// markers.push(createXMarker(markersRaw[i].lat, markersRaw[i].log));
-    
+
     var lat = markersRaw[i].lat;
     var log = markersRaw[i].log;
 
@@ -426,15 +450,17 @@ function loadMapMarkers (){
     markers.push(marker);
 
     marker.setMap(beerMap);
-
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
     // MARKERS EVENT HANDLERS
-    google.maps.event.addListener(markers[i], "mouseover", function() {
+    google.maps.event.addListener(markers[i], "mouseover_", function() {
 
            this.setIcon(
             getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
             );
            this.setZIndex(ZINDEX_MARKER + 1);});
-    google.maps.event.addListener(markers[i], "mouseout", function() {
+    google.maps.event.addListener(markers[i], "mouseout_", function() {
        // marker.setIcon(this.icon);
 
        function test(that) {
@@ -451,12 +477,16 @@ function loadMapMarkers (){
        };
        setTimeout(test(this), 1000);
 
-       
+
      });
     google.maps.event.addListener(markers[i], "click", function() {
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
-      beerMap.setCenter(latLng);
-      beerMap.setZoom(MAX_ZOOM)});
+      // beerMap.setCenter(latLng);
+      // beerMap.setZoom(MAX_ZOOM)
+      console.log("djfhdkjshfdkjhfkh", this)
+
+      infowindow.open(beerMap, this)
+    });
 
 	}
 
@@ -557,7 +587,7 @@ function loadClusters() {
                       clusterIcon.cluster_.center_.lng()-2*getOffset() + getOffset()*(i%5),
                       curMarker.icon.url.split('/')[curMarker.icon.url.split('/').length - 1])
                     );
-                    
+
                     testMarkers[i].setMap(beerMap);
                   }
 
@@ -565,7 +595,7 @@ function loadClusters() {
                   //   markerCluster.clusters_[i].setMap(null)
                   // }
                   // markerCluster.clusters_[0].markerClusterer_.setMap(null)
-                  
+
 
                 },
                 onMouseoutCluster: function (clusterIcon, event) {
@@ -610,7 +640,7 @@ function onZoomChanged() {
         markers[i].setPosition(position)
       }
     }
-  } 
+  }
   else if (!isStarMode && currentZoom <= STAR_MODE_MAX_ZOOM) { // previous mode wasnt start mode and now in star mode
     isStarMode = true;
     for (i=0; i < markersRaw.length; i++) {
@@ -655,7 +685,7 @@ function loadBanner() {
    controlUI.style.width='245px';
    controlUI.style.height='419px';
    controlPanelDiv.appendChild(controlUI);
-   
+
    //Map title
    titleBar = document.createElement('div');
    titleBar.style.backgroundColor = '#89CBED';
@@ -676,7 +706,7 @@ function loadBanner() {
    titleBar.style.cssFloat='left';
    titleBar.innerHTML = '<div align="center"><img src="icons/map_title.png" width="230" height="252" border="0"/></div>';
    controlUI.appendChild(titleBar);
-   
+
    yellowStripe = document.createElement('div');
    yellowStripe.style.backgroundColor = '#FFFF00';
    yellowStripe.style.height='2px';
@@ -693,7 +723,7 @@ function loadBanner() {
    yellowStripe.style.fontFamily='Georgia, serif';
    yellowStripe.style.fontSize='14px';
    controlUI.appendChild(yellowStripe);
-   
+
    //'Smaller' events button.
    smallEvents = document.createElement('div');
    smallEvents.style.height='108px';
@@ -709,7 +739,7 @@ function loadBanner() {
    smallEvents.style.cssFloat='left';
    smallEvents.innerHTML = '<div align="center" onClick="handelRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
    controlUI.appendChild(smallEvents);
-   
+
    //Umbrella button
    brolly = document.createElement('div');
    brolly.style.height='149px';
@@ -725,7 +755,7 @@ function loadBanner() {
    brolly.style.cssFloat='left';
    brolly.innerHTML = '<div align="center" onClick="handelRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
    controlUI.appendChild(brolly);
-   
+
   }
 
   var controlPanelDiv = document.createElement('div');
@@ -1265,13 +1295,13 @@ map_style = [
     </script>
 
 </head>
-<body>  
+<body>
      <!--Create the div to hold the map.-->
-  
+
     <div id="festival-map">
-      
+
     </div>
 
-  
+
 </body>
 </html>
