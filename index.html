@@ -23,7 +23,14 @@
     }*/
 
 	  /*Adapt the following styling depending on where you want to put your map. If you want a 'full screen' map, then set the width and height to 100 percent and remove the margins.*/
-	  #festival-map {
+    #wrapper {
+      position: relative;
+      height: 100%;
+		  width: 100%;
+    }
+
+    #festival-map {
+      position: absolute;
 	  	height: 100%;
 		  width: 100%;
 		  margin-left: auto;
@@ -36,6 +43,19 @@
 		  border-left-style: solid;
 	  }
 
+    #over-map {
+      position: absolute;
+      top: 30%;
+      left: 100%,
+      z-index: 99;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
 	  .pop_up_box_text {
 	 	  font-family: Georgia, 'Times New Roman', Times, serif;
 		  font-size: 16px;
@@ -477,26 +497,36 @@ function loadMapMarkers (){
 
      });
     google.maps.event.addListener(markers[i], "click", function() {
+
+      // x.style.display = "none"
+      showPinPreview(this)
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
       // beerMap.setCenter(latLng);
       // beerMap.setZoom(MAX_ZOOM)
-      console.log("djfhdkjshfdkjhfkh", this.rawData)
-      var contentString = '<div id="content">'+
-                '<div id="bodyContent">'+
-                '<a target="_blank" href="'+this.rawData.infoUrl+'">info</a> <br>'+
-                '<a target="_blank" href="'+this.rawData.mapUrl+'">Navigate</a>'+
-                '</div>';
-
-      var infowindow = new google.maps.InfoWindow({
-        content: contentString
-      });
-      infowindow.open(beerMap, this)
+      
+      // var contentString = '<div id="content">'+
+      //           '<div id="bodyContent">'+
+      //           '<a target="_blank" href="'+this.rawData.infoUrl+'">info</a> <br>'+
+      //           '<a target="_blank" href="'+this.rawData.mapUrl+'">Navigate</a>'+
+      //           '</div>';
+      //
+      // var infowindow = new google.maps.InfoWindow({
+      //   content: contentString
+      // });
+      // infowindow.open(beerMap, this)
     });
 
 	}
 
 }
 
+function showPinPreview(pin) {
+  var prv = document.getElementById("over-map");
+  prv.style.display = "block"
+  document.getElementById("preview-pin").src="./icons/pins/" + pin.rawData.icon;
+  document.getElementById("preview-info").href=pin.rawData.infoUrl
+  document.getElementById("preview-nav").href=pin.rawData.mapUrl
+}
 
 function get_new_cap_size() {
   var currentZoom = beerMap.getZoom();
@@ -1302,10 +1332,21 @@ map_style = [
 </head>
 <body>
      <!--Create the div to hold the map.-->
+<div id="wrapper">
+  <div id="festival-map">
 
-    <div id="festival-map">
+  </div>
 
+  <div id="over-map">
+    <div>
+      <img id='preview-pin' class="center" src="./icons/pins/vergina.png" alt="Fjords" width="300" height="300">
+      <a id="preview-info" target="_blank" href="">Info</a>
+      <a id="preview-nav" target="_blank" href="">Navigate</a>
     </div>
+
+  </div>
+</div>
+
 
 
 </body>
