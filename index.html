@@ -265,6 +265,8 @@ google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
+
+  // hidePinPreview()
   //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable.
   //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map.
   beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);
@@ -471,15 +473,17 @@ function loadMapMarkers (){
     marker.setMap(beerMap);
 
     // MARKERS EVENT HANDLERS
-    google.maps.event.addListener(markers[i], "mouseover_", function() {
-
+    google.maps.event.addListener(markers[i], "mouseover", function() {
+            showPinPreview(this)
+            return
            this.setIcon(
             getImageObj(this.getIcon().url, MARKER_CAP_SIZE*MARKER_CAP_HOVER_FACTOR)
             );
            this.setZIndex(ZINDEX_MARKER + 1);});
-    google.maps.event.addListener(markers[i], "mouseout_", function() {
+    google.maps.event.addListener(markers[i], "mouseout", function() {
        // marker.setIcon(this.icon);
-
+       // hidePinPreview()
+       return;
        function test(that) {
         function callback(){
           console.log("sjkdhfjkdhkjsdhfjkhdkjfhdskjhfdjkshfkjdshfkjh")
@@ -499,7 +503,14 @@ function loadMapMarkers (){
     google.maps.event.addListener(markers[i], "click", function() {
 
       // x.style.display = "none"
-      showPinPreview(this)
+      // showPinPreview(this)
+      var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+      // alert(x + ' × ' + y);
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
       // beerMap.setCenter(latLng);
       // beerMap.setZoom(MAX_ZOOM)
@@ -526,6 +537,11 @@ function showPinPreview(pin) {
   document.getElementById("preview-pin").src="./icons/pins/" + pin.rawData.icon;
   document.getElementById("preview-info").href=pin.rawData.infoUrl
   document.getElementById("preview-nav").href=pin.rawData.mapUrl
+}
+
+function hidePinPreview() {
+  var prv = document.getElementById("over-map");
+  prv.style.display = "none";
 }
 
 function get_new_cap_size() {
@@ -1337,7 +1353,7 @@ map_style = [
 
   </div>
 
-  <div id="over-map">
+  <div id="over-map" display="none">
     <div>
       <img id='preview-pin' class="center" src="./icons/pins/vergina.png" alt="Fjords" width="300" height="300">
       <a id="preview-info" target="_blank" href="">Info</a>
