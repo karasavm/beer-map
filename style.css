@@ -166,6 +166,7 @@ body {
       font-size: 0.9em;
       background-color: #fff;
       color: #646464;
+      
     }
 
 .card, .dialog {
@@ -193,6 +194,7 @@ body {
       height: 10%;
       font-size: 0.9em;
       float: right;
+      width: 100%;
     }
     
     .dialog > .content > .title {
@@ -224,3 +226,7 @@ body {
       color: #d23f31; 
     }
 
+
+    .dialogButton {
+      width: 70px;
+    }
