@@ -4,7 +4,7 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <title>UK Festivals</title>
 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="style.css">
 <!--Connect to the google maps api using your api key-->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
@@ -20,14 +20,14 @@
 
   <div id="festival-map"></div>
 
-  <div id="cboxOverlay"></div>
+  <div id="cboxOverlay" onclick="hidePinPreview()"></div>
 
   <div id="over-map" display="none" class="dialog">
 
 
     <div class="content">
-        <div class="title">Permission</div><br>
-        <img id='preview-pin' class="center" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
+        <div id="preview-pin-title" class="title">Permission</div><br>
+        <img id='preview-pin-img' class="centerImg" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
       </div>
 
     <!-- <img id='preview-pin' class="center" src="./icons/pins/vergina.png" alt="Fjords" width="200" height="200">
@@ -48,7 +48,7 @@
       <!-- <a class="center" id="preview-info" target="_blank" href="">Info</a>
        
        <a class="center" id="preview-nav" target="_blank" href="">Navigate</a> -->
-       <section>
+      <!--  <section>
     <div class="button dialogButton raised">
       <div class="center" fit>info</div>
       <paper-ripple fit></paper-ripple>
@@ -64,8 +64,14 @@
       <paper-ripple fit></paper-ripple>
     </div>
     
+
     
-  </section>
+  </section> -->
+
+  <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+  <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button>
+  <!-- <button class="btn"><i class="fa fa-trash"></i> close</button> -->
+
 
     </div>
     
@@ -95,6 +101,8 @@
     </div>
     
   </section> -->
+
+<p>Icon buttons with text:</p>
 
 
 </body>

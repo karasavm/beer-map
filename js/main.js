@@ -39,6 +39,7 @@ var beerMapOptions = {
 var beerMap;
 var isStarMode = true; // start is when markers are in "star" position on map, on virtual positions
 var currentCapSize = MARKER_CAP_SIZE;
+var curOpenedPin;
 
 //When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', loadbeerMap);
@@ -285,7 +286,8 @@ function loadMapMarkers (){
     google.maps.event.addListener(markers[i], "click", function() {
 
       // x.style.display = "none"
-      showPinPreview(this)
+      curOpenedPin = this;
+      showPinPreview()
       var w = window,
       d = document,
       e = d.documentElement,
@@ -313,16 +315,25 @@ function loadMapMarkers (){
 
 }
 
-function showPinPreview(pin) {
+function openInNewTab(url) {
+	console.log(url)
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+
+function showPinPreview() {
+
   var prv = document.getElementById("over-map");
   prv.style.display = "block"
 
   var back = document.getElementById("cboxOverlay");
   back.style.display = 'block';
 
-  document.getElementById("preview-pin").src="./icons/pins/" + pin.rawData.icon;
-  document.getElementById("preview-info").href=pin.rawData.infoUrl
-  document.getElementById("preview-nav").href=pin.rawData.mapUrl
+  document.getElementById("preview-pin-img").src="./icons/pins/" + curOpenedPin.rawData.icon;
+  document.getElementById("preview-pin-title").innerHTML= curOpenedPin.rawData.name;
+
+  // document.getElementById("preview-info").href=curOpenedPin.rawData.infoUrl
+  // document.getElementById("preview-nav").href=curOpenedPin.rawData.mapUrl
 }
 
 function hidePinPreview() {
