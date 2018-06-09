@@ -316,6 +316,10 @@ function loadMapMarkers (){
 function showPinPreview(pin) {
   var prv = document.getElementById("over-map");
   prv.style.display = "block"
+
+  var back = document.getElementById("cboxOverlay");
+  back.style.display = 'block';
+
   document.getElementById("preview-pin").src="./icons/pins/" + pin.rawData.icon;
   document.getElementById("preview-info").href=pin.rawData.infoUrl
   document.getElementById("preview-nav").href=pin.rawData.mapUrl
@@ -324,6 +328,9 @@ function showPinPreview(pin) {
 function hidePinPreview() {
   var prv = document.getElementById("over-map");
   prv.style.display = "none";
+
+  var back = document.getElementById("cboxOverlay");
+  back.style.display = 'none';
 }
 
 function get_new_cap_size() {
