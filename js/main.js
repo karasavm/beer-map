@@ -49,7 +49,7 @@ google.maps.event.addDomListener(window, 'load', loadbeerMap);
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
 
-  hidePinPreview()
+  // hidePinPreview()
   //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable.
   //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map.
   beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);
