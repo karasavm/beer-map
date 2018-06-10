@@ -40,6 +40,7 @@ var beerMap;
 var isStarMode = true; // start is when markers are in "star" position on map, on virtual positions
 var currentCapSize = MARKER_CAP_SIZE;
 var curOpenedPin;
+var markerClusters;
 
 //When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', loadbeerMap);
@@ -54,10 +55,6 @@ function loadbeerMap() {
   //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable.
   //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map.
   beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);
-
-	var controlPanelDiv = document.createElement('div');
-	var festivalMapControlPanel = new createControlPanel(controlPanelDiv, beerMap);
-	beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 
 	beerMap.addListener('zoom_changed', onZoomChanged);
 
@@ -77,9 +74,9 @@ function loadbeerMap() {
   loadMapMarkers(); // create markers list
   // updateMarkersSize();
 
-  // loadClusters();
+  loadClusters();
   // 	ters();
-  // loadBanner();
+  loadBanner();
 
 } // EDN OF loadbeerMap()
 
@@ -317,6 +314,12 @@ function loadMapMarkers (){
 
 }
 
+function showAllMarkers() {
+		for (var i=0; i < markers.length; i++) {
+			markers[i].setMap(beerMap);
+		}
+}
+
 function openInNewTab(url) {
 	console.log(url)
   var win = window.open(url, '_blank');
@@ -437,8 +440,10 @@ function loadClusters() {
                   testMarkers = []
                 },
               };
-
-   var markerCluster = new MarkerClusterer(beerMap, markers,options);
+	console.log(markers[0])
+	console.log("hhhhhhhhhh")
+  markerClusters = new MarkerClusterer(beerMap, markers, options);
+	console.log(markers[0])
 }
 
 // -------------------------- EVENT HANDLERS -------------
@@ -564,7 +569,7 @@ function loadBanner() {
    smallEvents.style.paddingLeft='0px';
    smallEvents.style.paddingRight='0px';
    smallEvents.style.cssFloat='left';
-   smallEvents.innerHTML = '<div align="center" onClick="handelRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
+   smallEvents.innerHTML = '<div align="center" onClick="handleRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
    controlUI.appendChild(smallEvents);
 
    //Umbrella button
@@ -580,101 +585,75 @@ function loadBanner() {
    brolly.style.paddingLeft='0px';
    brolly.style.paddingRight='0px';
    brolly.style.cssFloat='left';
-   brolly.innerHTML = '<div align="center" onClick="handelRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
+   brolly.innerHTML = '<div align="center" onClick="handleRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
    controlUI.appendChild(brolly);
 
   }
+	function createResetButton (resetButtonDiv){
+	 resetButtonDiv.style.padding = '0px';
+	 controlUI2 = document.createElement('div');
+	 controlUI2.style.backgroundColor = '#ffffff';
+	 controlUI2.style.borderRadius='5px';
+	 controlUI2.style.margin='10px';
+	 controlUI2.style.paddingTop='2px';
+	 controlUI2.style.paddingBottom='2px';
+	 controlUI2.style.paddingLeft='2px';
+	 controlUI2.style.paddingRight='5px';
+	 controlUI2.style.textAlign='center';
+	 controlUI2.style.width='148px';
+	 controlUI2.style.height='31px';
+	 controlUI2.innerHTML = '<div onClick="handleRequests(\'reset\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';" ><img src="icons/button_reset.png" width="148" height="31" border="0"/></div>';
+	 resetButtonDiv.appendChild(controlUI2);
+	}
+
 
   var controlPanelDiv = document.createElement('div');
-  var beerMapControlPanel = new createControlPanel(controlPanelDiv, beerMap);
+  var beerMapControlPanel = new createControlPanel(controlPanelDiv);
+
+	var resetDiv = document.createElement('div');
+	var beerMapResetButton = new createResetButton(resetDiv);
+
+
+
 
   //Add the control panel and reset button (created previously) to the map.
-  beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
+  // beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
+	// beerMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(resetDiv);
+
+	beerMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(document.getElementById('controls'));
 }
 
-function createControlPanel (controlPanelDiv){
- controlPanelDiv.style.padding = '0px';
- controlUI = document.createElement('div');
- controlUI.style.border='0px solid white';
- controlUI.style.margin='10px';
- controlUI.style.paddingTop='11px';
- controlUI.style.paddingBottom='5px';
- controlUI.style.paddingLeft='0px';
- controlUI.style.paddingRight='0px';
- controlUI.style.width='245px';
- controlUI.style.height='419px';
- controlPanelDiv.appendChild(controlUI);
 
- //Map title
- titleBar = document.createElement('div');
- titleBar.style.backgroundColor = '#89CBED';
- titleBar.style.height='255px';
- titleBar.style.width='245px';
- titleBar.style.marginTop='0px';
- titleBar.style.marginBottom='0px';
- titleBar.style.marginLeft='0px';
- titleBar.style.marginRight='0px';
- titleBar.style.paddingTop='6px';
- titleBar.style.paddingBottom='2px';
- titleBar.style.paddingLeft='0px';
- titleBar.style.paddingRight='0px';
- titleBar.style.borderTopLeftRadius='5px';
- titleBar.style.borderTopRightRadius='5px';
- titleBar.style.borderBottomLeftRadius='0px';
- titleBar.style.borderBottomLeftRadius='0px';
- titleBar.style.cssFloat='left';
- titleBar.innerHTML = '<div align="center"><img src="icons/map_title.png" width="230" height="252" border="0"/></div>';
- controlUI.appendChild(titleBar);
+//Function that creates the 'Reser map' button.
 
- yellowStripe = document.createElement('div');
- yellowStripe.style.backgroundColor = '#FFFF00';
- yellowStripe.style.height='2px';
- yellowStripe.style.width='245px';
- yellowStripe.style.marginTop='3px';
- yellowStripe.style.marginBottom='3px';
- yellowStripe.style.marginLeft='0px';
- yellowStripe.style.marginRight='0px';
- yellowStripe.style.paddingTop='0px';
- yellowStripe.style.paddingBottom='0px';
- yellowStripe.style.paddingLeft='0px';
- yellowStripe.style.paddingRight='0px';
- yellowStripe.style.cssFloat='left';
- yellowStripe.style.fontFamily='Georgia, serif';
- yellowStripe.style.fontSize='14px';
- controlUI.appendChild(yellowStripe);
 
- //'Smaller' events button.
- smallEvents = document.createElement('div');
- smallEvents.style.height='108px';
- smallEvents.style.width='129px';
- smallEvents.style.marginTop='0px';
- smallEvents.style.marginBottom='0px';
- smallEvents.style.marginLeft='0px';
- smallEvents.style.marginRight='0px';
- smallEvents.style.paddingTop='0px';
- smallEvents.style.paddingBottom='2px';
- smallEvents.style.paddingLeft='0px';
- smallEvents.style.paddingRight='0px';
- smallEvents.style.cssFloat='left';
- smallEvents.innerHTML = '<div align="center" onClick="handelRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
- controlUI.appendChild(smallEvents);
+//Function that is called when either the 'smaller events', unbrella or the 'reset map' buttons are clicked.
 
- //Umbrella button
- brolly = document.createElement('div');
- brolly.style.height='149px';
- brolly.style.width='94px';
- brolly.style.marginTop='0px';
- brolly.style.marginBottom='0px';
- brolly.style.marginLeft='0px';
- brolly.style.marginRight='0px';
- brolly.style.paddingTop='0px';
- brolly.style.paddingBottom='2px';
- brolly.style.paddingLeft='0px';
- brolly.style.paddingRight='0px';
- brolly.style.cssFloat='left';
- brolly.innerHTML = '<div align="center" onClick="handelRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
- controlUI.appendChild(brolly);
+function resetZindexes() {
+	console.log("Reset z indexed. check guides")
+}
 
+function handleRequests (buttonPressed) {
+	console.log("fdkkfjdlkjflj")
+	if (buttonPressed === "reset"){
+		//Resets the zoom, map position and marker z-indexes back to their orignal position. Also closes all infoboxes currently open.
+		beerMap.setZoom(4);
+		// beerMap.setCenter(festivalMapCenter);
+		resetZindexes();
+	}
+	else if (buttonPressed === "small_events"){
+		alert("This button will do something useful in a later tutorial!");
+	}
+	else if (buttonPressed === "rainfall"){
+		alert("This button will do something useful in a later tutorial!");
+	}
+	else if (buttonPressed === "showGroups") {
+		loadClusters();
+	}
+	else if (buttonPressed === "showPins") {
+		markerClusters.clearMarkers();
+		showAllMarkers();
+	}
 }
 
 // --------------------------------------------------------

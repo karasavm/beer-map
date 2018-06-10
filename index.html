@@ -94,7 +94,31 @@
 
   <div id="festival-map"></div>
 
+  <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px">
+    <!-- <button type="button" class="btn btn-secondary">Group</button>
+    <button type="button" class="btn btn-secondary">Pins</button> -->
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
+      </label>
+      <label class="btn btn-secondary" onchange="handleRequests('showPins')">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Pins
+      </label>
+    </div>
 
+    <div class="btn-group" role="group">
+
+      <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Types
+      </button>
+
+      <div class="dropdown-menu" aria-labelledby="btnTypes">
+        <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
+        <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
+        <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
+      </div>
+    </div>
+  </div>
 
 
 
