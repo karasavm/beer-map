@@ -291,7 +291,7 @@ function loadMapMarkers (){
       curOpenedPin = this;
 
 
-      
+
       var latLng = new google.maps.LatLng(this.rawData.lat, this.rawData.log)
       // beerMap.setCenter(latLng);
       // beerMap.setZoom(MAX_ZOOM)
