@@ -5,102 +5,122 @@
 <title>Greek Microbreweries</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<!-- CUSTOM STYLES -->
 <link rel="stylesheet" type="text/css" href="style.css">
-<!--Connect to the google maps api using your api key-->
+
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+<!-- GOOGLE API -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
+
+<!-- LIBS -->
 <script src="js/infobox/infobox.js" type="text/javascript"></script>
 <script src="js/gmaps-marker-clusterer-master/src/markerclusterer.js"></script>
+
+<!-- CUSTOM SCRIPTS -->
 <script src="js/data.js" type="text/javascript"></script>
 <script src="js/main.js" type="text/javascript"></script>
 
 </head>
-<body>
-     <!--Create the div to hold the map.-->
-<div id="wrapper">
 
-  <div id="festival-map"></div>
+<body>
+
+
+  <!-- Button trigger modal -->
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="beerInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <!-- <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div> -->
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <img id='infoModalImg' class="img-fluid mx-auto d-block" width="200" height="200" src="icons/pins/vergina.png" alt="Avatar">
+        <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+            <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+
+              <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button>
+
+      </div>
+
+      <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+      <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
+
+      <div class="modal-footer no-border d-flex justify-content-center">
+        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+      </div>
+    </div>
+
+
+  </div>
+  </div>
 
   <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div>
 
-  <div id="over-map" display="none" class="dialog" style="display: none;">
 
+  <!-- <div id="over-map" class="dialog" display="none" style="display: none;">
 
     <div class="content">
-        <div id="preview-pin-title" class="title">Permission</div><br>
-        <img id='preview-pin-img' class="centerImg" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
-      </div>
-
-    <!-- <img id='preview-pin' class="center" src="./icons/pins/vergina.png" alt="Fjords" width="200" height="200">
-    <a class="center" id="preview-info" target="_blank" href="">Info</a>
-    <a class="center" id="preview-nav" target="_blank" href="">Navigate</a> -->
-    
-    <!-- <div class="card"> -->
-      
-      <!-- <div class="container">
-        <h4><b>Jane Doe</b></h4> 
-        <p>Interior Designer</p> 
-      </div> -->
-    <!-- </div> -->
-    <!-- <button onclick="hidePinPreview()" class="center">X</button> -->
-    
+      <div id="preview-pin-title" class="title">Permission</div><br>
+      <img id='preview-pin-img' class="centerImg" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
+    </div>
 
     <div class="footer">
-      <!-- <a class="center" id="preview-info" target="_blank" href="">Info</a>
-       
-       <a class="center" id="preview-nav" target="_blank" href="">Navigate</a> -->
-      <!--  <section>
-    <div class="button dialogButton raised">
-      <div class="center" fit>info</div>
-      <paper-ripple fit></paper-ripple>
+      <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+      <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button>
     </div>
-    
-    <div class="button dialogButton raised grey">
-      <div class="center" fit>navigate</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
-    <div class="button dialogButton raised blue" onclick="hidePinPreview()">
-      <div class="center" fit>close</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
 
-    
-  </section> -->
+  </div> -->
 
-  <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
-  <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button>
-  <!-- <button class="btn"><i class="fa fa-trash"></i> close</button> -->
+  <div id="festival-map"></div>
 
 
-    </div>
-    
 
-  </div>
 
-<!-- 
-<section>
-    <div class="button raised">
-      <div class="center" fit>SUBMIT</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
-    <div class="button raised grey">
-      <div class="center" fit>CANCEL</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
-    <div class="button raised blue">
-      <div class="center" fit>COMPOSE</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
-    <div class="button raised green">
-      <div class="center" fit>OK</div>
-      <paper-ripple fit></paper-ripple>
-    </div>
-    
-  </section> -->
+
+  <!--
+  <section>
+      <div class="button raised">
+        <div class="center" fit>SUBMIT</div>
+        <paper-ripple fit></paper-ripple>
+      </div>
+
+      <div class="button raised grey">
+        <div class="center" fit>CANCEL</div>
+        <paper-ripple fit></paper-ripple>
+      </div>
+
+      <div class="button raised blue">
+        <div class="center" fit>COMPOSE</div>
+        <paper-ripple fit></paper-ripple>
+      </div>
+
+      <div class="button raised green">
+        <div class="center" fit>OK</div>
+        <paper-ripple fit></paper-ripple>
+      </div>
+
+    </section> -->
 
 
 
