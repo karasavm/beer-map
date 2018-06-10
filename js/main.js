@@ -49,12 +49,17 @@ google.maps.event.addDomListener(window, 'load', loadbeerMap);
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
 
+
   // hidePinPreview()
   //The empty map variable ('beerMap') was created above. The line below creates the map, assigning it to this variable.
   //The line below also loads the map into the div with the id 'festival-map' (see code within the 'body' tags below), and applies the 'beerMapOptions' (above) to configure this map.
   beerMap = new google.maps.Map(document.getElementById("festival-map"), beerMapOptions);
 
-  beerMap.addListener('zoom_changed', onZoomChanged);
+	var controlPanelDiv = document.createElement('div');
+	var festivalMapControlPanel = new createControlPanel(controlPanelDiv, beerMap);
+	beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
+
+	beerMap.addListener('zoom_changed', onZoomChanged);
 
   loadStyledMap();
 
@@ -363,26 +368,7 @@ function updateMarkersSize() {
 
 // -------------------------- CLUSTERS -----------------
 function loadClusters() {
-  var clusterStyles = [
-    {
-      textColor: 'white',
-      url: 'gmaps-marker-clusterer-master/images/cap.png',
-      height: 52,
-      width: 52
-    },
-   {
-      textColor: 'white',
-      url: 'gmaps-marker-clusterer-master/images/cap.png',
-      height: 50,
-      width: 50
-    },
-   {
-      textColor: 'white',
-      url: 'gmaps-marker-clusterer-master/images/cap.png',
-      height: 50,
-      width: 50
-    }
-  ];
+
 
   function getOffset() {
 
@@ -418,8 +404,8 @@ function loadClusters() {
 
   var testMarkers = [];
   var options = {
-                imagePath: './js/gmaps-marker-clusterer-master/images/m',
-                onMouseoverCluster: function (clusterIcon, event) {
+								cssClass: 'custom-pin',
+								onMouseoverCluster: function (clusterIcon, event) {
                   // console.log(clusterIcon.cluster_.markers_, event)
                   console.log("mouse in", clusterIcon.cluster_.markers_[0]);
 
@@ -450,9 +436,6 @@ function loadClusters() {
                   }
                   testMarkers = []
                 },
-                __styles: clusterStyles,
-                cssClass: 'custom-pin'
-
               };
 
    var markerCluster = new MarkerClusterer(beerMap, markers,options);
@@ -608,6 +591,92 @@ function loadBanner() {
   //Add the control panel and reset button (created previously) to the map.
   beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 }
+
+function createControlPanel (controlPanelDiv){
+ controlPanelDiv.style.padding = '0px';
+ controlUI = document.createElement('div');
+ controlUI.style.border='0px solid white';
+ controlUI.style.margin='10px';
+ controlUI.style.paddingTop='11px';
+ controlUI.style.paddingBottom='5px';
+ controlUI.style.paddingLeft='0px';
+ controlUI.style.paddingRight='0px';
+ controlUI.style.width='245px';
+ controlUI.style.height='419px';
+ controlPanelDiv.appendChild(controlUI);
+
+ //Map title
+ titleBar = document.createElement('div');
+ titleBar.style.backgroundColor = '#89CBED';
+ titleBar.style.height='255px';
+ titleBar.style.width='245px';
+ titleBar.style.marginTop='0px';
+ titleBar.style.marginBottom='0px';
+ titleBar.style.marginLeft='0px';
+ titleBar.style.marginRight='0px';
+ titleBar.style.paddingTop='6px';
+ titleBar.style.paddingBottom='2px';
+ titleBar.style.paddingLeft='0px';
+ titleBar.style.paddingRight='0px';
+ titleBar.style.borderTopLeftRadius='5px';
+ titleBar.style.borderTopRightRadius='5px';
+ titleBar.style.borderBottomLeftRadius='0px';
+ titleBar.style.borderBottomLeftRadius='0px';
+ titleBar.style.cssFloat='left';
+ titleBar.innerHTML = '<div align="center"><img src="icons/map_title.png" width="230" height="252" border="0"/></div>';
+ controlUI.appendChild(titleBar);
+
+ yellowStripe = document.createElement('div');
+ yellowStripe.style.backgroundColor = '#FFFF00';
+ yellowStripe.style.height='2px';
+ yellowStripe.style.width='245px';
+ yellowStripe.style.marginTop='3px';
+ yellowStripe.style.marginBottom='3px';
+ yellowStripe.style.marginLeft='0px';
+ yellowStripe.style.marginRight='0px';
+ yellowStripe.style.paddingTop='0px';
+ yellowStripe.style.paddingBottom='0px';
+ yellowStripe.style.paddingLeft='0px';
+ yellowStripe.style.paddingRight='0px';
+ yellowStripe.style.cssFloat='left';
+ yellowStripe.style.fontFamily='Georgia, serif';
+ yellowStripe.style.fontSize='14px';
+ controlUI.appendChild(yellowStripe);
+
+ //'Smaller' events button.
+ smallEvents = document.createElement('div');
+ smallEvents.style.height='108px';
+ smallEvents.style.width='129px';
+ smallEvents.style.marginTop='0px';
+ smallEvents.style.marginBottom='0px';
+ smallEvents.style.marginLeft='0px';
+ smallEvents.style.marginRight='0px';
+ smallEvents.style.paddingTop='0px';
+ smallEvents.style.paddingBottom='2px';
+ smallEvents.style.paddingLeft='0px';
+ smallEvents.style.paddingRight='0px';
+ smallEvents.style.cssFloat='left';
+ smallEvents.innerHTML = '<div align="center" onClick="handelRequests(\'small_events\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_small_event.png" width="128" height="107" border="0"/></div>';
+ controlUI.appendChild(smallEvents);
+
+ //Umbrella button
+ brolly = document.createElement('div');
+ brolly.style.height='149px';
+ brolly.style.width='94px';
+ brolly.style.marginTop='0px';
+ brolly.style.marginBottom='0px';
+ brolly.style.marginLeft='0px';
+ brolly.style.marginRight='0px';
+ brolly.style.paddingTop='0px';
+ brolly.style.paddingBottom='2px';
+ brolly.style.paddingLeft='0px';
+ brolly.style.paddingRight='0px';
+ brolly.style.cssFloat='left';
+ brolly.innerHTML = '<div align="center" onClick="handelRequests(\'rainfall\')" OnMouseOver="this.style.cursor=\'pointer\';" OnMouseOut="this.style.cursor=\'default\';"><img src="icons/button_brolly.png" width="93" height="148" border="0"/></div>';
+ controlUI.appendChild(brolly);
+
+}
+
 // --------------------------------------------------------
 var map_style = [
     {
