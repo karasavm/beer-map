@@ -191,7 +191,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
     var marker = new google.maps.Marker({
       position: position,
       title: legend,
-      // animation: google.maps.Animation.DROP,
+      animation: google.maps.Animation.DROP,
       draggable: false,
       shape: shape,
       icon: getImageObj('icons/pins/'+ imageUrl, MARKER_CAP_SIZE),
@@ -316,6 +316,7 @@ function loadMapMarkers (){
 
 function showAllMarkers() {
 		for (var i=0; i < markers.length; i++) {
+			console.log(markers[i])
 			markers[i].setMap(beerMap);
 		}
 }
@@ -327,8 +328,6 @@ function openInNewTab(url) {
 }
 
 function setInfoModalValues(title, icon) {
-
-
 
   document.getElementById("infoModalImg").src="./icons/pins/" + icon;
   document.getElementById("infoModalTitle").innerHTML= title;

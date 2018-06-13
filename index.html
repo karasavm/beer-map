@@ -47,27 +47,86 @@
 
     <div class="modal-content">
       <div class="modal-header">
-        <img id='infoModalImg' class="img-fluid mx-auto d-block" width="200" height="200" src="icons/pins/vergina.png" alt="Avatar">
+
         <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
 
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-">
+              <img id='infoModalImg' class="img-fluid mx-auto d-block" width="200" height="200" src="icons/pins/vergina.png" alt="Avatar">
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-">
+              <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-">
+              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
       </div>
 
-      <div class="modal-body">
 
-            <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+        <div class="container">
 
-              <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button>
+          <div class="row bg-secondary padding-inherit">
+            <div class="col-">
+              <h6 class="my-2">beers</h6>
+            </div>
+          </div>
 
-      </div>
+          <div class="row justify-content-start padding-inherit">
+            <div class="col-">
+              <ul class="list-unstyled">
+                <li class="media">
+                  <img class="mr-3 beer-size" src="images/test.png" alt="Generic placeholder image">
+                  <div class="media-body align-self-center">
+                    <h6 class="">List-based media object</h6>
+                  </div>
+                </li>
+                <li class="media">
+                  <img class="mr-3 beer-size" src="images/test.png" alt="Generic placeholder image">
+                  <div class="media-body align-self-center">
+                    <h6 class="">List-based media object</h6>
+                  </div>
+                </li>
+                <li class="media">
+                  <img class="mr-3 beer-size" src="images/test.png" alt="Generic placeholder image">
+                  <div class="media-body align-self-center">
+                    <h6 class="">List-based media object</h6>
+                  </div>
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+        </div>
+              <!-- <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button> -->
+
 
       <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
       <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
 
       <div class="modal-footer no-border d-flex justify-content-center">
-        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+        <!-- <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
         <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
       </div>
     </div>
 
