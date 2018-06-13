@@ -41,6 +41,8 @@ var isStarMode = true; // start is when markers are in "star" position on map, o
 var currentCapSize = MARKER_CAP_SIZE;
 var curOpenedPin;
 var markerClusters;
+var selectedType = 'all';
+var selectedMode = "groups";
 
 //When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', loadbeerMap);
@@ -78,6 +80,11 @@ function loadbeerMap() {
   // 	ters();
   loadBanner();
 
+	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
+    // do something only the first time the map is loaded
+		console.log("mpla mpla mpla")
+		document.getElementById('controls').style.display = 'block';
+});
 } // EDN OF loadbeerMap()
 
 
@@ -314,12 +321,66 @@ function loadMapMarkers (){
 
 }
 
-function showAllMarkers() {
+
+
+function showClusters(type) {
+	markerClusters.clearMarkers();
+
+	if (type === 'all') {
+		for (var i=0; i < markers.length; i++) {
+			console.log(markers[i])
+			markerClusters.addMarker(markers[i], true);
+		}
+	} else if (type === 'micro') {
+		for (var i=0; i < markers.length; i ++) {
+
+			if (markers[i].rawData.type === "Microbrewery") {
+				markerClusters.addMarker(markers[i], true);
+			}
+		}
+	} else if (type === 'clients') {
+		for (var i=0; i < markers.length; i ++) {
+
+			if (markers[i].rawData.type === "Microbrewery") {
+
+			} else {
+				markerClusters.addMarker(markers[i], true);
+			}
+		}
+	}
+
+	markerClusters.redraw();
+
+	console.log(markerClusters)
+}
+
+function showMarkers(type) {
+	if (type === 'all') {
 		for (var i=0; i < markers.length; i++) {
 			console.log(markers[i])
 			markers[i].setMap(beerMap);
 		}
+	} else if (type === 'micro') {
+		for (var i=0; i < markers.length; i ++) {
+
+			if (markers[i].rawData.type === "Microbrewery") {
+				markers[i].setMap(beerMap);
+			} else {
+				markers[i].setMap(null);
+			}
+		}
+	} else if (type === 'clients') {
+		for (var i=0; i < markers.length; i ++) {
+
+			if (markers[i].rawData.type === "Microbrewery") {
+				markers[i].setMap(null);
+			} else {
+				markers[i].setMap(beerMap);
+			}
+		}
+	}
 }
+
 
 function openInNewTab(url) {
 	console.log(url)
@@ -331,7 +392,7 @@ function setInfoModalValues(title, icon) {
 
   document.getElementById("infoModalImg").src="./icons/pins/" + icon;
   document.getElementById("infoModalTitle").innerHTML= title;
-	console.log("lkdsjlkfjdljflkjlkajflk")
+
   // document.getElementById("preview-info").href=curOpenedPin.rawData.infoUrl
   // document.getElementById("preview-nav").href=curOpenedPin.rawData.mapUrl
 }
@@ -408,6 +469,7 @@ function loadClusters() {
   var options = {
 								cssClass: 'custom-pin',
 								onMouseoverCluster: function (clusterIcon, event) {
+									return;
                   // console.log(clusterIcon.cluster_.markers_, event)
                   console.log("mouse in", clusterIcon.cluster_.markers_[0]);
 
@@ -431,6 +493,7 @@ function loadClusters() {
 
                 },
                 onMouseoutCluster: function (clusterIcon, event) {
+									return;
                   console.log("mouse out");
 
                   for(let i=0; i < testMarkers.length; i++) {
@@ -440,9 +503,9 @@ function loadClusters() {
                 },
               };
 	console.log(markers[0])
-	console.log("hhhhhhhhhh")
+
   markerClusters = new MarkerClusterer(beerMap, markers, options);
-	console.log(markers[0])
+
 }
 
 // -------------------------- EVENT HANDLERS -------------
@@ -620,6 +683,7 @@ function loadBanner() {
 	// beerMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(resetDiv);
 
 	beerMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(document.getElementById('controls'));
+
 }
 
 
@@ -633,7 +697,6 @@ function resetZindexes() {
 }
 
 function handleRequests (buttonPressed) {
-	console.log("fdkkfjdlkjflj")
 	if (buttonPressed === "reset"){
 		//Resets the zoom, map position and marker z-indexes back to their orignal position. Also closes all infoboxes currently open.
 		beerMap.setZoom(4);
@@ -647,11 +710,48 @@ function handleRequests (buttonPressed) {
 		alert("This button will do something useful in a later tutorial!");
 	}
 	else if (buttonPressed === "showGroups") {
-		loadClusters();
+		selectedMode = "groups";
+		showClusters(selectedType);
+		// loadClusters();
 	}
 	else if (buttonPressed === "showPins") {
+		selectedMode = "pins";
 		markerClusters.clearMarkers();
-		showAllMarkers();
+		showMarkers(selectedType);
+	}
+	else if (buttonPressed === "showAll") {
+
+		selectedType = "all";
+		if (selectedMode === 'groups') {
+
+			showClusters(selectedType);
+		} else {
+			showMarkers(selectedType);
+		}
+		document.getElementById("btnTypes").innerHTML = "All";
+		// showAllMarkers();
+	}
+	else if (buttonPressed === "showMicrobrewers") {
+
+		selectedType = "micro";
+		if (selectedMode === 'groups') {
+			showClusters(selectedType);
+		} else {
+			showMarkers(selectedType);
+		}
+		document.getElementById("btnTypes").innerHTML = "Microbreweries";
+
+	}
+	else if (buttonPressed === "showClients") {
+		selectedType = "clients";
+		console.log(selectedMode)
+		if (selectedMode === 'groups') {
+			showClusters(selectedType);
+		} else {
+			showMarkers(selectedType);
+		}
+
+		document.getElementById("btnTypes").innerHTML = "Clients";
 	}
 }
 
