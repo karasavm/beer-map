@@ -752,7 +752,71 @@ function handleRequests (buttonPressed) {
 		}
 
 		document.getElementById("btnTypes").innerHTML = "Clients";
-	}
+	} else if (buttonPressed === 'menu') {
+		$('#introModal').modal();
+		var delay = 2500;
+		var allNum = 69;
+		var microNum = 47;
+		var clientNum = 22;
+
+		document.getElementById("allNumber").innerHTML = 0;
+		var int1 = setInterval(function() {
+				var num = Number(document.getElementById("allNumber").innerHTML);
+
+				if (num == allNum) {
+					console.log("dsdfdfs")
+					window.clearInterval(int1);
+				} else {
+					num = num +1;
+					console.log(this)
+					document.getElementById("allNumber").innerHTML = num.toString();
+				}
+
+		}, delay/allNum + 1)
+
+		document.getElementById("clientNumber").innerHTML = 0;
+		var int2 = setInterval(function() {
+				var num = Number(document.getElementById("clientNumber").innerHTML);
+
+				if (num == clientNum) {
+
+					window.clearInterval(int2);
+				} else {
+					num = num +1;
+					console.log(this)
+					document.getElementById("clientNumber").innerHTML = num.toString();
+				}
+
+		}, delay/clientNum + 1)
+
+
+		document.getElementById("microNumber").innerHTML = 0;
+		var int3 = setInterval(function() {
+				var num = Number(document.getElementById("microNumber").innerHTML);
+
+				if (num == microNum) {
+
+					window.clearInterval(int3);
+				} else {
+					num = num +1;
+					console.log(this)
+					document.getElementById("microNumber").innerHTML = num.toString();
+				}
+
+		}, delay/microNum + 1)
+
+
+
+		}
+
+
+
+		// while (true) {
+		// 	if (Number(document.getElementById("allNumber").innerHTML) == 69) {
+		// 		clearInterval(interval)
+		// 	}
+		// }
+
 }
 
 // --------------------------------------------------------

@@ -36,102 +36,172 @@
 
   <!-- Modal -->
   <div class="modal fade" id="beerInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
 
-    <!-- <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-  <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div> -->
+      <!-- <div class="card" style="width: 18rem;">
+    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+    <div class="card-body">
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+  </div> -->
 
-    <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-content">
+        <div class="modal-header">
 
-        <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
 
-        <div class="container-fluid">
-          <div class="row justify-content-center">
-            <div class="col-">
-              <img id='infoModalImg' class="img-fluid mx-auto d-block" width="200" height="200" src="icons/pins/vergina.png" alt="Avatar">
-            </div>
-          </div>
-
-          <div class="row justify-content-center">
-            <div class="col-">
-              <h5  id="infoModalTitle" class="text-center">Modal title</h5>
-            </div>
-          </div>
-
-          <div class="row justify-content-center">
-            <div class="col-">
-              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
-              <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button>
+          <div class="container-fluid">
+            <div class="row justify-content-center">
+              <div class="col-">
+                <img id='infoModalImg' class="img-fluid mx-auto d-block modal-img"  src="icons/pins/vergina.png" alt="Avatar">
+              </div>
             </div>
 
+            <div class="row justify-content-center">
+              <div class="col-">
+                <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+              </div>
+            </div>
+
+            <div class="row justify-content-center">
+              <div class="col-">
+                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button>
+              </div>
+
+            </div>
+
           </div>
+
+
 
         </div>
 
 
+          <div class="container">
 
+            <div class="row bg-secondary padding-inherit">
+              <div class="col-">
+                <h6 class="my-2">beers</h6>
+              </div>
+            </div>
+
+            <div class="row justify-content-start padding-inherit">
+              <div class="col-">
+                <ul class="list-unstyled">
+                  <li class="media">
+                    <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
+                    <div class="media-body align-self-center">
+                      <h6 class="">Snipa Lady 330lt</h6>
+                    </div>
+                  </li>
+                  <li class="media">
+                    <img class="mr-3 beer-size" src="images/b2.jpg" alt="Generic placeholder image">
+                    <div class="media-body align-self-center">
+                      <h6 class="">Sknipa Strong Ale 330lt</h6>
+                    </div>
+                  </li>
+                  <li class="media">
+                    <img class="mr-3 beer-size" src="images/b3.jpg" alt="Generic placeholder image">
+                    <div class="media-body align-self-center">
+                      <h6 class="">Sknipa Salonikia 330lt</h6>
+                    </div>
+                  </li>
+
+                </ul>
+
+              </div>
+
+            </div>
+          </div>
+                <!-- <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button> -->
+
+
+        <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+        <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
+
+        <div class="modal-footer no-border d-flex justify-content-center">
+          <!-- <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+          <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+          <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
+        </div>
       </div>
 
 
-        <div class="container">
+    </div>
+  </div>
 
-          <div class="row bg-secondary padding-inherit">
-            <div class="col-">
-              <h6 class="my-2">beers</h6>
-            </div>
-          </div>
 
-          <div class="row justify-content-start padding-inherit">
-            <div class="col-">
-              <ul class="list-unstyled">
-                <li class="media">
-                  <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
-                  <div class="media-body align-self-center">
-                    <h6 class="">Snipa Lady 330lt</h6>
-                  </div>
-                </li>
-                <li class="media">
-                  <img class="mr-3 beer-size" src="images/b2.jpg" alt="Generic placeholder image">
-                  <div class="media-body align-self-center">
-                    <h6 class="">Sknipa Strong Ale 330lt</h6>
-                  </div>
-                </li>
-                <li class="media">
-                  <img class="mr-3 beer-size" src="images/b3.jpg" alt="Generic placeholder image">
-                  <div class="media-body align-self-center">
-                    <h6 class="">Sknipa Salonikia 330lt</h6>
-                  </div>
-                </li>
+  <!-- Modal -->
+  <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content intro-modal">
 
-              </ul>
-
-            </div>
-
-          </div>
+        <div class="modal-header no-border">
+          <!-- <h5 class="modal-title" id="beersModalCenterTitle">Modal title</h5> -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 2.5rem;">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-              <!-- <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button> -->
+
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-3 no-padding">
+
+              </div>
+              <div class="col no-padding">
+                <div class="thumbnail">
+                    <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
+                      <div id="allNumber" class="centered">69</div>
+                      <div class="top-center">COMPANIES</div>
+                </div>
+
+              </div>
+              <div class="col-3 no-padding">
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col no-padding">
+                <div class="thumbnail">
+                    <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
+                      <div id="microNumber" class="centered">47</div>
+                      <div class="top-center">BREWERIES</div>
+                </div>
+              </div>
+              <div class="col no-padding">
+                <div class="thumbnail">
+                    <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
+                      <div id="clientNumber" class="centered">69</div>
+                      <div class="top-center">SELLERS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <img src="images/unicap.png" class="rounded  img-fluid" width=200 alt="...">
+          <img src="images/unicap.png" class="rounded right img-fluid" width=200 alt="..."> -->
+          <!-- <img src="images/unicap.png" class="rounded float-right img-fluid" alt="..."> -->
 
 
-      <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
-      <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
+          <!-- <div class="intro">
+              <strong>69</strong> Beer Companies,
+              <strong>47</strong> of them produce on their one,
+              <strong>22</strong> of them produce somewhere else
+          </div> -->
 
-      <div class="modal-footer no-border d-flex justify-content-center">
-        <!-- <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
-        <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
+        </div>
+        <!-- <div class="modal-footer no-border">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
       </div>
     </div>
-
-
-  </div>
   </div>
 
   <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div>
@@ -154,8 +224,9 @@
   <div id="festival-map"></div>
 
   <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: none;">
-    <!-- <button type="button" class="btn btn-secondary">Group</button>
-    <button type="button" class="btn btn-secondary">Pins</button> -->
+    <!-- <button type="button" class="btn btn-secondary">Group</button> -->
+    <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
+
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
         <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups

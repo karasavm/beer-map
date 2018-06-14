@@ -119,6 +119,11 @@ body {
     font-size: 2.0rem;
     top: 5px;
 }
+
+.modal-img {
+  max-width: 250px;
+  width: 100%
+}
 .pin-size {
   width: 200px;
   height: 200px;
@@ -130,4 +135,48 @@ body {
 
 .padding-inherit {
   padding: inherit;
+}
+
+.intro {
+  font-family: 'Helvetica Neue', Helvetica, Arial, Sans-Serif;
+  font-size: 100%;
+  line-height: 45px;
+  color: #636363;
+}
+.intro strong {
+
+  font-weight: bold;
+      color: #eaa728bd;
+      font-size: 25px;
+}
+
+.intro-modal {
+  border: none;
+  background-color: transparent;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.thumbnail {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.centered {
+    font-size: 40px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.top-center {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
 }
