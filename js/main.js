@@ -806,7 +806,8 @@ function handleRequests (buttonPressed) {
 
 		document.getElementById("btnTypes").innerHTML = "Clients";
 	} else if (buttonPressed === 'menu') {
-		openIntroModal()
+		// openIntroModal()
+		$('#beerInfoModal').modal();
 	}
 
 
