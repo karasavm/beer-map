@@ -696,6 +696,7 @@ function loadBanner() {
 
 function openIntroModal() {
 	$('#introModal').modal();
+	return;
 	var delay = 2500;
 	var allNum = 69;
 	var microNum = 47;
