@@ -47,7 +47,9 @@ var selectedMode = "groups";
 //When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
-
+window.addEventListener('DOMContentLoaded', function() {
+  openIntroModal();
+}, true);
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
@@ -692,6 +694,56 @@ function loadBanner() {
 
 //Function that is called when either the 'smaller events', unbrella or the 'reset map' buttons are clicked.
 
+function openIntroModal() {
+	$('#introModal').modal();
+	var delay = 2500;
+	var allNum = 69;
+	var microNum = 47;
+	var clientNum = 22;
+
+	document.getElementById("allNumber").innerHTML = 0;
+	var int1 = setInterval(function() {
+			var num = Number(document.getElementById("allNumber").innerHTML);
+
+			if (num == allNum) {
+				console.log("dsdfdfs")
+				window.clearInterval(int1);
+			} else {
+				num = num +1;
+				document.getElementById("allNumber").innerHTML = num.toString();
+			}
+
+	}, delay/allNum + 1)
+
+	document.getElementById("clientNumber").innerHTML = 0;
+	var int2 = setInterval(function() {
+			var num = Number(document.getElementById("clientNumber").innerHTML);
+
+			if (num == clientNum) {
+
+				window.clearInterval(int2);
+			} else {
+				num = num +1;
+				document.getElementById("clientNumber").innerHTML = num.toString();
+			}
+
+	}, delay/clientNum + 1)
+
+
+	document.getElementById("microNumber").innerHTML = 0;
+	var int3 = setInterval(function() {
+			var num = Number(document.getElementById("microNumber").innerHTML);
+
+			if (num == microNum) {
+
+				window.clearInterval(int3);
+			} else {
+				num = num +1;
+				document.getElementById("microNumber").innerHTML = num.toString();
+			}
+
+	}, delay/microNum + 1)
+}
 function resetZindexes() {
 	console.log("Reset z indexed. check guides")
 }
@@ -753,61 +805,8 @@ function handleRequests (buttonPressed) {
 
 		document.getElementById("btnTypes").innerHTML = "Clients";
 	} else if (buttonPressed === 'menu') {
-		$('#introModal').modal();
-		var delay = 2500;
-		var allNum = 69;
-		var microNum = 47;
-		var clientNum = 22;
-
-		document.getElementById("allNumber").innerHTML = 0;
-		var int1 = setInterval(function() {
-				var num = Number(document.getElementById("allNumber").innerHTML);
-
-				if (num == allNum) {
-					console.log("dsdfdfs")
-					window.clearInterval(int1);
-				} else {
-					num = num +1;
-					console.log(this)
-					document.getElementById("allNumber").innerHTML = num.toString();
-				}
-
-		}, delay/allNum + 1)
-
-		document.getElementById("clientNumber").innerHTML = 0;
-		var int2 = setInterval(function() {
-				var num = Number(document.getElementById("clientNumber").innerHTML);
-
-				if (num == clientNum) {
-
-					window.clearInterval(int2);
-				} else {
-					num = num +1;
-					console.log(this)
-					document.getElementById("clientNumber").innerHTML = num.toString();
-				}
-
-		}, delay/clientNum + 1)
-
-
-		document.getElementById("microNumber").innerHTML = 0;
-		var int3 = setInterval(function() {
-				var num = Number(document.getElementById("microNumber").innerHTML);
-
-				if (num == microNum) {
-
-					window.clearInterval(int3);
-				} else {
-					num = num +1;
-					console.log(this)
-					document.getElementById("microNumber").innerHTML = num.toString();
-				}
-
-		}, delay/microNum + 1)
-
-
-
-		}
+		openIntroModal()
+	}
 
 
 
