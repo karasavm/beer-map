@@ -796,6 +796,8 @@ function handleRequests (buttonPressed) {
 
 	}
 	else if (buttonPressed === "showClients") {
+		openIntroModal()
+		return;
 		selectedType = "clients";
 		console.log(selectedMode)
 		if (selectedMode === 'groups') {
@@ -806,8 +808,8 @@ function handleRequests (buttonPressed) {
 
 		document.getElementById("btnTypes").innerHTML = "Clients";
 	} else if (buttonPressed === 'menu') {
-		// openIntroModal()
-		$('#beerInfoModal').modal();
+		openIntroModal()
+		// $('#beerInfoModal').modal();
 	}
 
 
