@@ -796,8 +796,7 @@ function handleRequests (buttonPressed) {
 
 	}
 	else if (buttonPressed === "showClients") {
-		openIntroModal()
-		return;
+		
 		selectedType = "clients";
 		console.log(selectedMode)
 		if (selectedMode === 'groups') {
