@@ -136,28 +136,28 @@
 
 
   <!-- Modal -->
-  <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document" >
       <div class="modal-content intro-modal">
 
-        <div class="modal-header no-border">
-          <!-- <h5 class="modal-title" id="beersModalCenterTitle">Modal title</h5> -->
+        <!-- <div class="modal-header no-border">
+
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 2.5rem;">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
+        </div> -->
 
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="row">
+            <div class="row pb-4">
               <div class="col-3 no-padding">
 
               </div>
               <div class="col no-padding">
-                <div class="thumbnail">
+                <div class="thumbnail" id="allNumberThb">
                     <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
                       <div id="allNumber" class="centered">69</div>
-                      <div class="top-center">COMPANIES</div>
+                      <div class="top-center">CHRIS</div>
                 </div>
 
               </div>
@@ -166,22 +166,22 @@
               </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col no-padding">
-                <div class="thumbnail">
+                <div class="thumbnail" id="microThb">
                     <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
                       <div id="microNumber" class="centered">47</div>
                       <div class="top-center">BREWERIES</div>
                 </div>
               </div>
               <div class="col no-padding">
-                <div class="thumbnail">
+                <div class="thumbnail" id="clientThb">
                     <img src="images/unicap.png" class="rounded img-fluid" width=300 alt="...">
                       <div id="clientNumber" class="centered">69</div>
                       <div class="top-center">SELLERS</div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!-- <img src="images/unicap.png" class="rounded  img-fluid" width=200 alt="...">
@@ -223,32 +223,39 @@
 
   <div id="festival-map"></div>
 
-  <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: none;">
-    <!-- <button type="button" class="btn btn-secondary">Group</button> -->
-    <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
+  <div class="container fixed-bottom">
+    <div class="row justify-content-center">
+      <div class="col-">
+        <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
+          <!-- <button type="button" class="btn btn-secondary">Group</button> -->
+          <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
 
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
-      </label>
-      <label class="btn btn-secondary" onchange="handleRequests('showPins')">
-        <input type="radio" name="options" id="option2" autocomplete="off"> Pins
-      </label>
-    </div>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary" onchange="handleRequests('showGroups')">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
+            </label>
+            <label class="btn btn-secondary active" onchange="handleRequests('showPins')">
+              <input type="radio" name="options" id="option2" autocomplete="off"> Pins
+            </label>
+          </div>
 
-    <div class="btn-group" role="group">
+          <div class="btn-group" role="group">
 
-      <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        All
-      </button>
+            <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              All
+            </button>
 
-      <div class="dropdown-menu" aria-labelledby="btnTypes">
-        <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
-        <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
-        <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
+            <div class="dropdown-menu" aria-labelledby="btnTypes">
+              <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
+              <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
+              <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
 
 
 

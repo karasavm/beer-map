@@ -163,10 +163,11 @@ body {
   position: relative;
   text-align: center;
   color: white;
+  font-size: 30px;
 }
 
 .centered {
-    font-size: 40px;
+
     position: absolute;
     top: 45%;
     left: 50%;
@@ -174,9 +175,20 @@ body {
 }
 
 .top-center {
+  top: 90%;
   position: absolute;
   bottom: 22px;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: bold;
+  font-size: 60%;
+}
+
+.controls {
+  padding-bottom: 20px;
+  display: block;
+  z-index: 0;
+  position: absolute;
+  bottom: 0px;
+  left: 20%;
 }

@@ -41,6 +41,7 @@ var isStarMode = true; // start is when markers are in "star" position on map, o
 var currentCapSize = MARKER_CAP_SIZE;
 var curOpenedPin;
 var markerClusters;
+
 var selectedType = 'all';
 var selectedMode = "groups";
 
@@ -48,8 +49,9 @@ var selectedMode = "groups";
 google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
 window.addEventListener('DOMContentLoaded', function() {
-  openIntroModal();
+  // openIntroModal();
 }, true);
+
 
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
@@ -82,10 +84,18 @@ function loadbeerMap() {
   // 	ters();
   loadBanner();
 
+	initControlsState();
 	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
     // do something only the first time the map is loaded
 		console.log("mpla mpla mpla")
-		document.getElementById('controls').style.display = 'block';
+		// document.getElementById('controls').style.display = 'block';
+
+
+
+		setTimeout(function test() {
+			// document.getElementById('controls').style.display = 'block';
+			openIntroModal();
+		}, 1000);
 });
 } // EDN OF loadbeerMap()
 
@@ -323,7 +333,14 @@ function loadMapMarkers (){
 
 }
 
+function initControlsState() {
+	selectedType = 'all';
+	selectedMode = "pins";
+	markerClusters.clearMarkers();
+	showMarkers(selectedType);
 
+
+}
 
 function showClusters(type) {
 	markerClusters.clearMarkers();
@@ -506,7 +523,7 @@ function loadClusters() {
               };
 	console.log(markers[0])
 
-  markerClusters = new MarkerClusterer(beerMap, markers, options);
+  markerClusters = new MarkerClusterer(beerMap, [], options);
 
 }
 
@@ -684,7 +701,7 @@ function loadBanner() {
   // beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 	// beerMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(resetDiv);
 
-	beerMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(document.getElementById('controls'));
+	// beerMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(document.getElementById('controls'));
 
 }
 
@@ -694,13 +711,56 @@ function loadBanner() {
 
 //Function that is called when either the 'smaller events', unbrella or the 'reset map' buttons are clicked.
 
+
+
+//
+
 function openIntroModal() {
 	$('#introModal').modal();
-	return;
+
+	document.getElementById("introModal").addEventListener("touchstart", function(e) {
+		$('#introModal').modal('hide');
+	}, false);
+
+	// return;
 	var delay = 2500;
 	var allNum = 69;
+	allNum = 1000
 	var microNum = 47;
+	// allNum =
 	var clientNum = 22;
+
+
+
+
+
+	function adjustThbFontSize() {
+	    var w = window.innerWidth;
+			var thubs = document.getElementsByClassName("thumbnail");
+
+			var fontSize;
+			if (w >= 540) {
+				fontSize = '65px';
+			} else if (w >= 440) {
+				fontSize = '55px';
+			} else if (w >= 340) {
+				fontSize = '45px';
+			} else if (w >= 290) {
+				fontSize = '40px';
+			}
+			else {
+				fontSize = '30px';
+			}
+
+			y = (65 - 30)/(590 - 230)*(w - 230) + 30
+			console.log(y)
+			thubs[0].style.fontSize = fontSize;
+			// thubs[1].style.fontSize = fontSize;
+			// thubs[2].style.fontSize = fontSize;
+	}
+
+	adjustThbFontSize()
+
 
 	document.getElementById("allNumber").innerHTML = 0;
 	var int1 = setInterval(function() {
@@ -796,7 +856,7 @@ function handleRequests (buttonPressed) {
 
 	}
 	else if (buttonPressed === "showClients") {
-		
+
 		selectedType = "clients";
 		console.log(selectedMode)
 		if (selectedMode === 'groups') {
