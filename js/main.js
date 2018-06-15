@@ -725,9 +725,7 @@ function openIntroModal() {
 	// return;
 	var delay = 2500;
 	var allNum = 69;
-	allNum = 1000
 	var microNum = 47;
-	// allNum =
 	var clientNum = 22;
 
 
@@ -755,8 +753,8 @@ function openIntroModal() {
 			y = (65 - 30)/(590 - 230)*(w - 230) + 30
 			console.log(y)
 			thubs[0].style.fontSize = fontSize;
-			// thubs[1].style.fontSize = fontSize;
-			// thubs[2].style.fontSize = fontSize;
+			thubs[1].style.fontSize = fontSize;
+			thubs[2].style.fontSize = fontSize;
 	}
 
 	adjustThbFontSize()
