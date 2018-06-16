@@ -138,7 +138,7 @@
   <!-- Modal -->
   <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered" role="document" >
-      <div class="modal-content intro-modal">
+      <div class="modal-content intro-modal" onclick="closeIntroModal()">
 
         <!-- <div class="modal-header no-border">
 
@@ -231,10 +231,10 @@
           <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
 
           <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-secondary" onchange="handleRequests('showGroups')">
+            <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
               <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
             </label>
-            <label class="btn btn-secondary acitve" onchange="handleRequests('showPins')">
+            <label class="btn btn-secondary" onchange="handleRequests('showPins')">
               <input type="radio" name="options" id="option2" autocomplete="off"> Pins
             </label>
           </div>

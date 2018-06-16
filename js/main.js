@@ -335,9 +335,10 @@ function loadMapMarkers (){
 
 function initControlsState() {
 	selectedType = 'all';
-	selectedMode = "pins";
-	markerClusters.clearMarkers();
-	showMarkers(selectedType);
+	selectedMode = "groups";
+	// markerClusters.clearMarkers();
+	// showMarkers(selectedType);
+	showClusters(selectedType);
 
 
 }
@@ -714,12 +715,14 @@ function loadBanner() {
 
 
 //
-
+function closeIntroModal() {
+	$('#introModal').modal('hide');
+}
 function openIntroModal() {
 	$('#introModal').modal();
 
 	document.getElementById("introModal").addEventListener("touchstart", function(e) {
-		$('#introModal').modal('hide');
+		closeIntroModal();
 	}, false);
 
 	// return;
