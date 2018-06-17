@@ -531,7 +531,7 @@ function loadClusters() {
 // -------------------------- EVENT HANDLERS -------------
 
 function onZoomChanged() {
-
+	return;
   updateMarkersSize();
 
   var currentZoom = beerMap.getZoom();
