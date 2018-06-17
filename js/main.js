@@ -726,13 +726,13 @@ function openIntroModal() {
 	}, false);
 
 	// return;
-	var delay = 2500;
+	var delay = 2000;
 	var allNum = 69;
 	var microNum = 47;
-	var clientNum = 22;
+	var clientNum = 500;
 
 
-
+	console.log(delay/allNum, delay/microNum, delay/clientNum)
 
 
 	function adjustThbFontSize() {
@@ -757,7 +757,7 @@ function openIntroModal() {
 			console.log(y)
 			thubs[0].style.fontSize = fontSize;
 			thubs[1].style.fontSize = fontSize;
-			thubs[2].style.fontSize = fontSize;
+			// thubs[2].style.fontSize = fontSize;
 	}
 
 	adjustThbFontSize()
@@ -775,7 +775,7 @@ function openIntroModal() {
 				document.getElementById("allNumber").innerHTML = num.toString();
 			}
 
-	}, delay/allNum + 1)
+	}, delay/allNum)
 
 	document.getElementById("clientNumber").innerHTML = 0;
 	var int2 = setInterval(function() {
@@ -789,22 +789,22 @@ function openIntroModal() {
 				document.getElementById("clientNumber").innerHTML = num.toString();
 			}
 
-	}, delay/clientNum + 1)
+	}, delay/clientNum)
 
 
-	document.getElementById("microNumber").innerHTML = 0;
-	var int3 = setInterval(function() {
-			var num = Number(document.getElementById("microNumber").innerHTML);
-
-			if (num == microNum) {
-
-				window.clearInterval(int3);
-			} else {
-				num = num +1;
-				document.getElementById("microNumber").innerHTML = num.toString();
-			}
-
-	}, delay/microNum + 1)
+	// document.getElementById("microNumber").innerHTML = 0;
+	// var int3 = setInterval(function() {
+	// 		var num = Number(document.getElementById("microNumber").innerHTML);
+	//
+	// 		if (num == microNum) {
+	//
+	// 			window.clearInterval(int3);
+	// 		} else {
+	// 			num = num +1;
+	// 			document.getElementById("microNumber").innerHTML = num.toString();
+	// 		}
+	//
+	// }, delay/microNum)
 }
 function resetZindexes() {
 	console.log("Reset z indexed. check guides")

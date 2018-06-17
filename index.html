@@ -62,14 +62,25 @@
             <div class="row justify-content-center">
               <div class="col-">
                 <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+                <p class="text-center font-weight-bold text-monospace" style="color: #585252;">Athens</p>
               </div>
             </div>
 
             <div class="row justify-content-center">
               <div class="col-">
-                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
-                <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button>
+                <button type="button" class="btn btn-primary no-border" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+                <button type="button" class="btn btn-danger no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-map-marker"></i></button>
+                <button type="button" class="btn btn-secondary no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)" style="background-color: #3B5998;"><i class="fa fa-facebook"></i></button>
+
+                <!-- <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
+                <button type="button" class="btn btn-success no-border" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-phone"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">2310 231231</a>
+                  <a class="dropdown-item" href="#">69833420123</a>
+                </div>
+
               </div>
 
             </div>
@@ -150,7 +161,7 @@
         <div class="modal-body">
           <div class="container-fluid">
             <div class="row pb-4">
-              <div class="col-3 no-padding">
+              <!-- <div class="col-3 no-padding">
 
               </div>
               <div class="col no-padding">
@@ -163,22 +174,24 @@
               </div>
               <div class="col-3 no-padding">
 
-              </div>
+              </div> -->
             </div>
 
             <div class="row">
               <div class="col no-padding">
-                <div class="thumbnail" id="microThb">
+                <div class="thumbnail" id="allNumberThb">
                     <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
-                      <div id="microNumber" class="centered">47</div>
+                      <div id="allNumber" class="centered">69</div>
                       <div class="top-center">BREWERIES</div>
                 </div>
+
               </div>
+              
               <div class="col no-padding">
                 <div class="thumbnail" id="clientThb">
                     <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
                       <div id="clientNumber" class="centered">69</div>
-                      <div class="top-center">SELLERS</div>
+                      <div class="top-center">BEERS</div>
                 </div>
               </div>
             </div>
@@ -239,7 +252,7 @@
             </label>
           </div>
 
-          <div class="btn-group" role="group">
+          <!-- <div class="btn-group" role="group">
 
             <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               All
@@ -250,7 +263,8 @@
               <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
               <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
             </div>
-          </div>
+          </div> -->
+
         </div>
       </div>
     </div>
