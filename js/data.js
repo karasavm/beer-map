@@ -77,7 +77,7 @@ var testData = [
 {id: 67,name: "Unibrau Hellas",icon: "", mapUrl: "https://www.google.com/maps/place/Unibr%C3%A4u/@38.0278585,23.8515193,17z/data=!3m1!4b1!4m5!3m4!1s0x14a1995e1465d091:0xb7a60f6b6b13a48f!8m2!3d38.0278585!4d23.853708", infoUrl: "http://www.unibrau.gr/", type: "Client Brewer"},
 {id: 68,name: "Valtinger",icon: "", mapUrl: "https://www.google.com/maps/place/40%C2%B003'00.1%22N+23%C2%B025'06.0%22E/@40.0490537,23.4132024,16z/data=!4m5!3m4!1s0x0:0x0!8m2!3d40.05004!4d23.41834", infoUrl: "https://www.facebook.com/valtinger/", type: "Client Brewer"},
 {id: 69,name: "O.K. Athens",icon: "", mapUrl: "https://www.google.com/maps/place/O.K.+Athens+Ltd/@37.9259131,23.6889071,17z/data=!4m12!1m6!3m5!1s0x14a1bc21ccbc905f:0x73b7cc7039631a11!2sO.K.+Athens+Ltd!8m2!3d37.9259131!4d23.6910958!3m4!1s0x14a1bc21ccbc905f:0x73b7cc7039631a11!8m2!3d37.9259131!4d23.6910958", infoUrl: "http://www.okathens.gr/", type: "Contract Brewer"}
-  ];
+]
 
 for (var i=0; i < testData.length; i ++) {
 

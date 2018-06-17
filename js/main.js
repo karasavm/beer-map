@@ -12,7 +12,7 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 30;
+var MARKER_CAP_SIZE = 40;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
@@ -65,6 +65,35 @@ function loadbeerMap() {
 	beerMap.addListener('zoom_changed', onZoomChanged);
 
   loadStyledMap();
+
+
+	function preloadImages(array) {
+	  if (!preloadImages.list) {
+	      preloadImages.list = [];
+	  }
+	  var list = preloadImages.list;
+	  for (var i = 0; i < array.length; i++) {
+	      var img = new Image();
+	      img.onload = function() {
+	          var index = list.indexOf(this);
+	          if (index !== -1) {
+	              // remove image from the array once it's loaded
+	              // for memory consumption reasons
+	              list.splice(index, 1);
+	          }
+	      }
+	      list.push(img);
+	      img.src = array[i];
+	  }
+	}
+
+	var images = []
+	for (var i=0; i < markersRaw.length; i++) {
+		images.push('icons/pins/compressed/' + markersRaw[i].icon)
+	}
+	console.log(images)
+	preloadImages(images)
+
 
 
   var rainMapOverlay = new google.maps.ImageMapType({
@@ -213,7 +242,8 @@ function createImageMarker(lat, log, imageUrl, legend) {
       animation: google.maps.Animation.DROP,
       draggable: false,
       shape: shape,
-      icon: getImageObj('icons/pins/60x60/'+ imageUrl, MARKER_CAP_SIZE),
+      icon: getImageObj('icons/pins/compressed/'+ imageUrl, MARKER_CAP_SIZE),
+			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
 
@@ -329,8 +359,12 @@ function loadMapMarkers (){
       // infowindow.open(beerMap, this)
     });
 
+
 	}
 
+	for (i=0; i < markers.length; i ++) {
+		markers[i].setMap(beerMap)
+	}
 }
 
 function initControlsState() {
@@ -410,7 +444,7 @@ function openInNewTab(url) {
 
 function setInfoModalValues(title, icon) {
 
-  document.getElementById("infoModalImg").src="./icons/pins/" + icon;
+  document.getElementById("infoModalImg").src="./icons/pins/compressed/" + icon;
   document.getElementById("infoModalTitle").innerHTML= title;
 
   // document.getElementById("preview-info").href=curOpenedPin.rawData.infoUrl
