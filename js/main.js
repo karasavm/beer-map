@@ -213,7 +213,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
       animation: google.maps.Animation.DROP,
       draggable: false,
       shape: shape,
-      icon: getImageObj('icons/pins/'+ imageUrl, MARKER_CAP_SIZE),
+      icon: getImageObj('icons/pins/60x60/'+ imageUrl, MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
 
@@ -753,8 +753,19 @@ function openIntroModal() {
 				fontSize = '30px';
 			}
 
-			y = (65 - 30)/(590 - 230)*(w - 230) + 30
-			console.log(y)
+			y1 = 65;
+			y2 = 30;
+			x1 = 540;
+			x2 = 240;
+
+
+			if (w >= 540) {
+				 fontSize = '65px';
+			} else
+			{
+				y = (y1 - y2)/(x1 - x2)*(w - x2) + y2
+				fontSize = Math.round(y).toString() + 'px';
+			}
 			thubs[0].style.fontSize = fontSize;
 			thubs[1].style.fontSize = fontSize;
 			// thubs[2].style.fontSize = fontSize;

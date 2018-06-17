@@ -160,16 +160,38 @@ body {
 }
 
 .thumbnail {
+  /* font-weight: bold; */
   position: relative;
   text-align: center;
   color: white;
   font-size: 30px;
 }
 
+.centered-brewery {
+
+    position: absolute;
+    /* top: 45%; */
+    top: 90%;
+    color: #3e4840;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.centered-bottle {
+
+    position: absolute;
+    top: 45%;
+    /* top: 90%; */
+    /* color: #3e4840; */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .centered {
 
     position: absolute;
     top: 45%;
+    /* top: 90%; */
+    /* color: #3e4840; */
     left: 50%;
     transform: translate(-50%, -50%);
 }
