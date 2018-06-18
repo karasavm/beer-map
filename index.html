@@ -244,10 +244,10 @@
             <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
 
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
+              <label id='groupsMode' class="btn btn-secondary active" onchange="handleRequests('showGroups')">
                 <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
               </label>
-              <label class="btn btn-secondary" onchange="handleRequests('showPins')">
+              <label id='pinsMode'class="btn btn-secondary" onchange="handleRequests('showPins')">
                 <input type="radio" name="options" id="option2" autocomplete="off"> Pins
               </label>
             </div>
@@ -305,8 +305,9 @@
             <form action="">
               <input id="searchbox" autocomplete="off" type="text" name="search"
                 onkeyup="updateSearchList()"
-                onfocus="onSearchboxFocus()" onblur="onSearchboxBlur()">
+                onfocus="onSearchboxFocus()">
               <button id="searchbox-cancel" type="button"
+              onclick="onSearchBoxCancelClick()"
               name="button"
               class="btn btn-lg btn-secondary"
               >
@@ -331,20 +332,22 @@
             </ul> -->
 
             <div class="list-group" id="searchlist" style="overflow-y:scroll;max-height: 500px;height: 75vh;display: none;">
-              <a href="#" id="templateListItem" class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
+              <a id="templateListItem"  onclick='' class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
 
                 <div class="pr-1">
-                  <img src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px" alt="">
+                  <img  src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px" alt="">
                 </div>
                 <div class="flex-fill flex-column align-items-start" style="line-height: 0.9;">
                   <div class="d-flex w-100 justify-content-between">
                     <h6 class="mb-1" id="">List group item heading</h6>
-                    <small>3 days ago</small>
+                    <small>since 2011</small>
                   </div>
-                  <p class="mb-1">Donec id elit non mi</p>
-                  <small>Donec id elit non mi porta.</small>
+                  <!-- todo set town and date-->
+                  <p class="mb-1">Athens</p>
+                  <small>6 different beers</small>
                 </div>
               </a>
+
             </div>
 
         </div>

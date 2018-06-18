@@ -240,12 +240,12 @@ body {
     font-size: 16px;
 }
 
-#searchbox:focus {
+.searchbox-focus {
 
 
-    width: 98%;
-    border-bottom: 2px solid grey;
-    background-color: grey;
+    width: 98%!important;
+    border-bottom: 2px solid grey!important;
+    background-color: grey!important;
     /* opacity: 0.6; */
 }
 
