@@ -1,348 +1,356 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<title>Greek Microbreweries</title>
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <title>Greek Microbreweries</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
-<!-- CUSTOM STYLES -->
-<link rel="stylesheet" type="text/css" href="style.css">
+  <!-- CUSTOM STYLES -->
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-<!-- BOOTSTRAP SCRIPTS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <!-- BOOTSTRAP SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-<!-- GOOGLE API -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
+  <!-- GOOGLE API -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
 
-<!-- LIBS -->
-<script src="js/infobox/infobox.js" type="text/javascript"></script>
-<script src="js/gmaps-marker-clusterer-master/src/markerclusterer.js"></script>
+  <!-- LIBS -->
+  <script src="js/infobox/infobox.js" type="text/javascript"></script>
+  <script src="js/gmaps-marker-clusterer-master/src/markerclusterer.js"></script>
 
-<!-- CUSTOM SCRIPTS -->
-<script src="js/data.js" type="text/javascript"></script>
-<script src="js/main.js" type="text/javascript"></script>
+  <!-- CUSTOM SCRIPTS -->
+  <script src="js/data.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
 
-</head>
+  </head>
 
-<body>
-
-
-  <!-- Button trigger modal -->
+  <body>
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="beerInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-
-      <!-- <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-    <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-  </div> -->
-
-      <div class="modal-content">
-        <div class="modal-header">
-
-          <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-
-          <div class="container-fluid">
-            <div class="row justify-content-center">
-              <div class="col-">
-                <img id='infoModalImg' class="img-fluid mx-auto d-block modal-img"  src="icons/pins/vergina.png" alt="Avatar">
-              </div>
-            </div>
-
-            <div class="row justify-content-center">
-              <div class="col-">
-                <h5  id="infoModalTitle" class="text-center">Modal title</h5>
-                <p class="text-center font-weight-bold text-monospace" style="color: #585252;">Athens</p>
-              </div>
-            </div>
-
-            <div class="row justify-content-center">
-              <div class="col-">
-                <button type="button" class="btn btn-primary no-border" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-                <button type="button" class="btn btn-danger no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-map-marker"></i></button>
-                <button type="button" class="btn btn-secondary no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)" style="background-color: #3B5998;"><i class="fa fa-facebook"></i></button>
-
-                <!-- <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
-                <button type="button" class="btn btn-success no-border" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-phone"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">2310 231231</a>
-                  <a class="dropdown-item" href="#">69833420123</a>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
+    <!-- Button trigger modal -->
 
 
+    <!-- Modal -->
+    <div class="modal fade" id="beerInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
 
-        </div>
-
-
-          <div class="container">
-
-            <div class="row bg-secondary padding-inherit">
-              <div class="col-">
-                <h6 class="my-2">beers</h6>
-              </div>
-            </div>
-
-            <div class="row justify-content-start padding-inherit">
-              <div class="col-">
-                <ul class="list-unstyled">
-                  <li class="media">
-                    <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
-                    <div class="media-body align-self-center">
-                      <h6 class="">Snipa Lady 330lt</h6>
-                    </div>
-                  </li>
-                  <li class="media">
-                    <img class="mr-3 beer-size" src="images/b2.jpg" alt="Generic placeholder image">
-                    <div class="media-body align-self-center">
-                      <h6 class="">Sknipa Strong Ale 330lt</h6>
-                    </div>
-                  </li>
-                  <li class="media">
-                    <img class="mr-3 beer-size" src="images/b3.jpg" alt="Generic placeholder image">
-                    <div class="media-body align-self-center">
-                      <h6 class="">Sknipa Salonikia 330lt</h6>
-                    </div>
-                  </li>
-
-                </ul>
-
-              </div>
-
-            </div>
-          </div>
-                <!-- <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button> -->
-
-
-        <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
-        <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
-
-        <div class="modal-footer no-border d-flex justify-content-center">
-          <!-- <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-          <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
-          <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
-        </div>
+        <!-- <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+      <div class="card-body">
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
+    </div> -->
 
+        <div class="modal-content">
+          <div class="modal-header">
 
-    </div>
-  </div>
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
-    <div class="modal-dialog modal-dialog-centered" role="document" >
-      <div class="modal-content intro-modal" onclick="closeIntroModal()">
-
-        <!-- <div class="modal-header no-border">
-
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 2.5rem;">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> -->
-
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="row pb-4">
-              <!-- <div class="col-3 no-padding">
-
-              </div>
-              <div class="col no-padding">
-                <div class="thumbnail" id="allNumberThb">
-                    <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
-                      <div id="allNumber" class="centered">69</div>
-                      <div class="top-center">COMPANIES</div>
-                </div>
-
-              </div>
-              <div class="col-3 no-padding">
-
-              </div> -->
-            </div>
-
-            <div class="row">
-              <div class="col no-padding">
-                <div class="thumbnail" id="allNumberThb">
-                    <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
-                      <div id="allNumber" class="centered">69</div>
-                      <div class="top-center">BREWERIES</div>
-                </div>
-
-              </div>
-
-              <div class="col no-padding">
-                <div class="thumbnail" id="clientThb">
-                    <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
-                      <div id="clientNumber" class="centered">69</div>
-                      <div class="top-center">BEERS</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- <img src="images/unicap.png" class="rounded  img-fluid" width=200 alt="...">
-          <img src="images/unicap.png" class="rounded right img-fluid" width=200 alt="..."> -->
-          <!-- <img src="images/unicap.png" class="rounded float-right img-fluid" alt="..."> -->
-
-
-          <!-- <div class="intro">
-              <strong>69</strong> Beer Companies,
-              <strong>47</strong> of them produce on their one,
-              <strong>22</strong> of them produce somewhere else
-          </div> -->
-
-        </div>
-        <!-- <div class="modal-footer no-border">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
-      </div>
-    </div>
-  </div>
-
-  <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div>
-
-
-  <!-- <div id="over-map" class="dialog" display="none" style="display: none;">
-
-    <div class="content">
-      <div id="preview-pin-title" class="title">Permission</div><br>
-      <img id='preview-pin-img' class="centerImg" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
-    </div>
-
-    <div class="footer">
-      <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
-      <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button>
-    </div>
-
-  </div> -->
-
-  <div id="festival-map"></div>
-
-  <div class="container fixed-bottom">
-    <div class="row justify-content-center">
-      <div class="col-">
-        <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
-          <!-- <button type="button" class="btn btn-secondary">Group</button> -->
-          <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
-
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
-              <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
-            </label>
-            <label class="btn btn-secondary" onchange="handleRequests('showPins')">
-              <input type="radio" name="options" id="option2" autocomplete="off"> Pins
-            </label>
-          </div>
-
-          <!-- <div class="btn-group" role="group">
-
-            <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              All
+            <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
             </button>
 
-            <div class="dropdown-menu" aria-labelledby="btnTypes">
-              <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
-              <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
-              <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
+            <div class="container-fluid">
+              <div class="row justify-content-center">
+                <div class="col-">
+                  <img id='infoModalImg' class="img-fluid mx-auto d-block modal-img"  src="icons/pins/vergina.png" alt="Avatar">
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-">
+                  <h5  id="infoModalTitle" class="text-center">Modal title</h5>
+                  <p class="text-center font-weight-bold text-monospace" style="color: #585252;">Athens</p>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-">
+                  <button type="button" class="btn btn-primary no-border" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+                  <button type="button" class="btn btn-danger no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-map-marker"></i></button>
+                  <button type="button" class="btn btn-secondary no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)" style="background-color: #3B5998;"><i class="fa fa-facebook"></i></button>
+
+                  <!-- <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
+                  <button type="button" class="btn btn-success no-border" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-phone"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">2310 231231</a>
+                    <a class="dropdown-item" href="#">69833420123</a>
+                  </div>
+
+                </div>
+
+              </div>
+
             </div>
+
+
+
+          </div>
+
+
+            <div class="container">
+
+              <div class="row bg-secondary padding-inherit">
+                <div class="col-">
+                  <h6 class="my-2">beers</h6>
+                </div>
+              </div>
+
+              <div class="row justify-content-start padding-inherit">
+                <div class="col-">
+                  <ul class="list-unstyled">
+                    <li class="media">
+                      <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
+                      <div class="media-body align-self-center">
+                        <h6 class="">Snipa Lady 330lt</h6>
+                      </div>
+                    </li>
+                    <li class="media">
+                      <img class="mr-3 beer-size" src="images/b2.jpg" alt="Generic placeholder image">
+                      <div class="media-body align-self-center">
+                        <h6 class="">Sknipa Strong Ale 330lt</h6>
+                      </div>
+                    </li>
+                    <li class="media">
+                      <img class="mr-3 beer-size" src="images/b3.jpg" alt="Generic placeholder image">
+                      <div class="media-body align-self-center">
+                        <h6 class="">Sknipa Salonikia 330lt</h6>
+                      </div>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+            </div>
+                  <!-- <button type="button" class="btn btn-link mx-auto d-block"><i class="fa fa-phone fa-lg"></i> 2310 34212</button> -->
+
+
+          <!-- <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+          <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button> -->
+
+          <div class="modal-footer no-border d-flex justify-content-center">
+            <!-- <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
+            <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i></button>
+            <button type="button" class="btn btn-link btn-lg" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content intro-modal" onclick="closeIntroModal()">
+
+          <!-- <div class="modal-header no-border">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 2.5rem;">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div> -->
 
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row pb-4">
+                <!-- <div class="col-3 no-padding">
+
+                </div>
+                <div class="col no-padding">
+                  <div class="thumbnail" id="allNumberThb">
+                      <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
+                        <div id="allNumber" class="centered">69</div>
+                        <div class="top-center">COMPANIES</div>
+                  </div>
+
+                </div>
+                <div class="col-3 no-padding">
+
+                </div> -->
+              </div>
+
+              <div class="row">
+                <div class="col no-padding">
+                  <div class="thumbnail" id="allNumberThb">
+                      <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
+                        <div id="allNumber" class="centered">69</div>
+                        <div class="top-center">BREWERIES</div>
+                  </div>
+
+                </div>
+
+                <div class="col no-padding">
+                  <div class="thumbnail" id="clientThb">
+                      <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
+                        <div id="clientNumber" class="centered">69</div>
+                        <div class="top-center">BEERS</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <img src="images/unicap.png" class="rounded  img-fluid" width=200 alt="...">
+            <img src="images/unicap.png" class="rounded right img-fluid" width=200 alt="..."> -->
+            <!-- <img src="images/unicap.png" class="rounded float-right img-fluid" alt="..."> -->
+
+
+            <!-- <div class="intro">
+                <strong>69</strong> Beer Companies,
+                <strong>47</strong> of them produce on their one,
+                <strong>22</strong> of them produce somewhere else
+            </div> -->
+
+          </div>
+          <!-- <div class="modal-footer no-border">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div> -->
         </div>
       </div>
     </div>
-  </div>
+
+    <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div>
 
 
+    <!-- <div id="over-map" class="dialog" display="none" style="display: none;">
 
-
-  <!--
-  <section>
-      <div class="button raised">
-        <div class="center" fit>SUBMIT</div>
-        <paper-ripple fit></paper-ripple>
+      <div class="content">
+        <div id="preview-pin-title" class="title">Permission</div><br>
+        <img id='preview-pin-img' class="centerImg" src="icons/pins/vergina.png" alt="Avatar" width="200" height="200">
       </div>
 
-      <div class="button raised grey">
-        <div class="center" fit>CANCEL</div>
-        <paper-ripple fit></paper-ripple>
+      <div class="footer">
+        <button class="btn" style="float: left;" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i> webpage</button>
+        <button class="btn" style="float: right;" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-location-arrow"></i> directions</button>
       </div>
 
-      <div class="button raised blue">
-        <div class="center" fit>COMPOSE</div>
-        <paper-ripple fit></paper-ripple>
-      </div>
+    </div> -->
 
-      <div class="button raised green">
-        <div class="center" fit>OK</div>
-        <paper-ripple fit></paper-ripple>
-      </div>
+    <div id="festival-map"></div>
 
-    </section> -->
+    <div class="container fixed-bottom">
+      <div class="row justify-content-center">
+        <div class="col-">
+          <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
+            <!-- <button type="button" class="btn btn-secondary">Group</button> -->
+            <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
 
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active" onchange="handleRequests('showGroups')">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked onclick=""> Groups
+              </label>
+              <label class="btn btn-secondary" onchange="handleRequests('showPins')">
+                <input type="radio" name="options" id="option2" autocomplete="off"> Pins
+              </label>
+            </div>
 
+            <!-- <div class="btn-group" role="group">
 
-    <div class="container fixed-top">
-      <div class="row justify-content-left">
-        <div class="col">
-          <form action="">
-            <input id="searchbox" autocomplete="off" type="text" name="search" onfocus="onSearchboxFocus()" onblur="onSearchboxBlur()">
-            <button id="searchbox-cancel" type="button"
-            name="button"
-            class="btn btn-lg btn-secondary"
-            >
-            <i class="fa fa-times"></i>
-            </button>
-          </form>
+              <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                All
+              </button>
+
+              <div class="dropdown-menu" aria-labelledby="btnTypes">
+                <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
+                <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
+                <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
+              </div>
+            </div> -->
+
+          </div>
         </div>
-      </div>
-
-      <div class="row justify-content-center" >
-        <div class="col">
-          <ul id="searchlist" class="list-group"  style="overflow-y:scroll;height: 50%;display: none">
-            <li class="list-group-item">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Porta ac consectetur ac</li>
-            <li class="list-group-item">Vestibulum at eros</li>
-          </ul>
-        </div>
-
       </div>
     </div>
 
 
 
-</body>
-</html>
+
+    <!--
+    <section>
+        <div class="button raised">
+          <div class="center" fit>SUBMIT</div>
+          <paper-ripple fit></paper-ripple>
+        </div>
+
+        <div class="button raised grey">
+          <div class="center" fit>CANCEL</div>
+          <paper-ripple fit></paper-ripple>
+        </div>
+
+        <div class="button raised blue">
+          <div class="center" fit>COMPOSE</div>
+          <paper-ripple fit></paper-ripple>
+        </div>
+
+        <div class="button raised green">
+          <div class="center" fit>OK</div>
+          <paper-ripple fit></paper-ripple>
+        </div>
+
+      </section> -->
+
+
+
+      <div class="container fixed-top pt-2">
+        <div class="row justify-content-left">
+          <div class="col">
+            <form action="">
+              <input id="searchbox" autocomplete="off" type="text" name="search"
+                onkeyup="updateSearchList()"
+                onfocus="onSearchboxFocus()" onblur="onSearchboxBlur()">
+              <button id="searchbox-cancel" type="button"
+              name="button"
+              class="btn btn-lg btn-secondary"
+              >
+              <i class="fa fa-times"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="row justify-content-center" >
+          <div class="col">
+            <!-- <ul id="searchlist" class="list-group"
+              data-spy="scroll" style="overflow-y:scroll;height: 60vh;display: none"
+              >
+
+              <a href="#" class="list-group-item list-group-item-action">Cras justo odio</a>
+              <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+              <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+
+            </ul> -->
+
+            <div class="list-group" id="searchlist" style="overflow-y:scroll;max-height: 500px;height: 75vh;display: none;">
+              <a href="#" id="templateListItem" class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
+
+                <div class="pr-1">
+                  <img src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px" alt="">
+                </div>
+                <div class="flex-fill flex-column align-items-start" style="line-height: 0.9;">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1" id="">List group item heading</h6>
+                    <small>3 days ago</small>
+                  </div>
+                  <p class="mb-1">Donec id elit non mi</p>
+                  <small>Donec id elit non mi porta.</small>
+                </div>
+              </a>
+            </div>
+
+        </div>
+      </div>
+
+
+
+  </body>
+  </html>

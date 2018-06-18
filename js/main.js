@@ -433,7 +433,75 @@ function showMarkers() {
 
 }
 
+function setSearchList() {
+	// return;
+
+  var list = document.getElementById("searchlist");
+
+  for (var i=0; i < markersRaw.length; i++) {
+
+		// var li = document.createElement("li");
+	  // li.setAttribute("id", "li" + i.toString()); // added line
+		// li.setAttribute("class", 'list-group-item'); // added line
+		// li.innerHTML = markersRaw[i].name
+		// ul.appendChild(li);
+
+		var a = document.getElementById("templateListItem").cloneNode(true);
+
+		a.getElementsByTagName('h6')[0].innerHTML = markersRaw[i].name
+		a.getElementsByTagName('img')[0].src = PINS_PATH + markersRaw[i].icon
+		a.setAttribute("id", "item-" + i.toString()); // added line
+		list.appendChild(a);
+
+		a.classList.remove("d-none");
+		document.getElementById("item-" + i.toString()).classList.add("d-flex");
+	}
+}
+
+function updateSearchList() {
+	// return;
+	console.log("SEARCHING....")
+	var key = document.getElementById("searchbox").value;
+
+	if ( key === "") {
+		for (var i=0; i < markersRaw.length; i++) {
+			document.getElementById("item-" + i.toString()).classList.remove("d-none");
+			document.getElementById("item-" + i.toString()).classList.add("d-flex");
+			console.log(document.getElementById("item-" + i.toString()).classList)
+			// console.log(document.getElementById("item-" + i.toString()).style.display)
+		}
+	} else {
+		for (var i=0; i < markersRaw.length; i++) {
+			var matches = markersRaw[i].name.toLowerCase().search(key.toLowerCase()) != -1;
+
+			if (matches) {
+				document.getElementById("item-" + i.toString()).classList.remove("d-none");
+				document.getElementById("item-" + i.toString()).classList.add("d-flex");
+			} else {
+				document.getElementById("item-" + i.toString()).classList.remove("d-flex");
+				document.getElementById("item-" + i.toString()).classList.add("d-none");
+			}
+
+		}
+	}
+
+
+
+  // for (var i=0; i < markersRaw.length; i++) {
+	//
+	// 	var li = document.createElement("li");
+	//   li.setAttribute("id", i.toString()); // added line
+	// 	li.setAttribute("class", 'list-group-item'); // added line
+	// 	li.innerHTML = markersRaw[i].name
+	// 	ul.appendChild(li);
+	// }
+}
+
+
 function onSearchboxFocus() {
+
+	setSearchList();
+
 	document.getElementById("searchbox-cancel").style.display = "inline-block";
 	document.getElementById("searchlist").style.display = "block";
 }
@@ -763,6 +831,7 @@ function closeIntroModal() {
 	$('#introModal').modal('hide');
 }
 function openIntroModal() {
+	return;
 	$('#introModal').modal();
 
 	document.getElementById("introModal").addEventListener("touchstart", function(e) {

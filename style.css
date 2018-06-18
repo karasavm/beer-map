@@ -219,31 +219,34 @@ body {
 
 /* ******************** SEARCH BOX ********************************/
 #searchbox {
-    width: 130px;
-    /* box-sizing: border-box; */
-    /* border: 2px solid #ccc; */
+    width: 20px;
+    outline: 0;
     border: none;
     border-radius: 4px;
-    font-size: 16px;
-    background-color: transparent;
-    background-image: url('images/search.png');
+
+    background-color: grey;
+    opacity: 0.7;
+    background-image: url('images/magnify.png');
     background-size: 30px;
-    background-position: 1px 10px;
+    background-position: 10px 10px;
     background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
+
+    padding: 12px 10px 12px 40px;
+
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
-    left: 20%;
-    /* border: 0; */
-    outline: 0;
+
+    font-weight: bold;
+    font-size: 16px;
 }
 
 #searchbox:focus {
 
+
     width: 98%;
     border-bottom: 2px solid grey;
     background-color: grey;
-    opacity: 0.6;
+    /* opacity: 0.6; */
 }
 
 
@@ -264,7 +267,7 @@ body {
 }
 
 #searchlist {
-  
+
   width: 98%;
 }
 
