@@ -20,6 +20,9 @@ var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
 
 var STAR_MODE_MAX_ZOOM = 9;
+var PINS_PATH = 'icons/pins/cp200x200cp/';
+var LOGO_PATH = 'icons/pins/compressed/';
+
 
 // -------------------------------------------------
 //These options configure the setup of the map.
@@ -89,7 +92,7 @@ function loadbeerMap() {
 
 	var images = []
 	for (var i=0; i < markersRaw.length; i++) {
-		images.push('icons/pins/compressed/' + markersRaw[i].icon)
+		images.push( + markersRaw[i].icon)
 	}
 	console.log(images)
 	preloadImages(images)
@@ -242,7 +245,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
       animation: google.maps.Animation.DROP,
       draggable: false,
       shape: shape,
-      icon: getImageObj('icons/pins/compressed/'+ imageUrl, MARKER_CAP_SIZE),
+      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE),
 			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
@@ -408,31 +411,26 @@ function showClusters(type) {
 	console.log(markerClusters)
 }
 
-function showMarkers(type) {
-	if (type === 'all') {
-		for (var i=0; i < markers.length; i++) {
-			console.log(markers[i])
+function showMarkers() {
+	// for (var i=0; i < markers.length; i++) {
+	// 	markers[i].setAnimation(google.maps.Animation.BOUNCE)
+	// }
+	for (var i=0; i < markers.length; i+=3) {
 			markers[i].setMap(beerMap);
-		}
-	} else if (type === 'micro') {
-		for (var i=0; i < markers.length; i ++) {
-
-			if (markers[i].rawData.type === "Microbrewery") {
-				markers[i].setMap(beerMap);
-			} else {
-				markers[i].setMap(null);
-			}
-		}
-	} else if (type === 'clients') {
-		for (var i=0; i < markers.length; i ++) {
-
-			if (markers[i].rawData.type === "Microbrewery") {
-				markers[i].setMap(null);
-			} else {
-				markers[i].setMap(beerMap);
-			}
-		}
 	}
+
+	setTimeout(function() {
+		for (var i=1; i < markers.length; i+=3) {
+				markers[i].setMap(beerMap);
+		}
+	}, 400)
+
+	setTimeout(function() {
+		for (var i=2; i < markers.length; i+=3) {
+				markers[i].setMap(beerMap);
+		}
+	}, 700)
+
 }
 
 
@@ -444,7 +442,7 @@ function openInNewTab(url) {
 
 function setInfoModalValues(title, icon) {
 
-  document.getElementById("infoModalImg").src="./icons/pins/compressed/" + icon;
+  document.getElementById("infoModalImg").src= LOGO_PATH + icon;
   document.getElementById("infoModalTitle").innerHTML= title;
 
   // document.getElementById("preview-info").href=curOpenedPin.rawData.infoUrl
@@ -876,43 +874,12 @@ function handleRequests (buttonPressed) {
 	else if (buttonPressed === "showPins") {
 		selectedMode = "pins";
 		markerClusters.clearMarkers();
-		showMarkers(selectedType);
+		setTimeout(function(){
+			showMarkers();
+		}, 1000 )
+		// showMarkers();
 	}
-	else if (buttonPressed === "showAll") {
-
-		selectedType = "all";
-		if (selectedMode === 'groups') {
-
-			showClusters(selectedType);
-		} else {
-			showMarkers(selectedType);
-		}
-		document.getElementById("btnTypes").innerHTML = "All";
-		// showAllMarkers();
-	}
-	else if (buttonPressed === "showMicrobrewers") {
-
-		selectedType = "micro";
-		if (selectedMode === 'groups') {
-			showClusters(selectedType);
-		} else {
-			showMarkers(selectedType);
-		}
-		document.getElementById("btnTypes").innerHTML = "Microbreweries";
-
-	}
-	else if (buttonPressed === "showClients") {
-
-		selectedType = "clients";
-		console.log(selectedMode)
-		if (selectedMode === 'groups') {
-			showClusters(selectedType);
-		} else {
-			showMarkers(selectedType);
-		}
-
-		document.getElementById("btnTypes").innerHTML = "Clients";
-	} else if (buttonPressed === 'menu') {
+	else if (buttonPressed === 'menu') {
 		openIntroModal()
 		// $('#beerInfoModal').modal();
 	}
