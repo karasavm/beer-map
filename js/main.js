@@ -33,7 +33,7 @@ var beerMapOptions = {
 		  minZoom: MIN_ZOOM,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
 		  mapTypeId: google.maps.MapTypeId.ROADMAP,
-
+			disableDefaultUI: true,
 		  panControl: false,
 		  mapTypeControl: false,
 		  streetViewControl: false,
@@ -433,6 +433,18 @@ function showMarkers() {
 
 }
 
+function onSearchboxFocus() {
+	document.getElementById("searchbox-cancel").style.display = "inline-block";
+	document.getElementById("searchlist").style.display = "block";
+}
+
+function onSearchBoxClick() {
+	document.getElementById("searchbox").blur();
+}
+function onSearchboxBlur() {
+	document.getElementById("searchbox-cancel").style.display = "none";
+	document.getElementById("searchlist").style.display = "none";
+}
 
 function openInNewTab(url) {
 	console.log(url)
