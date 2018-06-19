@@ -271,7 +271,7 @@ body {
 }
 
 #searchlist {
-
+  border-radius: .3rem;
   width: 98%;
 }
 

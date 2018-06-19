@@ -12,7 +12,7 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 35;
+var MARKER_CAP_SIZE = 30;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
@@ -535,6 +535,7 @@ function onSearchBoxClearClick() {
 	closeSearchBox();
 	return;
 	/////////////////////////
+
 	if ( searchBox.value === '' ) {
 		closeSearchBox();
 	} else {
@@ -570,7 +571,9 @@ function hidePinPreview() {
 
 function get_new_cap_size() {
   var currentZoom = beerMap.getZoom();
-  if (currentZoom >= 10) return MARKER_CAP_SIZE*2;
+
+
+  if (currentZoom >= 11) return MARKER_CAP_SIZE*2.5;
   if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
   return MARKER_CAP_SIZE;
 }
@@ -674,9 +677,9 @@ function loadClusters() {
 // -------------------------- EVENT HANDLERS -------------
 
 function onZoomChanged() {
-	return;
+	// return;
   updateMarkersSize();
-
+	return;
   var currentZoom = beerMap.getZoom();
 
   // FROM STAR TO ORIGINAL LOCATION
@@ -898,13 +901,18 @@ function onClickListItem(id) {
 								beerMap.setZoom(MAX_ZOOM-5)
 								setTimeout(function() {
 										beerMap.setZoom(MAX_ZOOM-4)
-										beerMap.setZoom(MAX_ZOOM-3)
-										setTimeout(function() {
-											setInfoModalValues(markers[id].rawData.name, markers[id].rawData.icon);
-											$('#beerInfoModal').modal();
-										}, 1200)
-								}, 10)
-						}, 10)
+										setTimeout(function(){
+											beerMap.setZoom(MAX_ZOOM-3)
+											setTimeout(function() {
+												beerMap.setZoom(MAX_ZOOM-2)
+												setTimeout(function() {
+													setInfoModalValues(markers[id].rawData.name, markers[id].rawData.icon);
+													$('#beerInfoModal').modal();
+												}, 1200)
+											}, 100)
+										}, 100)
+								}, 100)
+						}, 100)
 				}, 1200)
 			}, delay)
 		}, 10)
