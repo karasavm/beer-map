@@ -20,7 +20,8 @@ var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
 
 var STAR_MODE_MAX_ZOOM = 9;
-var PINS_PATH = 'icons/pins/cp200x200cp/';
+// var PINS_PATH = 'icons/pins/cp200x200cp/';
+var PINS_PATH = 'icons/pins/150x150cp/';
 var LOGO_PATH = 'icons/pins/compressed/';
 
 
@@ -428,13 +429,13 @@ function showMarkers() {
 		for (var i=1; i < markers.length; i+=3) {
 				markers[i].setMap(beerMap);
 		}
-	}, 400)
+	}, 200)
 
 	setTimeout(function() {
 		for (var i=2; i < markers.length; i+=3) {
 				markers[i].setMap(beerMap);
 		}
-	}, 700)
+	}, 400)
 
 }
 function setSearchList() {
@@ -572,9 +573,13 @@ function hidePinPreview() {
 function get_new_cap_size() {
   var currentZoom = beerMap.getZoom();
 
-
-  if (currentZoom >= 11) return MARKER_CAP_SIZE*2.5;
-  if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
+	if (currentZoom >= 12) return MARKER_CAP_SIZE*0.9;
+  if (currentZoom >= 11) return MARKER_CAP_SIZE*2.2;
+  if (currentZoom >= 10) return MARKER_CAP_SIZE*1.9;
+	if (currentZoom >= 9) return MARKER_CAP_SIZE*1.7;
+	if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
+	if (currentZoom >= 7) return MARKER_CAP_SIZE*1.3;
+	if (currentZoom >= 6) return MARKER_CAP_SIZE*1;
   return MARKER_CAP_SIZE;
 }
 
@@ -871,58 +876,65 @@ function onClickListItem(id) {
 	var latLng = new google.maps.LatLng(markers[id].rawData.lat, markers[id].rawData.log)
 
 	closeSearchBox();
+
+	// clear map
 	markerClusters.clearMarkers();
 	hideMarkers();
+
+	// clear controls state
 	document.getElementById('groupsMode').classList.remove('active');
 	document.getElementById('pinsMode').classList.remove('active');
-	markers[id].setAnimation(google.maps.Animation.DROP)
+
+	// wait before any step
 	setTimeout(function() {
 
-		var delay = 200;
-		console.log(beerMap.getZoom())
-		if (MAX_ZOOM-6 < beerMap.getZoom() ) {
-				beerMap.setZoom(MAX_ZOOM-6);
-				delay = 1200;
+		var delayZoom = 100;
+		var endZoomOut = 6
+		var endZoomIn = 11
+		var firstDelay = 1200;
+		function zoomin() {
+			if (beerMap.getZoom() < endZoomIn) {
+				console.log("zooming in")
+				beerMap.setZoom(beerMap.getZoom() + 1)
+				setTimeout(zoomin, delayZoom)
+
+			} else {
+				setTimeout(function() {
+				setInfoModalValues(markers[id].rawData.name, markers[id].rawData.icon);
+					$('#beerInfoModal').modal();
+				}, 1200)
+			}
 		}
 
-		setTimeout(function() {
-
-			// beerMap.setZoom(MAX_ZOOM-6);
-
-
-			setTimeout(function() {
-				markers[id].setMap(beerMap);
-				beerMap.panTo(latLng);
-
-
+		function zoomout() {
+			if (beerMap.getZoom() > endZoomOut) {
+				console.log("zooming out")
+				beerMap.setZoom(beerMap.getZoom() - 1)
+				setTimeout(zoomout, delayZoom)
+			} else {
 				setTimeout(function() {
-						beerMap.setZoom(MAX_ZOOM-6)
-						setTimeout(function() {
-								beerMap.setZoom(MAX_ZOOM-5)
-								setTimeout(function() {
-										beerMap.setZoom(MAX_ZOOM-4)
-										setTimeout(function(){
-											beerMap.setZoom(MAX_ZOOM-3)
-											setTimeout(function() {
-												beerMap.setZoom(MAX_ZOOM-2)
-												setTimeout(function() {
-													setInfoModalValues(markers[id].rawData.name, markers[id].rawData.icon);
-													$('#beerInfoModal').modal();
-												}, 1200)
-											}, 100)
-										}, 100)
-								}, 100)
-						}, 100)
-				}, 1200)
-			}, delay)
-		}, 10)
+					markers[id].setAnimation(google.maps.Animation.DROP)
+					markers[id].setMap(beerMap);
+					beerMap.panTo(latLng);
+					setTimeout(function() {
+						zoomin()
+					}, 1500)
+				}, firstDelay)
+			}
+		}
+
+		if (beerMap.getZoom() <= endZoomOut) {
+			firstDelay = 10;
+		}
+		zoomout();
+
 
 	}, 500)
 
 }
 
 function openIntroModal() {
-	// return;
+	return;
 	$('#introModal').modal();
 
 	document.getElementById("introModal").addEventListener("touchstart", function(e) {
