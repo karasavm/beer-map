@@ -54,9 +54,39 @@ google.maps.event.addDomListener(window, 'load', loadbeerMap);
 
 window.addEventListener('DOMContentLoaded', function() {
   // openIntroModal();
+	translate();
+	document.getElementsByTagName("BODY")[0].style.display = 'block';
 }, true);
 
+/// ------------ LANGUAGES ----------- ////////
+var curLang = 'en';
+var languages = {
+	'en' : {
+		'groupsBtn': 'Groups',
+		'pinsBtn': 'Pins'
+	},
+	"gr" : {
+		'groupsBtn': 'Γκρουπ',
+		'pinsBtn': 'Πινς'
+	}
+}
+function translate() {
+	console.log("translating....")
+	var allDom = document.getElementsByTagName("*");
+	for(var i =0; i < allDom.length; i++){
 
+			var elem = allDom[i];
+	    var key = elem.getAttribute('lng-key');
+
+	    if(key != null) {
+	         console.log(key);
+	         elem.innerHTML = languages[curLang][key]  ;
+					 console.log(elem)
+	    }
+	}
+
+}
+////////////////////////////////////////////////
 //THE MAIN FUNCTION THAT IS CALLED WHEN THE WEB PAGE LOADS --------------------------------------------------------------------------------
 function loadbeerMap() {
 
@@ -95,8 +125,8 @@ function loadbeerMap() {
 	for (var i=0; i < markersRaw.length; i++) {
 		images.push( + markersRaw[i].icon)
 	}
-	console.log(images)
-	preloadImages(images)
+
+	// preloadImages(images)
 
 
 
@@ -106,7 +136,7 @@ function loadbeerMap() {
    },
    tileSize: new google.maps.Size(256, 256)
   });
-
+	// translate();
   // beerMap.overlayMapTypes.insertAt(0, rainMapOverlay);
 
   //Calls the function below to load up all the map markers.
@@ -117,7 +147,10 @@ function loadbeerMap() {
   // 	ters();
   loadBanner();
 
+
 	initControlsState();
+
+
 	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
     // do something only the first time the map is loaded
 		console.log("mpla mpla mpla")
@@ -129,8 +162,10 @@ function loadbeerMap() {
 			// document.getElementById('controls').style.display = 'block';
 			openIntroModal();
 			setSearchList();
+
 		}, 1000);
-});
+	});
+
 } // EDN OF loadbeerMap()
 
 
@@ -173,7 +208,7 @@ function createXMarker(lat, log) {
 }
 
 function convertFromLatLngToPoint(latlng, map, elementContainingMap){
-  console.log(elementContainingMap)
+
   var worldMapWidth = 256*map.getZoom();
 
   var mapWidth = elementContainingMap.clientWidth ;
@@ -325,7 +360,7 @@ function loadMapMarkers (){
        return;
        function test(that) {
         function callback(){
-          console.log("sjkdhfjkdhkjsdhfjkhdkjfhdskjhfdjkshfkjdshfkjh")
+
           that.setIcon(
             getImageObj(that.getIcon().url, get_new_cap_size())
             )
@@ -387,7 +422,7 @@ function showClusters(type) {
 
 	if (type === 'all') {
 		for (var i=0; i < markers.length; i++) {
-			console.log(markers[i])
+
 			markerClusters.addMarker(markers[i], true);
 		}
 	} else if (type === 'micro') {
@@ -410,7 +445,7 @@ function showClusters(type) {
 
 	markerClusters.redraw();
 
-	console.log(markerClusters)
+
 }
 function hideMarkers() {
 	for (var i=0; i < markers.length; i+=1) {
@@ -548,7 +583,7 @@ function onSearchBoxClearClick() {
 }
 
 function openInNewTab(url) {
-	console.log(url)
+
   var win = window.open(url, '_blank');
   win.focus();
 }
@@ -673,7 +708,7 @@ function loadClusters() {
                   testMarkers = []
                 },
               };
-	console.log(markers[0])
+
 
   markerClusters = new MarkerClusterer(beerMap, [], options);
 
@@ -918,7 +953,7 @@ function onClickListItem(id) {
 					beerMap.panTo(latLng);
 					setTimeout(function() {
 						zoomin()
-					}, 1500)
+					}, 1200)
 				}, firstDelay)
 			}
 		}
@@ -933,8 +968,12 @@ function onClickListItem(id) {
 
 }
 
+function testing() {
+	console.log("ela re file")
+
+}
 function openIntroModal() {
-	return;
+	// return;
 	$('#introModal').modal();
 
 	document.getElementById("introModal").addEventListener("touchstart", function(e) {
@@ -948,7 +987,7 @@ function openIntroModal() {
 	var clientNum = 500;
 
 
-	console.log(delay/allNum, delay/microNum, delay/clientNum)
+
 
 
 	function adjustThbFontSize() {
@@ -1051,11 +1090,15 @@ function handleRequests (buttonPressed) {
 	}
 	else if (buttonPressed === "showGroups") {
 		selectedMode = "groups";
+		document.getElementById('groupsMode').classList.add('mode-checked');
+		document.getElementById('pinsMode').classList.remove('mode-checked');
 		showClusters(selectedType);
 		// loadClusters();
 	}
 	else if (buttonPressed === "showPins") {
 		selectedMode = "pins";
+		document.getElementById('groupsMode').classList.remove('mode-checked');
+		document.getElementById('pinsMode').classList.add('mode-checked');
 		markerClusters.clearMarkers();
 		setTimeout(function(){
 			showMarkers();
