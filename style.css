@@ -239,14 +239,18 @@ body {
     font-weight: bold;
     font-size: 16px;
 }
-
+/* #searchbox::placeholder {
+  color: white;
+} */
 .searchbox-focus {
-
-
+    padding-left: 50px!important;
     width: 98%!important;
     border-bottom: 2px solid grey!important;
     background-color: grey!important;
     /* opacity: 0.6; */
+}
+.searchbox-focus::placeholder {
+  color: white;
 }
 
 

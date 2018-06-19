@@ -437,20 +437,11 @@ function showMarkers() {
 	}, 700)
 
 }
-
 function setSearchList() {
-	// return;
 
   var list = document.getElementById("searchlist");
 
   for (var i=0; i < markersRaw.length; i++) {
-
-		// var li = document.createElement("li");
-	  // li.setAttribute("id", "li" + i.toString()); // added line
-		// li.setAttribute("class", 'list-group-item'); // added line
-		// li.innerHTML = markersRaw[i].name
-		// ul.appendChild(li);
-
 		var a = document.getElementById("templateListItem").cloneNode(true);
 
 		a.getElementsByTagName('h6')[0].innerHTML = markersRaw[i].name
@@ -463,20 +454,21 @@ function setSearchList() {
 		document.getElementById("item-" + i.toString()).classList.add("d-flex");
 	}
 }
-
 function updateSearchList() {
 	// return;
 	console.log("SEARCHING....")
 	var key = document.getElementById("searchbox").value;
 
 	if ( key === "") {
+		// document.getElementById('searchbox-cancel').style.display = 'none';
 		for (var i=0; i < markersRaw.length; i++) {
 			document.getElementById("item-" + i.toString()).classList.remove("d-none");
 			document.getElementById("item-" + i.toString()).classList.add("d-flex");
-			console.log(document.getElementById("item-" + i.toString()).classList)
+
 			// console.log(document.getElementById("item-" + i.toString()).style.display)
 		}
 	} else {
+		// document.getElementById('searchbox-cancel').style.display = 'inline-block';
 		for (var i=0; i < markersRaw.length; i++) {
 			var matches = markersRaw[i].name.toLowerCase().search(key.toLowerCase()) != -1;
 
@@ -487,30 +479,35 @@ function updateSearchList() {
 				document.getElementById("item-" + i.toString()).classList.remove("d-flex");
 				document.getElementById("item-" + i.toString()).classList.add("d-none");
 			}
-
 		}
 	}
 
+}
+function closeSearchBox() {
+	var searchBox = document.getElementById("searchbox");
 
 
-  // for (var i=0; i < markersRaw.length; i++) {
-	//
-	// 	var li = document.createElement("li");
-	//   li.setAttribute("id", i.toString()); // added line
-	// 	li.setAttribute("class", 'list-group-item'); // added line
-	// 	li.innerHTML = markersRaw[i].name
-	// 	ul.appendChild(li);
-	// }
+	searchBox.value = '';
+	updateSearchList();
+
+	document.getElementById("searchbox-cancel").style.display = "none";
+	document.getElementById("searchlist").style.display = "none";
+	searchBox.classList.remove("searchbox-focus");
+	searchbox.style.backgroundImage = "url('images/view-list.png')";
 }
 
+function onKeyupSearcBox() {
 
+	updateSearchList();
+
+}
 function onSearchboxFocus() {
 
 	var searchBox = document.getElementById("searchbox");
-	console.log("onSearchboxFocus")
+
 	if ( !searchBox.classList.contains('searchbox-focus') ) {
 		// fist click on searchBox
-		// url('images/view-list.png');
+
 		searchbox.style.backgroundImage = "url('images/magnify.png')";
 		searchBox.blur();
 		searchBox.classList.add("searchbox-focus");
@@ -523,20 +520,21 @@ function onSearchboxFocus() {
 
 }
 
-function closeSearchBox() {
+
+function onSearchBoxClearClick() {
+
+
+	console.log("onSearchBoxClearClick");
 	var searchBox = document.getElementById("searchbox");
+
+	/////// functionality //////
+	/// only to close the search box panel
+	/// remove if you want to clear text with first clicked
+	/// and close panel with the second click
 	searchBox.value = '';
-	updateSearchList();
-
-	document.getElementById("searchbox-cancel").style.display = "none";
-	document.getElementById("searchlist").style.display = "none";
-	searchBox.classList.remove("searchbox-focus");
-	searchbox.style.backgroundImage = "url('images/view-list.png')";
-}
-function onSearchBoxCancelClick() {
-	console.log("onSearchBoxCancelClick")
-
-	var searchBox = document.getElementById("searchbox");
+	closeSearchBox();
+	return;
+	/////////////////////////
 	if ( searchBox.value === '' ) {
 		closeSearchBox();
 	} else {
@@ -545,10 +543,6 @@ function onSearchBoxCancelClick() {
 		searchBox.focus();
 
 	}
-	// document.getElementById("searchbox").blur();
-
-
-
 }
 
 function openInNewTab(url) {

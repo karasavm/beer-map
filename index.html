@@ -303,11 +303,11 @@
         <div class="row justify-content-left">
           <div class="col">
             <form action="">
-              <input id="searchbox" autocomplete="off" type="text" name="search"
-                onkeyup="updateSearchList()"
-                onfocus="onSearchboxFocus()">
+              <input id="searchbox" autocomplete="off" type="text"
+                name="search" placeholder="Search"
+                onkeyup="onKeyupSearcBox()" onfocus="onSearchboxFocus()">
               <button id="searchbox-cancel" type="button"
-              onclick="onSearchBoxCancelClick()"
+              onclick="onSearchBoxClearClick()"
               name="button"
               class="btn btn-lg btn-secondary"
               >
@@ -331,7 +331,7 @@
 
             </ul> -->
 
-            <div class="list-group" id="searchlist" style="overflow-y:scroll;max-height: 600px;height: 90vh;display: none;">
+            <div class="list-group" id="searchlist" style="overflow-y:scroll;max-height: 600px;height: 80vh;display: none;">
               <a id="templateListItem"  onclick='' class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
 
                 <div class="pr-1">
