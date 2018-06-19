@@ -12,7 +12,7 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 40;
+var MARKER_CAP_SIZE = 35;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
@@ -506,8 +506,16 @@ function updateSearchList() {
 
 function onSearchboxFocus() {
 
+	var searchBox = document.getElementById("searchbox");
 	console.log("onSearchboxFocus")
-	document.getElementById("searchbox").classList.add("searchbox-focus");
+	if ( !searchBox.classList.contains('searchbox-focus') ) {
+		// fist click on searchBox
+		// url('images/view-list.png');
+		searchbox.style.backgroundImage = "url('images/magnify.png')";
+		searchBox.blur();
+		searchBox.classList.add("searchbox-focus");
+	}
+
 	document.getElementById("searchlist").style.display = "block";
 	setTimeout(function() {
 		document.getElementById("searchbox-cancel").style.display = "inline-block";
@@ -522,7 +530,8 @@ function closeSearchBox() {
 
 	document.getElementById("searchbox-cancel").style.display = "none";
 	document.getElementById("searchlist").style.display = "none";
-	document.getElementById("searchbox").classList.remove("searchbox-focus");
+	searchBox.classList.remove("searchbox-focus");
+	searchbox.style.backgroundImage = "url('images/view-list.png')";
 }
 function onSearchBoxCancelClick() {
 	console.log("onSearchBoxCancelClick")
