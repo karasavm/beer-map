@@ -1180,6 +1180,10 @@ function handleRequests (buttonPressed) {
 					beerMap.panTo(INITIAL_CENTER)
 				}, 800)
 			})();
+		} else {
+			setTimeout(function() {
+				beerMap.panTo(INITIAL_CENTER)
+			}, 100)
 		}
 
 		// beerMap.setCenter(INITIAL_CENTER);
