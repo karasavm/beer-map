@@ -24,12 +24,14 @@ var STAR_MODE_MAX_ZOOM = 9;
 var PINS_PATH = 'icons/pins/150x150cp/';
 var LOGO_PATH = 'icons/pins/compressed/';
 
-
+var INITIAL_ZOOM = 6;
+var INITIAL_CENTER = new google.maps.LatLng(39.074208, 22.824311999999964);
 // -------------------------------------------------
 //These options configure the setup of the map.
 var beerMapOptions = {
-		  center: new google.maps.LatLng(39.074208, 21.824311999999964),
-          zoom: 6,
+
+		  center: INITIAL_CENTER,
+          zoom: INITIAL_ZOOM,
 		  maxZoom: MAX_ZOOM,
 		  minZoom: MIN_ZOOM,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
@@ -46,7 +48,7 @@ var currentCapSize = MARKER_CAP_SIZE;
 var curOpenedPin;
 var markerClusters;
 
-var selectedType = 'all';
+
 var selectedMode = "groups";
 
 var markers = [];
@@ -117,7 +119,10 @@ function translate() {
 	for (var i=0; i < markersRaw.length; i++) {
 
 		var a = document.getElementById("item-" + i.toString())
-		setWordingListItem(a, markersRaw[i])
+		if (a) {
+				setWordingListItem(a, markersRaw[i])
+		}
+
 	}
 
 }
@@ -474,41 +479,19 @@ function loadMapMarkers (){
 }
 
 function initControlsState() {
-	selectedType = 'all';
 	selectedMode = "groups";
 	// markerClusters.clearMarkers();
 	// showMarkers(selectedType);
-	showClusters(selectedType);
+	showClusters();
 
 
 }
 
-function showClusters(type) {
+function showClusters() {
 	markerClusters.clearMarkers();
-
-	if (type === 'all') {
-		for (var i=0; i < markers.length; i++) {
-
-			markerClusters.addMarker(markers[i], true);
-		}
-	} else if (type === 'micro') {
-		for (var i=0; i < markers.length; i ++) {
-
-			if (markers[i].rawData.type === "Microbrewery") {
-				markerClusters.addMarker(markers[i], true);
-			}
-		}
-	} else if (type === 'clients') {
-		for (var i=0; i < markers.length; i ++) {
-
-			if (markers[i].rawData.type === "Microbrewery") {
-
-			} else {
-				markerClusters.addMarker(markers[i], true);
-			}
-		}
+	for (var i=0; i < markers.length; i++) {
+		markerClusters.addMarker(markers[i], true);
 	}
-
 	markerClusters.redraw();
 
 
@@ -544,7 +527,7 @@ function showMarkers() {
 }
 
 function setWordingListItem(a, pinRawData) {
-	console.log(pinRawData)
+
 	a.getElementsByTagName('h6')[0].innerHTML = pinRawData.name[curLang];
 	a.getElementsByTagName('p')[0].innerHTML = pinRawData.city[curLang];
 	a.getElementsByTagName('small')[0].innerHTML = languages[curLang]['words']['since'] + " " + pinRawData.yearCreated;
@@ -994,6 +977,32 @@ function closeIntroModal() {
 }
 
 
+function zoominFunc(endZoomIn, delayZoom, execFun) {
+	return function zoomin() {
+		if (beerMap.getZoom() < endZoomIn) {
+			console.log("zooming in")
+			beerMap.setZoom(beerMap.getZoom() + 1)
+			setTimeout(zoomin, delayZoom)
+
+		} else {
+			execFun();
+		}
+	}
+}
+
+function zoomoutFunc(endZoomOut, delayZoom, execFun) {
+
+	return function zoomout() {
+		if (beerMap.getZoom() > endZoomOut) {
+			console.log("zooming out")
+			beerMap.setZoom(beerMap.getZoom() - 1)
+			setTimeout(zoomout, delayZoom)
+		} else {
+			execFun();
+		}
+	}
+}
+
 function onClickListItem(id) {
 
 	var latLng = new google.maps.LatLng(markers[id].rawData.lat, markers[id].rawData.log)
@@ -1015,41 +1024,27 @@ function onClickListItem(id) {
 		var endZoomOut = 6
 		var endZoomIn = 11
 		var firstDelay = 1200;
-		function zoomin() {
-			if (beerMap.getZoom() < endZoomIn) {
-				console.log("zooming in")
-				beerMap.setZoom(beerMap.getZoom() + 1)
-				setTimeout(zoomin, delayZoom)
-
-			} else {
-				setTimeout(function() {
-				setInfoModalValues(markers[id]);
-					$('#beerInfoModal').modal();
-				}, 1200)
-			}
-		}
-
-		function zoomout() {
-			if (beerMap.getZoom() > endZoomOut) {
-				console.log("zooming out")
-				beerMap.setZoom(beerMap.getZoom() - 1)
-				setTimeout(zoomout, delayZoom)
-			} else {
-				setTimeout(function() {
-					markers[id].setAnimation(google.maps.Animation.DROP)
-					markers[id].setMap(beerMap);
-					beerMap.panTo(latLng);
-					setTimeout(function() {
-						zoomin()
-					}, 1200)
-				}, firstDelay)
-			}
-		}
 
 		if (beerMap.getZoom() <= endZoomOut) {
 			firstDelay = 10;
 		}
-		zoomout();
+
+
+		zoomoutFunc(endZoomOut, delayZoom, function() {
+			setTimeout(function() {
+				markers[id].setAnimation(google.maps.Animation.DROP)
+				markers[id].setMap(beerMap);
+				beerMap.panTo(latLng);
+				setTimeout(function() {
+					zoominFunc(endZoomIn, delayZoom, function() {
+						setTimeout(function() {
+						setInfoModalValues(markers[id]);
+							$('#beerInfoModal').modal();
+						}, 1200)
+					})();
+				}, 1200)
+			}, firstDelay)
+		})();
 
 
 	}, 500)
@@ -1165,10 +1160,30 @@ function resetZindexes() {
 
 function handleRequests (buttonPressed) {
 	if (buttonPressed === "reset"){
-		//Resets the zoom, map position and marker z-indexes back to their orignal position. Also closes all infoboxes currently open.
-		beerMap.setZoom(4);
-		// beerMap.setCenter(festivalMapCenter);
-		resetZindexes();
+		if (selectedMode === 'groups') {
+			showClusters();
+		} else if (selectedMode === 'pins') {
+			markerClusters.clearMarkers();
+			showMarkers();
+		}
+
+		if (beerMap.getZoom() > INITIAL_ZOOM) {
+			console.log("ZoomOUt")
+			zoomoutFunc(INITIAL_ZOOM, 100, function() {
+				setTimeout(function() {
+					beerMap.panTo(INITIAL_CENTER)
+				}, 800)
+			})();
+		} else if (beerMap.getZoom() < INITIAL_ZOOM) {
+			zoominFunc(INITIAL_ZOOM, 100, function() {
+				setTimeout(function() {
+					beerMap.panTo(INITIAL_CENTER)
+				}, 800)
+			})();
+		}
+
+		// beerMap.setCenter(INITIAL_CENTER);
+		// resetZindexes();
 	}
 	else if (buttonPressed === "small_events"){
 		alert("This button will do something useful in a later tutorial!");
@@ -1180,7 +1195,7 @@ function handleRequests (buttonPressed) {
 		selectedMode = "groups";
 		document.getElementById('groupsMode').classList.add('mode-checked');
 		document.getElementById('pinsMode').classList.remove('mode-checked');
-		showClusters(selectedType);
+		showClusters();
 		// loadClusters();
 	}
 	else if (buttonPressed === "showPins") {
