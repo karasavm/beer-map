@@ -49,28 +49,57 @@ var markerClusters;
 var selectedType = 'all';
 var selectedMode = "groups";
 
-//When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
-google.maps.event.addDomListener(window, 'load', loadbeerMap);
+var markers = [];
+var markersLines = [];
+var infoBoxes = [];
+var markersRaw = [];
 
+var curLang = 'en';
+///////// MAIN /////////////
 window.addEventListener('DOMContentLoaded', function() {
+
   // openIntroModal();
 	translate();
 	document.getElementsByTagName("BODY")[0].style.display = 'block';
 }, true);
 
+//When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
+google.maps.event.addDomListener(window, 'load', function() {
+	console.log("addDomListener");
+
+	parseRawData();
+	loadbeerMap();
+
+});
+
+
 /// ------------ LANGUAGES ----------- ////////
-var curLang = 'en';
+
 var languages = {
 	'en' : {
 		'groupsBtn': 'Groups',
-		'pinsBtn': 'Pins'
+		'pinsBtn': 'Pins',
+		'introBeers': 'BEERS',
+		'introBrewers': 'BREWS',
+		'words' : {
+			"beers": "Beers",
+			"since": "since"
+		}
 	},
 	"gr" : {
 		'groupsBtn': 'Γκρουπ',
-		'pinsBtn': 'Πινς'
+		'pinsBtn': 'Πινς',
+		'introBeers': 'ΜΠΥΡΕΣ',
+		'introBrewers': 'ΖΥΘΟΠΟΙΙΕΣ',
+		'words' : {
+			"beers": "Μπύρες",
+			"since": "από το"
+		}
 	}
 }
 function translate() {
+
+	// Translate Static tags
 	console.log("translating....")
 	var allDom = document.getElementsByTagName("*");
 	for(var i =0; i < allDom.length; i++){
@@ -79,11 +108,25 @@ function translate() {
 	    var key = elem.getAttribute('lng-key');
 
 	    if(key != null) {
-	         console.log(key);
 	         elem.innerHTML = languages[curLang][key]  ;
-					 console.log(elem)
 	    }
 	}
+
+	// Translate List Itmes
+	console.log("Translating List Items")
+	for (var i=0; i < markersRaw.length; i++) {
+
+		var a = document.getElementById("item-" + i.toString())
+		setWordingListItem(a, markersRaw[i])
+	}
+
+}
+
+function changeLang() {
+	var selectBox = document.getElementById("langSelectBox");
+  curLang = selectBox.options[selectBox.selectedIndex].value;
+
+	translate(); // translate static tags
 
 }
 ////////////////////////////////////////////////
@@ -153,16 +196,12 @@ function loadbeerMap() {
 
 	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
     // do something only the first time the map is loaded
-		console.log("mpla mpla mpla")
+
 		// document.getElementById('controls').style.display = 'block';
-
-
-
 		setTimeout(function test() {
 			// document.getElementById('controls').style.display = 'block';
 			openIntroModal();
 			setSearchList();
-
 		}, 1000);
 	});
 
@@ -170,10 +209,37 @@ function loadbeerMap() {
 
 
 
-var markers = [];
-var markersLines = [];
-var infoBoxes = [];
 
+
+function parseRawData() {
+	for (var i=0; i < rawData.length; i ++) {
+
+	  if (rawData[i].mapUrl !== '') {
+
+	    var sp = rawData[i].mapUrl.split("!3d");
+
+	    sp = sp[sp.length-1]
+	    markersRaw.push({
+	      id: rawData[i].id.toString(),
+	      name: { 'en': rawData[i].name.toString().split("/")[0], 'gr': rawData[i].name.toString().split("/")[1]},
+				city: { 'en': rawData[i].city.toString().split("/")[0], 'gr': rawData[i].city.toString().split("/")[1]},
+	      lat: Number(sp.split("!4d")[0]),
+	      log: Number(sp.split("!4d")[1]),
+	      icon: rawData[i].icon || "temp.png",
+	      mapUrl: rawData[i].mapUrl,
+	      fbUrl: rawData[i].fbUrl,
+				webUrl: rawData[i].webUrl,
+				tel: rawData[i].tel,
+				yearCreated: '2005', // todo update with excels data
+				numberOfBeers: 4, // todo update with excels data
+	      type: rawData[i].type,
+	    })
+	  } else {
+
+	  }
+
+	}
+}
 function createXMarker(lat, log) {
 
     var position = new google.maps.LatLng(lat, log);
@@ -340,7 +406,7 @@ function loadMapMarkers (){
       path.setMap(beerMap);
     }
 
-    var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name)
+    var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name['en'])
     marker.rawData = markersRaw[i];
     markers.push(marker);
 
@@ -376,7 +442,7 @@ function loadMapMarkers (){
      });
     google.maps.event.addListener(markers[i], "click", function() {
 
-			setInfoModalValues(this.rawData.name, this.rawData.icon);
+			setInfoModalValues(this);
 			$('#beerInfoModal').modal();
       // x.style.display = "none"
       curOpenedPin = this;
@@ -453,12 +519,15 @@ function hideMarkers() {
 	}
 }
 function showMarkers() {
-	// for (var i=0; i < markers.length; i++) {
-	// 	markers[i].setAnimation(google.maps.Animation.BOUNCE)
-	// }
-	for (var i=0; i < markers.length; i+=3) {
-			markers[i].setMap(beerMap);
+	for (var i=0; i < markers.length; i++) {
+		markers[i].setAnimation(google.maps.Animation.DROP)
 	}
+
+	setTimeout(function() {
+		for (var i=0; i < markers.length; i+=3) {
+				markers[i].setMap(beerMap);
+		}
+	}, 400)
 
 	setTimeout(function() {
 		for (var i=1; i < markers.length; i+=3) {
@@ -470,17 +539,28 @@ function showMarkers() {
 		for (var i=2; i < markers.length; i+=3) {
 				markers[i].setMap(beerMap);
 		}
-	}, 400)
+	}, 300)
+
+}
+
+function setWordingListItem(a, pinRawData) {
+	console.log(pinRawData)
+	a.getElementsByTagName('h6')[0].innerHTML = pinRawData.name[curLang];
+	a.getElementsByTagName('p')[0].innerHTML = pinRawData.city[curLang];
+	a.getElementsByTagName('small')[0].innerHTML = languages[curLang]['words']['since'] + " " + pinRawData.yearCreated;
+	a.getElementsByTagName('small')[1].innerHTML = pinRawData.numberOfBeers + " " + languages[curLang]['words']['beers'];
 
 }
 function setSearchList() {
+
 
   var list = document.getElementById("searchlist");
 
   for (var i=0; i < markersRaw.length; i++) {
 		var a = document.getElementById("templateListItem").cloneNode(true);
 
-		a.getElementsByTagName('h6')[0].innerHTML = markersRaw[i].name
+		setWordingListItem(a, markersRaw[i]);
+
 		a.getElementsByTagName('img')[0].src = PINS_PATH + markersRaw[i].icon
 		a.setAttribute("id", "item-" + i.toString()); // added line
 		a.setAttribute("onclick", "onClickListItem("+i+")")
@@ -506,7 +586,7 @@ function updateSearchList() {
 	} else {
 		// document.getElementById('searchbox-cancel').style.display = 'inline-block';
 		for (var i=0; i < markersRaw.length; i++) {
-			var matches = markersRaw[i].name.toLowerCase().search(key.toLowerCase()) != -1;
+			var matches = markersRaw[i].name[curLang].toLowerCase().search(key.toLowerCase()) != -1;
 
 			if (matches) {
 				document.getElementById("item-" + i.toString()).classList.remove("d-none");
@@ -588,10 +668,18 @@ function openInNewTab(url) {
   win.focus();
 }
 
-function setInfoModalValues(title, icon) {
+function setInfoModalValues(pin) {
 
-  document.getElementById("infoModalImg").src= LOGO_PATH + icon;
-  document.getElementById("infoModalTitle").innerHTML= title;
+	curOpenedPin = pin;
+
+  document.getElementById("infoModalImg").src= LOGO_PATH + pin.rawData.icon;
+  document.getElementById("infoModalTitle").innerHTML= pin.rawData.name[curLang];
+  document.getElementById("infoModalCity").innerHTML= pin.rawData.city[curLang];
+
+
+  document.getElementById("infoModalWebBtn").style.display = pin.rawData.webUrl === '' ? 'none' : 'inline-block';
+	document.getElementById("infoModalFbBtn").style.display = pin.rawData.fbUrl === '' ? 'none' : 'inline-block';
+	document.getElementById("infoModalTelBtn").style.display = pin.rawData.tel === '' ? 'none' : 'inline-block';
 
   // document.getElementById("preview-info").href=curOpenedPin.rawData.infoUrl
   // document.getElementById("preview-nav").href=curOpenedPin.rawData.mapUrl
@@ -935,7 +1023,7 @@ function onClickListItem(id) {
 
 			} else {
 				setTimeout(function() {
-				setInfoModalValues(markers[id].rawData.name, markers[id].rawData.icon);
+				setInfoModalValues(markers[id]);
 					$('#beerInfoModal').modal();
 				}, 1200)
 			}
@@ -976,7 +1064,7 @@ function openIntroModal() {
 	// return;
 	$('#introModal').modal();
 
-	document.getElementById("introModal").addEventListener("touchstart", function(e) {
+	document.getElementById("introModalMainBody").addEventListener("touchstart", function(e) {
 		closeIntroModal();
 	}, false);
 
@@ -1100,9 +1188,7 @@ function handleRequests (buttonPressed) {
 		document.getElementById('groupsMode').classList.remove('mode-checked');
 		document.getElementById('pinsMode').classList.add('mode-checked');
 		markerClusters.clearMarkers();
-		setTimeout(function(){
-			showMarkers();
-		}, 1000 )
+		showMarkers();
 		// showMarkers();
 	}
 	else if (buttonPressed === 'menu') {

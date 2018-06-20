@@ -2,7 +2,7 @@
   <html>
   <head>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <title>Greek Microbreweries</title>
+  <title>Greek Microbr>eweries</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -61,19 +61,18 @@
 
               <div class="row justify-content-center">
                 <div class="col-">
-                  <h5  id="infoModalTitle" class="text-center">Modal title</h5>
-                  <p class="text-center font-weight-bold text-monospace" style="color: #585252;">Athens</p>
+                  <h5  id="infoModalTitle" class="text-center"></h5>
+                  <p   id="infoModalCity" class="text-center font-weight-bold text-monospace" style="color: #585252;"></p>
                 </div>
               </div>
 
               <div class="row justify-content-center">
                 <div class="col-">
-                  <button type="button" class="btn btn-primary no-border" onclick="openInNewTab(curOpenedPin.rawData.infoUrl)"><i class="fa fa-globe"></i></button>
-                  <button type="button" class="btn btn-danger no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-map-marker"></i></button>
-                  <button type="button" class="btn btn-secondary no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)" style="background-color: #3B5998;"><i class="fa fa-facebook"></i></button>
 
-                  <!-- <button type="button" class="btn btn-link btn-lg px-2" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-phone"></i></button> -->
-                  <button type="button" class="btn btn-success no-border" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" id ="infoModalMapBtn" class="btn btn-danger no-border" onclick="openInNewTab(curOpenedPin.rawData.mapUrl)"><i class="fa fa-map-marker"></i></button>
+                  <button type="button" id ="infoModalWebBtn" class="btn btn-primary no-border" onclick="openInNewTab(curOpenedPin.rawData.webUrl)"><i class="fa fa-globe"></i></button>
+                  <button type="button" id ="infoModalFbBtn" class="btn btn-secondary no-border" onclick="openInNewTab(curOpenedPin.rawData.fbUrl)" style="background-color: #3B5998;"><i class="fa fa-facebook"></i></button>
+                  <button type="button" id ="infoModalTelBtn"class="btn btn-success no-border" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-phone"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -149,32 +148,12 @@
     <!-- Modal -->
     <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
       <div class="modal-dialog modal-dialog-centered" role="document" >
-        <div class="modal-content intro-modal" onclick="closeIntroModal()">
+        <div class="modal-content intro-modal" >
 
-          <!-- <div class="modal-header no-border">
-
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 2.5rem;">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div> -->
-
-          <div class="modal-body">
+          <div class="modal-body" onclick="closeIntroModal()" id="introModalMainBody">
             <div class="container-fluid">
               <div class="row pb-4">
-                <!-- <div class="col-3 no-padding">
 
-                </div>
-                <div class="col no-padding">
-                  <div class="thumbnail" id="allNumberThb">
-                      <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
-                        <div id="allNumber" class="centered">69</div>
-                        <div class="top-center">COMPANIES</div>
-                  </div>
-
-                </div>
-                <div class="col-3 no-padding">
-
-                </div> -->
               </div>
 
               <div class="row">
@@ -182,7 +161,7 @@
                   <div class="thumbnail" id="allNumberThb">
                       <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
                         <div id="allNumber" class="centered">69</div>
-                        <div class="top-center">BREWERIES</div>
+                        <div class="top-center" lng-key="introBrewers"></div>
                   </div>
 
                 </div>
@@ -191,33 +170,38 @@
                   <div class="thumbnail" id="clientThb">
                       <img src="images/unicap1.png" class="rounded img-fluid" width=300 alt="...">
                         <div id="clientNumber" class="centered">69</div>
-                        <div class="top-center">BEERS</div>
+                        <div class="top-center" lng-key="introBeers"></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- <img src="images/unicap.png" class="rounded  img-fluid" width=200 alt="...">
-            <img src="images/unicap.png" class="rounded right img-fluid" width=200 alt="..."> -->
-            <!-- <img src="images/unicap.png" class="rounded float-right img-fluid" alt="..."> -->
-
-
-            <!-- <div class="intro">
-                <strong>69</strong> Beer Companies,
-                <strong>47</strong> of them produce on their one,
-                <strong>22</strong> of them produce somewhere else
-            </div> -->
+            <br>
+            <br>
+            <br>
+            <br>
 
           </div>
-          <!-- <div class="modal-footer no-border">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div> -->
+
+
+
+          <div class="d-flex align-self-end" style="width: 80px">
+            <select id="langSelectBox" class="custom-select bg-secondary"
+            onchange="changeLang()"
+            style="background-color: #838a8d;font-weight: bold;max-width: 67px; color: white; border: none;">
+              <!-- <option selected>Open this select menu</option> -->
+              <option value="en"  selected>English</option>
+              <option value="gr">Ελληνικά</option>
+
+            </select>
+          </div>
+
+
         </div>
       </div>
     </div>
 
-    <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div>
+    <!-- <div id="cboxOverlay" onclick="hidePinPreview()" style="display: none;"></div> -->
 
 
     <!-- <div id="over-map" class="dialog" display="none" style="display: none;">
@@ -325,39 +309,27 @@
 
         <div class="row justify-content-center" >
           <div class="col">
-            <!-- <ul id="searchlist" class="list-group"
-              data-spy="scroll" style="overflow-y:scroll;height: 60vh;display: none"
-              >
-
-              <a href="#" class="list-group-item list-group-item-action">Cras justo odio</a>
-              <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-              <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-
-            </ul> -->
-
             <div class="list-group" id="searchlist"  style="overflow-y:scroll;max-height: 600px;height: 80vh;display: none;">
               <a id="templateListItem"  onclick='' class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
 
                 <div class="pr-1">
-                  <img  src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px" alt="">
+                  <img  src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px">
                 </div>
                 <div class="flex-fill flex-column align-items-start" style="line-height: 0.9;">
                   <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1" id="">List group item heading</h6>
-                    <small>since 2011</small>
+                    <h6 class="mb-1">::</h6>
+                    <small>::</small>
                   </div>
                   <!-- todo set town and date-->
-                  <p class="mb-1">Athens</p>
+                  <p class="mb-1">::</p>
                   <small>6 different beers</small>
                 </div>
               </a>
-
             </div>
 
         </div>
       </div>
+    </div>
 
 
 
