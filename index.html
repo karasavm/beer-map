@@ -226,7 +226,7 @@
         <div class="col-">
           <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
             <!-- <button type="button" class="btn btn-secondary">Group</button> -->
-            <button type="button" class="btn btn-secondary" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
+            <button type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
 
             <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label id='groupsMode' class="btn btn-secondary active" onchange="handleRequests('showGroups')" >
@@ -238,11 +238,11 @@
             </div> -->
 
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button id='groupsMode' type="button" class="btn btn-secondary mode-checked" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
-              <button id='pinsMode' type="button" class="btn btn-secondary" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button>
+              <button id='groupsMode' type="button" class="btn btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
+              <button id='pinsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button>
             </div>
 
-            <button type="button" class="btn btn-secondary" onclick="handleRequests('reset')"><i class="fa fa-undo"></i></button>
+            <button type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('reset')"><i class="fa fa-undo"></i></button>
 
             <!-- <div class="btn-group" role="group">
 
@@ -295,7 +295,7 @@
         <div class="row justify-content-left">
           <div class="col">
             <form action="">
-              <input id="searchbox" autocomplete="off" type="text"
+              <input id="searchbox" autocomplete="off" type="text" class="btn-opacity"
                 name="search" placeholder="Search"
                 onkeyup="onKeyupSearcBox()" onfocus="onSearchboxFocus()">
               <button id="searchbox-cancel" type="button"
