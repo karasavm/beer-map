@@ -78,16 +78,21 @@ body {
   /*width: 1em;*/
   width: 50px;
   height: 50px;
-  padding-top: 1.1em;
+
+  /* height: 50px; */
+
+  padding-top: 0.4em;
+
   /*padding-right: 21px;*/
   text-align: center;
   cursor: pointer;
-  color: #FEF9E2;
+  color: white;
   /*background-color: black;*/
   position: absolute;
   z-index: 10;
   /*border-radius: .5em;*/
-  font-size: 15px;
+  font-size: 25px;
+  /* font-weight: bold; */
   /*font-weight: bold;*/
   /*transition: all 500ms;*/
 }
@@ -200,10 +205,38 @@ body {
   top: 90%;
   position: absolute;
   bottom: 22px;
-  left: 50%;
+  left: 30%;
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 60%;
+}
+
+.top-center-l {
+  top: 95%;
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 80%;
+}
+
+.top-center-r {
+  top: 120%;
+  position: absolute;
+  bottom: 22px;
+  left: 53%;
+  transform: translate(-50%, -50%);
+  /* font-weight: bold; */
+  color: #e5ded5;
+  font-size: 65%;
+}
+
+
+.crop {
+    /* width: 400px; */
+    /* height: 300px; */
+    margin: -35px;
 }
 
 .controls {

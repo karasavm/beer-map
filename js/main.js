@@ -1067,7 +1067,7 @@ function openIntroModal() {
 	var delay = 2000;
 	var allNum = 69;
 	var microNum = 47;
-	var clientNum = 500;
+	var clientNum = 235;
 
 
 
