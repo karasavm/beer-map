@@ -70,29 +70,30 @@ body {
 }
 
 .custom-pin {
-  background-image: url('js/gmaps-marker-clusterer-master/images/cm1.png');
+  background-image: url('js/gmaps-marker-clusterer-master/images/test9.png');
+  /* background-image: url('js/gmaps-marker-clusterer-master/images/cm1.png'); */
   background-repeat: no-repeat;
   background-size: 50px;
   /*height: 1em;*/
   /*line-height: 1;*/
   /*width: 1em;*/
   width: 50px;
-  height: 50px;
+  height: 75px;
 
   /* height: 50px; */
 
-  padding-top: 0.4em;
+  padding-top: 0.9em;
 
   /*padding-right: 21px;*/
   text-align: center;
   cursor: pointer;
-  color: white;
+  color: #f1e8ca;
   /*background-color: black;*/
   position: absolute;
   z-index: 10;
   /*border-radius: .5em;*/
-  font-size: 25px;
-  /* font-weight: bold; */
+  font-size: 22px;
+  font-weight: bold;
   /*font-weight: bold;*/
   /*transition: all 500ms;*/
 }
@@ -209,27 +210,31 @@ body {
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 60%;
+
 }
 
 .top-center-l {
-  top: 95%;
+  top: 100%;
   position: absolute;
   bottom: 22px;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 80%;
+  color: hsl(39, 58%, 65%);
+  font-family: cursive;
 }
 
 .top-center-r {
-  top: 120%;
+
+  /* top: 120%;
   position: absolute;
   bottom: 22px;
   left: 53%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   /* font-weight: bold; */
-  color: #e5ded5;
-  font-size: 65%;
+  /* color: #e5ded5; */
+  font-size: 100%;
 }
 
 

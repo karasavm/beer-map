@@ -12,7 +12,7 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 30;
+var MARKER_CAP_SIZE = 35;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
@@ -499,6 +499,7 @@ function showClusters() {
 function hideMarkers() {
 	for (var i=0; i < markers.length; i+=1) {
 			markers[i].setMap(null);
+
 	}
 }
 function showMarkers() {
@@ -679,12 +680,12 @@ function hidePinPreview() {
 function get_new_cap_size() {
   var currentZoom = beerMap.getZoom();
 
-	if (currentZoom >= 12) return MARKER_CAP_SIZE*0.9;
-  if (currentZoom >= 11) return MARKER_CAP_SIZE*2.2;
-  if (currentZoom >= 10) return MARKER_CAP_SIZE*1.9;
-	if (currentZoom >= 9) return MARKER_CAP_SIZE*1.7;
-	if (currentZoom >= 8) return MARKER_CAP_SIZE*1.5;
-	if (currentZoom >= 7) return MARKER_CAP_SIZE*1.3;
+	if (currentZoom >= 12) return MARKER_CAP_SIZE*2.2;
+  if (currentZoom >= 11) return MARKER_CAP_SIZE*2;
+  if (currentZoom >= 10) return MARKER_CAP_SIZE*1.8;
+	if (currentZoom >= 9) return MARKER_CAP_SIZE*1.6;
+	if (currentZoom >= 8) return MARKER_CAP_SIZE*1.4;
+	if (currentZoom >= 7) return MARKER_CAP_SIZE*1.2;
 	if (currentZoom >= 6) return MARKER_CAP_SIZE*1;
   return MARKER_CAP_SIZE;
 }
@@ -745,6 +746,9 @@ function loadClusters() {
   var testMarkers = [];
   var options = {
 								cssClass: 'custom-pin',
+								maxZoom: 7,
+								// gridSize: 30,
+								// zoomOnClick: false,
 								onMouseoverCluster: function (clusterIcon, event) {
 									return;
                   // console.log(clusterIcon.cluster_.markers_, event)
@@ -778,11 +782,23 @@ function loadClusters() {
                   }
                   testMarkers = []
                 },
+								onClickCluster: function(clusterIcon, event) {
+									console.log("nai reee")
+								}
               };
 
 
   markerClusters = new MarkerClusterer(beerMap, [], options);
+	google.maps.event.addListener(markerClusters, 'clusterclick', function(cluster) {
+    // your code here
+		console.log(cluster)
+		// beerMap.panTo(cluster.center_);
+		// zoominFunc(8, 100, function() {
+		// 	console.log("aaaaaaaa")
+		// })();
 
+
+});
 }
 
 // -------------------------- EVENT HANDLERS -------------
@@ -954,8 +970,8 @@ function loadBanner() {
 
 
 
-
   //Add the control panel and reset button (created previously) to the map.
+
   // beerMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(controlPanelDiv);
 	// beerMap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(resetDiv);
 
@@ -1068,10 +1084,6 @@ function openIntroModal() {
 	var allNum = 69;
 	var microNum = 47;
 	var clientNum = 235;
-
-
-
-
 
 	function adjustThbFontSize() {
 	    var w = window.innerWidth;
