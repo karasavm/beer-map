@@ -746,8 +746,8 @@ function loadClusters() {
   var testMarkers = [];
   var options = {
 								cssClass: 'custom-pin',
-								maxZoom: 7,
-								// gridSize: 30,
+								maxZoom: 6,
+								gridSize: 45,
 								// zoomOnClick: false,
 								onMouseoverCluster: function (clusterIcon, event) {
 									return;
