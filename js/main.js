@@ -841,7 +841,7 @@ function loadClusters() {
 
 		beerMap.panTo(cluster.center_);
 
-		zoominFunc(8, 100, function() {
+		zoominFunc(MAX_ZOOM_CLUSTERS + 1, 20, function() {
 			console.log("aaaaaaaa", cluster)
 			beerMap.fitBounds(cluster.getBounds())
 
