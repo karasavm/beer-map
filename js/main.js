@@ -843,7 +843,10 @@ function loadClusters() {
 
 		zoominFunc(MAX_ZOOM_CLUSTERS + 1, 20, function() {
 			console.log("aaaaaaaa", cluster)
-			beerMap.fitBounds(cluster.getBounds())
+			setTimeout(function(){
+					beerMap.fitBounds(cluster.getBounds())
+			}, 100)
+
 
 		})();
 
@@ -860,7 +863,7 @@ function onZoomChanged() {
 	// hide show controls
 	var controls = document.getElementById('controls');
 	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
-
+		controls.style.display = 'display';
 	} else {
 		controls.style.display = 'none';
 	}
