@@ -863,7 +863,7 @@ function onZoomChanged() {
 	// hide show controls
 	var controls = document.getElementById('controls');
 	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
-		controls.style.display = 'display';
+		controls.style.display = 'block';
 	} else {
 		controls.style.display = 'none';
 	}
