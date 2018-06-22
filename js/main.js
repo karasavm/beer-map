@@ -18,7 +18,7 @@ var MARKER_CAP_HOVER_FACTOR = 7.5;
 
 var MAX_ZOOM = 12;
 var MIN_ZOOM = 2;
-
+var MAX_ZOOM_CLUSTERS = 7;
 var STAR_MODE_MAX_ZOOM = 9;
 // var PINS_PATH = 'icons/pins/cp200x200cp/';
 var PINS_PATH = 'icons/pins/150x150cp/';
@@ -268,7 +268,7 @@ function createXMarker(lat, log) {
     var marker = new google.maps.Marker({
       position: position,
       title: 'X',
-      animation: google.maps.Animation.DROP,
+      animation: null,
       draggable: false,
       shape: shape,
       icon: image,
@@ -350,7 +350,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
     var marker = new google.maps.Marker({
       position: position,
       title: legend,
-      animation: google.maps.Animation.DROP,
+      animation: null,
       draggable: false,
       shape: shape,
       icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE),
@@ -490,40 +490,67 @@ function initControlsState() {
 function showClusters() {
 	markerClusters.clearMarkers();
 	for (var i=0; i < markers.length; i++) {
+		console.log("Show Clusters")
 		markerClusters.addMarker(markers[i], true);
 	}
 	markerClusters.redraw();
 
 
 }
-function hideMarkers() {
+function setVisibleMarkers(isVisible) {
 	for (var i=0; i < markers.length; i+=1) {
-			markers[i].setMap(null);
+			markers[i].setVisible(isVisible);
 
 	}
 }
-function showMarkers() {
+
+function setMapMarkers(value) {
+	for (var i=0; i < markers.length; i+=1) {
+			markers[i].setMap(value);
+	}
+}
+
+function showMarkers(animation) {
 	for (var i=0; i < markers.length; i++) {
-		markers[i].setAnimation(google.maps.Animation.DROP)
+		markers[i].setAnimation(animation)
 	}
 
 	setTimeout(function() {
 		for (var i=0; i < markers.length; i+=3) {
-				markers[i].setMap(beerMap);
+			var marker =  markers[i];
+			if (!marker.map){
+				marker.setMap(beerMap);
+			}
 		}
 	}, 400)
 
 	setTimeout(function() {
 		for (var i=1; i < markers.length; i+=3) {
-				markers[i].setMap(beerMap);
+			var marker =  markers[i];
+			if (!marker.map){
+				marker.setMap(beerMap);
+			}
 		}
 	}, 200)
 
 	setTimeout(function() {
 		for (var i=2; i < markers.length; i+=3) {
-				markers[i].setMap(beerMap);
+			var marker =  markers[i];
+			if (!marker.map){
+				marker.setMap(beerMap);
+			}
 		}
 	}, 300)
+
+	// wait the above delays and then remove animation
+	if (animation) { // in case not null animation
+		setTimeout(function() {
+			for (var i=0; i < markers.length; i++) {
+				markers[i].setAnimation(null)
+			}
+		}, 800)
+	}
+
 
 }
 
@@ -746,9 +773,9 @@ function loadClusters() {
   var testMarkers = [];
   var options = {
 								cssClass: 'custom-pin',
-								maxZoom: 6,
-								gridSize: 45,
-								// zoomOnClick: false,
+								maxZoom: MAX_ZOOM_CLUSTERS,
+								gridSize: 44,
+								zoomOnClick: false,
 								onMouseoverCluster: function (clusterIcon, event) {
 									return;
                   // console.log(clusterIcon.cluster_.markers_, event)
@@ -791,11 +818,31 @@ function loadClusters() {
   markerClusters = new MarkerClusterer(beerMap, [], options);
 	google.maps.event.addListener(markerClusters, 'clusterclick', function(cluster) {
     // your code here
-		console.log(cluster)
-		// beerMap.panTo(cluster.center_);
-		// zoominFunc(8, 100, function() {
-		// 	console.log("aaaaaaaa")
-		// })();
+
+		// hide all markers
+		for (var j=0; j < markers.length; j++) {
+			markers[j].setVisible(false)
+		}
+
+		// animate markers
+		for (var i=0; i < cluster.getMarkers().length; i++) {
+			var marker = cluster.getMarkers()[i];
+			marker.setVisible(true); // set to hide before
+			marker.setAnimation(google.maps.Animation.BOUNCE)
+			setTimeout(function(marker) {
+				return function() {
+					marker.setAnimation(null)
+					for (var j=0; j < markers.length; j++) {
+						markers[j].setVisible(true)
+					}
+				}
+			}(marker), 3000)
+		}
+
+		beerMap.panTo(cluster.center_);
+		zoominFunc(9, 100, function() {
+			console.log("aaaaaaaa")
+		})();
 
 
 });
@@ -806,6 +853,14 @@ function loadClusters() {
 function onZoomChanged() {
 	// return;
   updateMarkersSize();
+
+	// hide show controls
+	var controls = document.getElementById('controls');
+	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
+
+	} else {
+		controls.style.display = 'none';
+	}
 	return;
   var currentZoom = beerMap.getZoom();
 
@@ -1026,12 +1081,12 @@ function onClickListItem(id) {
 	closeSearchBox();
 
 	// clear map
-	markerClusters.clearMarkers();
-	hideMarkers();
+	markerClusters.clearMarkers(); //if group mode
+	setMapMarkers(null);
 
 	// clear controls state
-	document.getElementById('groupsMode').classList.remove('active');
-	document.getElementById('pinsMode').classList.remove('active');
+	// document.getElementById('groupsMode').classList.remove('active');
+	// document.getElementById('pinsMode').classList.remove('active');
 
 	// wait before any step
 	setTimeout(function() {
@@ -1050,12 +1105,24 @@ function onClickListItem(id) {
 			setTimeout(function() {
 				markers[id].setAnimation(google.maps.Animation.DROP)
 				markers[id].setMap(beerMap);
+
+				// setTimeout(function(){markers[id].setAnimation(null)}, 500)
+
+
 				beerMap.panTo(latLng);
 				setTimeout(function() {
 					zoominFunc(endZoomIn, delayZoom, function() {
 						setTimeout(function() {
 						setInfoModalValues(markers[id]);
 							$('#beerInfoModal').modal();
+							// show markers or groups
+							setTimeout(function() {
+								if (selectedMode === 'groups') {
+									showClusters();
+								} else {
+									showMarkers(null)
+								}
+							}, 500)
 						}, 1200)
 					})();
 				}, 1200)
@@ -1176,7 +1243,7 @@ function handleRequests (buttonPressed) {
 			showClusters();
 		} else if (selectedMode === 'pins') {
 			markerClusters.clearMarkers();
-			showMarkers();
+			showMarkers(null);
 		}
 
 		if (beerMap.getZoom() > INITIAL_ZOOM) {
@@ -1219,7 +1286,7 @@ function handleRequests (buttonPressed) {
 		document.getElementById('groupsMode').classList.remove('mode-checked');
 		document.getElementById('pinsMode').classList.add('mode-checked');
 		markerClusters.clearMarkers();
-		showMarkers();
+		showMarkers(google.maps.Animation.DROP);
 		// showMarkers();
 	}
 	else if (buttonPressed === 'menu') {

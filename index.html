@@ -150,22 +150,29 @@
       <div class="modal-dialog modal-dialog-centered" role="document" >
         <div class="modal-content intro-modal" >
 
-          <div class="modal-body no-padding" onclick="closeIntroModal()" id="introModalMainBody">
-            <div class="container-fluid no-paddin">
-              <div class="row pb-4">
-
-              </div>
-
-              <div class="row">
-                <div class="col-7 no-padding">
+          <div class="modal-body" onclick="closeIntroModal()" id="introModalMainBody">
+            <div class="container-fluid no-padding">
+              <div class="row pb-5">
+                <div class="col no-padding">
                   <div class="thumbnail" id="allNumberThb">
-                      <img src="images/test24.png" class="rounded img-fluid" alt="...">
+                      <img src="images/title.png" class="rounded img-fluid" alt="...">
+
+                        <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="row pt-4 pb-4"></div>
+              <div class="row pb-5">
+                <div class="col-6 no-padding">
+                  <div class="thumbnail" id="allNumberThb">
+                      <img src="images/test19.png" class="rounded img-fluid" alt="...">
                         <div id="allNumber" class="top-center-l top-center-r">69</div>
+                        <div class="ampersand">&</div>
                         <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
                   </div>
 
                 </div>
-
+                <div class="col-1 no-padding"></div>
                 <div class="col-5 no-padding">
                   <div class="thumbnail" id="clientThb">
                       <img src="images/introIm1.png" class="rounded img-fluid" width=400 alt="...">
@@ -174,23 +181,14 @@
                   </div>
                 </div>
               </div>
+              <!-- <div class="row pb-5">
+              </div> -->
             </div>
-
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-
           </div>
-
-
-
           <div class="d-flex align-self-end" style="width: 80px">
             <select id="langSelectBox" class="custom-select bg-secondary"
-            onchange="changeLang()"
-            style="background-color: #838a8d;font-weight: bold;max-width: 67px; color: white; border: none;">
-              <!-- <option selected>Open this select menu</option> -->
+              onchange="changeLang()"
+              style="background-color: #838a8d;font-weight: bold;max-width: 67px; color: white; border: none;">
               <option value="en"  selected>English</option>
               <option value="gr">Ελληνικά</option>
 
@@ -223,41 +221,19 @@
 
     <div class="container fixed-bottom">
       <div class="row justify-content-center">
-        <div class="col-">
+        <div class="col pr-0">
+          <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
+        </div>
+        <div class="col no-padding">
           <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
-            <!-- <button type="button" class="btn btn-secondary">Group</button> -->
-            <button type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('menu')"><i class="fa fa-info"></i></button>
-
-            <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label id='groupsMode' class="btn btn-secondary active" onchange="handleRequests('showGroups')" >
-                <input type="radio"  name="options" id="option1" autocomplete="off" checked>
-              </label>
-              <label id='pinsMode'class="btn btn-secondary" onchange="handleRequests('showPins')" lng-key="pinsBtn">
-                <input type="radio" name="options" id="option2" autocomplete="off"> Pins
-              </label>
-            </div> -->
-
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button id='groupsMode' type="button" class="btn btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
+              <button id='groupsMode' type="button" class="btn btn-lg btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
               <button id='pinsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button>
             </div>
-
-            <button type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('reset')"><i class="fa fa-undo"></i></button>
-
-            <!-- <div class="btn-group" role="group">
-
-              <button id="btnTypes" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                All
-              </button>
-
-              <div class="dropdown-menu" aria-labelledby="btnTypes">
-                <a class="dropdown-item" onClick="handleRequests('showAll')" >All</a>
-                <a class="dropdown-item" onClick="handleRequests('showMicrobrewers')">Microbreweries</a>
-                <a class="dropdown-item" onClick="handleRequests('showClients')">Clients</a>
-              </div>
-            </div> -->
-
           </div>
+        </div>
+        <div class="col text-right pl-0">
+          <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('reset')"><i class="fa fa-undo"></i></button>
         </div>
       </div>
     </div>
