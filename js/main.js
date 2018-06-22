@@ -840,9 +840,12 @@ function loadClusters() {
 		}
 
 		beerMap.panTo(cluster.center_);
-		zoominFunc(9, 100, function() {
-			console.log("aaaaaaaa")
-		})();
+		beerMap.fitBounds(cluster.getBounds())
+		// zoominFunc(8, 100, function() {
+		// 	console.log("aaaaaaaa", cluster)
+		//
+		//
+		// })();
 
 
 });
