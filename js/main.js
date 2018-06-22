@@ -17,13 +17,15 @@ var MARKER_CAP_SIZE = 35;
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
 var MAX_ZOOM = 12;
-var MIN_ZOOM = 2;
+var MIN_ZOOM = 4;
+// var MIN_ZOOM = 2;
 var MAX_ZOOM_CLUSTERS = 7;
 var STAR_MODE_MAX_ZOOM = 9;
 // var PINS_PATH = 'icons/pins/cp200x200cp/';
 var PINS_PATH = 'icons/pins/150x150cp/';
 var LOGO_PATH = 'icons/pins/compressed/';
-
+var zoomCtrLocked = false;
+var onGroupMode = 0;
 var INITIAL_ZOOM = 6;
 var INITIAL_CENTER = new google.maps.LatLng(39.074208, 22.824311999999964);
 // -------------------------------------------------
@@ -482,12 +484,14 @@ function initControlsState() {
 	selectedMode = "groups";
 	// markerClusters.clearMarkers();
 	// showMarkers(selectedType);
+	beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
 	showClusters();
 
 
 }
 
 function showClusters() {
+
 	markerClusters.clearMarkers();
 	for (var i=0; i < markers.length; i++) {
 		console.log("Show Clusters")
@@ -773,8 +777,8 @@ function loadClusters() {
   var testMarkers = [];
   var options = {
 								cssClass: 'custom-pin',
-								maxZoom: MAX_ZOOM_CLUSTERS + 1,
-								gridSize: 45,
+								maxZoom: MAX_ZOOM_CLUSTERS ,
+								gridSize: 70,
 								averageCenter: true,
 								zoomOnClick: false,
 								minimumClusterSize: 1,
@@ -819,8 +823,40 @@ function loadClusters() {
 
   markerClusters = new MarkerClusterer(beerMap, [], options);
 	google.maps.event.addListener(markerClusters, 'clusterclick', function(cluster) {
-    // your code here
+    // SET GROUP MODE situation  GROUP MODE
+		onGroupMode = beerMap.getZoom();
+		document.getElementById('mainModeCtls').style.display = 'none';
+		document.getElementById('groupModeCtls').style.display = 'flex';
+		beerMap.setOptions({maxZoom: MAX_ZOOM});
+		setVisibleMarkers(false)
+		for (var i=0; i < cluster.getMarkers().length; i++) {
+			cluster.getMarkers()[i].setVisible(true)
+		}
+		// hide clusters with the above trick
+		markerClusters.maxZoom_ = 1;
 
+		beerMap.panTo(cluster.center_);
+		var bounds = cluster.getBounds();
+
+
+
+
+
+		// zoomCtrLocked = true;
+		zoominFunc(beerMap.getZoom() + 4, 100, function() {
+			setTimeout(function() {
+
+					beerMap.fitBounds(bounds);
+					zoomCtrLocked = false;
+					// beerMap.draggable = false
+						// beerMap.setOptions({draggable: false});
+					// beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
+					// beerMap.minZoom = beerMap.getZoom();
+			}, 500)
+		})()
+
+
+		return;
 		// hide all markers
 		for (var j=0; j < markers.length; j++) {
 			markers[j].setVisible(false)
@@ -862,7 +898,11 @@ function onZoomChanged() {
 	// return;
   updateMarkersSize();
 
+	// if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS && !zoomCtrLocked) {
+	// 	beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
+	// }
 	// hide show controls
+	return;
 	var controls = document.getElementById('controls');
 	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
 		controls.style.display = 'block';
@@ -1255,7 +1295,6 @@ function handleRequests (buttonPressed) {
 		}
 
 		if (beerMap.getZoom() > INITIAL_ZOOM) {
-			console.log("ZoomOUt")
 			zoomoutFunc(INITIAL_ZOOM, 100, function() {
 				setTimeout(function() {
 					beerMap.panTo(INITIAL_CENTER)
@@ -1275,6 +1314,26 @@ function handleRequests (buttonPressed) {
 
 		// beerMap.setCenter(INITIAL_CENTER);
 		// resetZindexes();
+	} else if (buttonPressed === 'back') {
+		// unset back
+
+
+		markerClusters.maxZoom_ = MAX_ZOOM_CLUSTERS;
+		markerClusters.resetViewport()
+
+		beerMap.setZoom(onGroupMode); //todo make it smouth, check for zoom in or out
+		setTimeout(function() {
+				beerMap.panTo(INITIAL_CENTER);
+		}, 200)
+
+		beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
+		onGroupMode = 0;
+
+		document.getElementById('groupModeCtls').style.display = 'none';
+		document.getElementById('mainModeCtls').style.display = 'flex';
+		setVisibleMarkers(true);
+
+
 	}
 	else if (buttonPressed === "small_events"){
 		alert("This button will do something useful in a later tutorial!");
@@ -1284,6 +1343,7 @@ function handleRequests (buttonPressed) {
 	}
 	else if (buttonPressed === "showGroups") {
 		selectedMode = "groups";
+		beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
 		document.getElementById('groupsMode').classList.add('mode-checked');
 		document.getElementById('pinsMode').classList.remove('mode-checked');
 		showClusters();
@@ -1291,6 +1351,7 @@ function handleRequests (buttonPressed) {
 	}
 	else if (buttonPressed === "showPins") {
 		selectedMode = "pins";
+		beerMap.setOptions({maxZoom: MAX_ZOOM});
 		document.getElementById('groupsMode').classList.remove('mode-checked');
 		document.getElementById('pinsMode').classList.add('mode-checked');
 		markerClusters.clearMarkers();
@@ -1664,168 +1725,197 @@ map_style = [
   }
 ]
 
-map_style =
-[
-  {
-    "stylers": [
-      {
-        "color": "#ff7000"
-      },
-      {
-        "saturation": "100"
-      },
-      {
-        "lightness": "69"
-      },
-      {
-        "gamma": "2.04"
-      },
-      {
-        "weight": "1.17"
-      }
-    ]
-  },
-  {
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#cb8536"
-      }
-    ]
-  },
-  {
-    "elementType": "labels",
-    "stylers": [
-      {
-        "color": "#ffb471"
-      },
-      {
-        "saturation": "100"
-      },
-      {
-        "lightness": "66"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "lightness": 20
-      },
-      {
-        "gamma": 0.01
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "saturation": -31
-      },
-      {
-        "lightness": -33
-      },
-      {
-        "gamma": 0.8
-      },
-      {
-        "weight": 2
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "stylers": [
-      {
-        "saturation": "26"
-      },
-      {
-        "lightness": "-8"
-      },
-      {
-        "gamma": "0.98"
-      },
-      {
-        "weight": "2.45"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "saturation": 30
-      },
-      {
-        "lightness": 30
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "saturation": 20
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "saturation": -20
-      },
-      {
-        "lightness": 20
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "saturation": -30
-      },
-      {
-        "lightness": 10
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "saturation": 25
-      },
-      {
-        "lightness": 25
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "stylers": [
-      {
-        "color": "#a8ac91"
-      },
-      {
-        "lightness": -20
-      }
-    ]
-  }
+map_style = [
+    {
+        "featureType": "all",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#ff7000"
+            },
+            {
+                "lightness": "69"
+            },
+            {
+                "saturation": "100"
+            },
+            {
+                "weight": "1.17"
+            },
+            {
+                "gamma": "2.04"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#cb8536"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "color": "#ffb471"
+            },
+            {
+                "lightness": "66"
+            },
+            {
+                "saturation": "100"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "gamma": 0.01
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "saturation": -31
+            },
+            {
+                "lightness": -33
+            },
+            {
+                "weight": 2
+            },
+            {
+                "gamma": 0.8
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": "-8"
+            },
+            {
+                "gamma": "0.98"
+            },
+            {
+                "weight": "2.45"
+            },
+            {
+                "saturation": "26"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 30
+            },
+            {
+                "saturation": 30
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": 20
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 20
+            },
+            {
+                "saturation": -20
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "weight": "0.51"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "lightness": 10
+            },
+            {
+                "saturation": -30
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "saturation": 25
+            },
+            {
+                "lightness": 25
+            }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#d13232"
+            },
+            {
+                "weight": "2.08"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": -20
+            },
+            {
+                "color": "#ecc080"
+            }
+        ]
+    }
 ]
