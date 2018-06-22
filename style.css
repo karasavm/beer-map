@@ -73,17 +73,17 @@ body {
   background-image: url('js/gmaps-marker-clusterer-master/images/test9.png');
   /* background-image: url('js/gmaps-marker-clusterer-master/images/cm1.png'); */
   background-repeat: no-repeat;
-  background-size: 50px;
+  background-size: 60px;
   /*height: 1em;*/
   /*line-height: 1;*/
   /*width: 1em;*/
-  width: 50px;
+  width: 60px;
   height: 75px;
 
   /* height: 50px; */
 
-  padding-top: 0.2em;
-  padding-left: 0.8em;
+  padding-top: 0.3em;
+  padding-left: 0.7em;
 
   /*padding-right: 21px;*/
   text-align: center;
