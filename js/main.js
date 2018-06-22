@@ -826,6 +826,7 @@ function loadClusters() {
     // SET GROUP MODE situation  GROUP MODE
 		onGroupMode = beerMap.getZoom();
 		document.getElementById('mainModeCtls').style.display = 'none';
+		document.getElementById('listContainer').style.display = 'none';
 		document.getElementById('groupModeCtls').style.display = 'flex';
 		beerMap.setOptions({maxZoom: MAX_ZOOM});
 		setVisibleMarkers(false)
@@ -1330,6 +1331,7 @@ function handleRequests (buttonPressed) {
 		onGroupMode = 0;
 
 		document.getElementById('groupModeCtls').style.display = 'none';
+		document.getElementById('listContainer').style.display = 'block';
 		document.getElementById('mainModeCtls').style.display = 'flex';
 		setVisibleMarkers(true);
 
