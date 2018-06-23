@@ -1343,17 +1343,21 @@ function handleRequests (buttonPressed) {
 	else if (buttonPressed === "rainfall"){
 		alert("This button will do something useful in a later tutorial!");
 	}
-	else if (buttonPressed === "showGroups") {
+	else if (buttonPressed === "showGroups" && selectedMode !== 'groups') {
 		selectedMode = "groups";
 		beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
+		showClusters();
+		// markerClusters.resetViewport()
+		beerMap.setZoom(INITIAL_ZOOM);
+		beerMap.panTo(INITIAL_CENTER);
 		document.getElementById('groupsMode').classList.add('mode-checked');
 		document.getElementById('pinsMode').classList.remove('mode-checked');
-		showClusters();
+
 		// loadClusters();
 	}
 	else if (buttonPressed === "showPins") {
 		selectedMode = "pins";
-		beerMap.setOptions({maxZoom: MAX_ZOOM});
+		beerMap.maxZoom = MAX_ZOOM;
 		document.getElementById('groupsMode').classList.remove('mode-checked');
 		document.getElementById('pinsMode').classList.add('mode-checked');
 		markerClusters.clearMarkers();
