@@ -246,13 +246,14 @@ function createAllMarkers() {
 
 function getAreaMarkerLabel(number, text) {
 	return {
-		color: '#753b07',
-		fontSize: '14px',
+		color: 'white',
+		fontSize: '15px',
 		fontWeight: 'bold',
 		text: number.toString() + ' ' + text,
 		fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
 	}
 }
+var areasLabels = [];
 function createAreaMarkers(type) {
 	// set the beers number
 	// set the brews number
@@ -265,10 +266,48 @@ function createAreaMarkers(type) {
 			type + '.png',
 			data.name)
 		marker.setLabel(
-			getAreaMarkerLabel(areasData[i][type],  areasData[i].name)
+			getAreaMarkerLabel(areasData[i].beers, "")
 		)
 		marker.rawData = areaMarkers[i];
 		areaMarkers.push(marker);
+
+		// geografika diamerismata
+		var size = MARKER_CAP_SIZE*0.01;
+		var image = {
+	      origin: new google.maps.Point(0, 0),
+	      url: PINS_PATH + 'stala.png',
+				labelOrigin: new google.maps.Point(0,35),
+	      // scaledSize: new google.maps.Size(60, 88), // short pin
+	      scaledSize: new google.maps.Size(size, size), // cap
+	      // anchor: new google.maps.Point(31, 88), // short pin
+	      anchor: new google.maps.Point(size/2, size/2), // cap
+	    };
+
+		var areaLabel =  new google.maps.Marker({
+      position: new google.maps.LatLng(data.latLng.split(',')[0], data.latLng.split(',')[1]),
+      title: '',
+			icon: image,
+      animation: null,
+      draggable: false,
+			clickable: false,
+			label: {
+					color: '#753b07',
+					fontSize: '12px',
+					fontWeight: 'bold',
+					text:areasData[i].name,
+					fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
+				},
+			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
+      zIndex: ZINDEX_MARKER - 1
+    });
+
+		areaLabel.rawData = areaMarkers[i];
+		areasLabels.push(areaLabel);
+
+		areaLabel.setMap(beerMap)
+
+
+
 	}
 }
 
@@ -278,9 +317,10 @@ function showAreaMarkers(type) {
 		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
 		console.log("aaaaaaaaaaaaaa")
 		areaMarkers[i].setLabel(
-			getAreaMarkerLabel(areasData[i][type], areasData[i].name)
+			getAreaMarkerLabel(areasData[i][type], '')
 		)
 		areaMarkers[i].setMap(beerMap)
+		areasLabels[i].setMap(beerMap)
 	}
 }
 
@@ -410,7 +450,7 @@ function getImageObj(url, size) {
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
-			labelOrigin: new google.maps.Point(28,65),
+			labelOrigin: new google.maps.Point(28,55),
       // scaledSize: new google.maps.Size(60, 88), // short pin
       scaledSize: new google.maps.Size(size, size), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
@@ -420,7 +460,7 @@ function getImageObj(url, size) {
   return image;
 }
 var tempPinCounter = 1;
-function createImageMarker(lat, log, imageUrl, legend) {
+function createImageMarker(lat, log, imageUrl, legend, areaLabel) {
 
     var position = new google.maps.LatLng(lat, log);
 
@@ -447,7 +487,7 @@ function createImageMarker(lat, log, imageUrl, legend) {
     };
 
     var marker = new google.maps.Marker({
-      position: position,
+      position: new google.maps.LatLng(lat, log),
       title: legend,
       animation: null,
       draggable: false,
@@ -956,6 +996,16 @@ function loadClusters() {
 function onZoomChanged() {
 	// return;
   // updateMarkersSize();
+
+	// increase area areasLabels
+
+	for (var i=0; i < areasLabels.length; i++) {
+		var style = areasLabels[i].getLabel();
+		console.log(style)
+		style.fontSize = (5+(beerMap.getZoom() - 5)*5).toString()+'px'
+		console.log(style)
+		areasLabels[i].setLabel(style)
+	}
 	console.log(markers)
 	if ( beerMap.getZoom() >= 8) {
 		state = 'all';
