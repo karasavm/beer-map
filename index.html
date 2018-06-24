@@ -185,7 +185,8 @@
               </div> -->
             </div>
           </div>
-          <div class="d-flex align-self-end" style="width: 80px">
+
+          <div class="d-flex align-self-end" style="width: 80px" style="display: none;">
             <select id="langSelectBox" class="custom-select bg-secondary"
               onchange="changeLang()"
               style="background-color: #838a8d;font-weight: bold;max-width: 67px; color: white; border: none;">
@@ -227,8 +228,12 @@
         <div class="col no-padding">
           <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button id='groupsMode' type="button" class="btn btn-lg btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
-              <button id='pinsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button>
+              <!-- <button id='groupsMode' type="button" class="btn btn-lg btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
+              <button id='pinsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button> -->
+
+              <button id='beersMode' type="button" class="btn btn-secondary btn-opacity _mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
+              <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button>
+
             </div>
           </div>
         </div>

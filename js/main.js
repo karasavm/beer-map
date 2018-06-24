@@ -51,14 +51,15 @@ var curOpenedPin;
 var markerClusters;
 
 
-var selectedMode = "groups";
+var selectedMode, state;
 
 var markers = [];
+
 var markersLines = [];
 var infoBoxes = [];
 var markersRaw = [];
 
-var curLang = 'en';
+var curLang = 'gr';
 ///////// MAIN /////////////
 window.addEventListener('DOMContentLoaded', function() {
 
@@ -72,6 +73,8 @@ google.maps.event.addDomListener(window, 'load', function() {
 	console.log("addDomListener");
 
 	parseRawData();
+	createAreaMarkers('beers');
+	createAllMarkers();
 	loadbeerMap();
 
 });
@@ -83,6 +86,8 @@ var languages = {
 	'en' : {
 		'groupsBtn': 'Groups',
 		'pinsBtn': 'Pins',
+		'brewsBtn': 'Brews',
+		'beersBtn': 'Beers',
 		'introBeers': 'BEERS',
 		'introBrewers': 'BREWS',
 		'words' : {
@@ -94,6 +99,8 @@ var languages = {
 		'groupsBtn': 'Γκρουπ',
 		'pinsBtn': 'Πινς',
 		'introBeers': 'ΜΠΥΡΕΣ',
+		'brewsBtn': 'Ζυθοποιίες',
+		'beersBtn': 'Μπύρες',
 		'introBrewers': 'ΖΥΘΟΠΟΙΙΕΣ',
 		'words' : {
 			"beers": "Μπύρες",
@@ -190,15 +197,15 @@ function loadbeerMap() {
   // beerMap.overlayMapTypes.insertAt(0, rainMapOverlay);
 
   //Calls the function below to load up all the map markers.
-  loadMapMarkers(); // create markers list
+  // loadMapMarkers(markersRaw, markers); // create markers list
   // updateMarkersSize();
 
-  loadClusters();
+  // loadClusters();
   // 	ters();
   loadBanner();
-
-
 	initControlsState();
+	showAreaMarkers(selectedMode)
+
 
 
 	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
@@ -216,7 +223,94 @@ function loadbeerMap() {
 
 
 
+var areaMarkers = [];
+// var areaBrewMarkers = [];
 
+
+
+function createAllMarkers() {
+	// set the beers number
+	// set the brews number
+	for (var i=0; i < markersRaw.length; i++) {
+		var data = markersRaw[i];
+		var marker = createImageMarker(
+			data.lat,
+			data.log,
+			data.icon,
+			data.name
+		)
+		marker.rawData = rawData[i];
+		markers.push(marker);
+	}
+}
+
+function getAreaMarkerLabel(number, text) {
+	return {
+		color: '#753b07',
+		fontSize: '14px',
+		fontWeight: 'bold',
+		text: number.toString() + ' ' + text,
+		fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
+	}
+}
+function createAreaMarkers(type) {
+	// set the beers number
+	// set the brews number
+	for (var i=0; i < areasData.length; i++) {
+		console.log(areasData[i])
+		var data = areasData[i];
+		var marker = createImageMarker(
+			data.latLng.split(',')[0],
+			data.latLng.split(',')[1],
+			type + '.png',
+			data.name)
+		marker.setLabel(
+			getAreaMarkerLabel(areasData[i][type],  areasData[i].name)
+		)
+		marker.rawData = areaMarkers[i];
+		areaMarkers.push(marker);
+	}
+}
+
+function showAreaMarkers(type) {
+
+	for (var i=0; i < areaMarkers.length; i++) {
+		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
+		console.log("aaaaaaaaaaaaaa")
+		areaMarkers[i].setLabel(
+			getAreaMarkerLabel(areasData[i][type], areasData[i].name)
+		)
+		areaMarkers[i].setMap(beerMap)
+	}
+}
+
+function showAllMarkers(type) {
+
+	for (var i=0; i < markers.length; i++) {
+
+		if ( type === 'beers') {
+				markers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
+				markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
+		} else {
+			markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
+		}
+
+		markers[i].setMap(beerMap)
+	}
+}
+
+
+function hideAreaMarkers() {
+	for (var i=0; i < areaMarkers.length; i++) {
+		areaMarkers[i].setMap(null);
+	}
+}
+
+function hideAllMarkers() {
+	for (var i=0; i < markers.length; i++) {
+		markers[i].setMap(null);
+	}
+}
 
 function parseRawData() {
 	for (var i=0; i < rawData.length; i ++) {
@@ -240,6 +334,8 @@ function parseRawData() {
 				yearCreated: '2005', // todo update with excels data
 				numberOfBeers: 4, // todo update with excels data
 	      type: rawData[i].type,
+				beers: Number(rawData[i].beers),
+				area: rawData[i].area
 	    })
 	  } else {
 
@@ -314,6 +410,7 @@ function getImageObj(url, size) {
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
+			labelOrigin: new google.maps.Point(28,65),
       // scaledSize: new google.maps.Size(60, 88), // short pin
       scaledSize: new google.maps.Size(size, size), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
@@ -355,7 +452,8 @@ function createImageMarker(lat, log, imageUrl, legend) {
       animation: null,
       draggable: false,
       shape: shape,
-      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE),
+			clickable: true,
+      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE+20),
 			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
@@ -368,50 +466,13 @@ function createImageMarker(lat, log, imageUrl, legend) {
 //Function that loads the map markers.
 // markersRaw = markersRaw.slice(1,1)
 var lines = [];
-function loadMapMarkers (){
-
-
-
-    // var infowindow = new google.maps.InfoWindow({
-    //   content: contentString
-    // });
-    //
-    // var marker = new google.maps.Marker({
-    //   position: uluru,
-    //   map: map,
-    //   title: 'Uluru (Ayers Rock)'
-    // });
-    // marker.addListener('click', function() {
-    //   infowindow.open(map, marker);
-    // });
-
+function loadMapMarkers (markersRaw, markers){
 	for(var i=0; i < markersRaw.length; i++) {
     // console.log(markersRaw[i].lat, markersRaw[i].log)
 		// markers.push(createXMarker(markersRaw[i].lat, markersRaw[i].log));
 
     var lat = markersRaw[i].lat;
     var log = markersRaw[i].log;
-
-    // draw lines
-    if (markersRaw[i].latV) {
-      lat = markersRaw[i].latV;
-      log = markersRaw[i].logV;
-
-      // line
-      lineCoord = [
-          {lat: markersRaw[i].latC,  lng: markersRaw[i].logC},
-          {lat: markersRaw[i].latV, lng: markersRaw[i].logV}
-        ];
-      path = new google.maps.Polyline({
-        path: lineCoord,
-        geodesic: true,
-        strokeColor: 'white',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
-      lines.push(path);
-      path.setMap(beerMap);
-    }
 
     var marker = createImageMarker(lat, log, markersRaw[i].icon, markersRaw[i].name['en'])
     marker.rawData = markersRaw[i];
@@ -448,7 +509,6 @@ function loadMapMarkers (){
 
      });
     google.maps.event.addListener(markers[i], "click", function() {
-
 			setInfoModalValues(this);
 			$('#beerInfoModal').modal();
       // x.style.display = "none"
@@ -470,10 +530,7 @@ function loadMapMarkers (){
       //   content: contentString
       // });
       // infowindow.open(beerMap, this)
-    });
-
-
-	}
+    });}
 
 	for (i=0; i < markers.length; i ++) {
 		markers[i].setMap(beerMap)
@@ -481,12 +538,13 @@ function loadMapMarkers (){
 }
 
 function initControlsState() {
-	selectedMode = "groups";
+	selectedMode = 'beers';
+	state = 'area';
+	showAreaMarkers(selectedMode)
 	// markerClusters.clearMarkers();
 	// showMarkers(selectedType);
-	beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
-	showClusters();
-
+	// beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
+	// showClusters();
 
 }
 
@@ -497,7 +555,7 @@ function showClusters() {
 		console.log("Show Clusters")
 		markerClusters.addMarker(markers[i], true);
 	}
-	markerClusters.redraw();
+	// markerClusters.redraw();
 
 
 }
@@ -897,12 +955,17 @@ function loadClusters() {
 
 function onZoomChanged() {
 	// return;
-  updateMarkersSize();
-
-	// if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS && !zoomCtrLocked) {
-	// 	beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
-	// }
-	// hide show controls
+  // updateMarkersSize();
+	console.log(markers)
+	if ( beerMap.getZoom() >= 8) {
+		state = 'all';
+		hideAreaMarkers();
+		showAllMarkers(selectedMode)
+	} else {
+		state = 'area';
+		hideAllMarkers();
+		showAreaMarkers(selectedMode);
+	}
 	return;
 	var controls = document.getElementById('controls');
 	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
@@ -1288,93 +1351,112 @@ function resetZindexes() {
 }
 
 function handleRequests (buttonPressed) {
-	if (buttonPressed === "reset"){
-		if (selectedMode === 'groups') {
-			showClusters();
-			beerMap.panTo(INITIAL_CENTER);
-			beerMap.setZoom(INITIAL_ZOOM);
-			beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
-
-		} else if (selectedMode === 'pins') {
-			beerMap.maxZoom = MAX_ZOOM;
-			beerMap.panTo(INITIAL_CENTER);
-			beerMap.setZoom(INITIAL_ZOOM);
-
-			markerClusters.clearMarkers();
-			showMarkers(null);
-		}
-
-		if (beerMap.getZoom() > INITIAL_ZOOM) {
-			zoomoutFunc(INITIAL_ZOOM, 100, function() {
-				setTimeout(function() {
-					beerMap.panTo(INITIAL_CENTER)
-				}, 800)
-			})();
-		} else if (beerMap.getZoom() < INITIAL_ZOOM) {
-			zoominFunc(INITIAL_ZOOM, 100, function() {
-				setTimeout(function() {
-					beerMap.panTo(INITIAL_CENTER)
-				}, 800)
-			})();
+	if (buttonPressed === 'showBeers') {
+		selectedMode = 'beers';
+		if (state === 'area' ) {
+			//todo change icon and number in areaMarkers to beers
+			showAreaMarkers('beers')
 		} else {
-			setTimeout(function() {
-				beerMap.panTo(INITIAL_CENTER)
-			}, 100)
+			showAllMarkers('beers')
+			//todo change icon and number in markers to beers
 		}
-
-		// beerMap.setCenter(INITIAL_CENTER);
-		// resetZindexes();
-	} else if (buttonPressed === 'back') {
-		// unset back
-
-
-		markerClusters.maxZoom_ = MAX_ZOOM_CLUSTERS;
-		markerClusters.resetViewport()
-
-		beerMap.setZoom(onGroupMode); //todo make it smouth, check for zoom in or out
-		setTimeout(function() {
-				beerMap.panTo(INITIAL_CENTER);
-		}, 200)
-
-		beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
-		onGroupMode = 0;
-
-		document.getElementById('groupModeCtls').style.display = 'none';
-		document.getElementById('listContainer').style.display = 'block';
-		document.getElementById('mainModeCtls').style.display = 'flex';
-		setVisibleMarkers(true);
-
-
+	} else if (buttonPressed === "showBrews") {
+		selectedMode = 'brews';
+		if (state === 'area' ) {
+			//todo change icon and number in areaMarkers to beers
+			showAreaMarkers('brews')
+		} else {
+			showAllMarkers('brews')
+			//todo change icon and number in markers to beers
+		}
 	}
-	else if (buttonPressed === "small_events"){
-		alert("This button will do something useful in a later tutorial!");
-	}
-	else if (buttonPressed === "rainfall"){
-		alert("This button will do something useful in a later tutorial!");
-	}
-	else if (buttonPressed === "showGroups" && selectedMode !== 'groups') {
-		selectedMode = "groups";
-		beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
-		showClusters();
-		// markerClusters.resetViewport()
-		beerMap.setZoom(INITIAL_ZOOM);
-		beerMap.panTo(INITIAL_CENTER);
-		document.getElementById('groupsMode').classList.add('mode-checked');
-		document.getElementById('pinsMode').classList.remove('mode-checked');
-
-		// loadClusters();
-	}
-	else if (buttonPressed === "showPins") {
-		selectedMode = "pins";
-		beerMap.maxZoom = MAX_ZOOM;
-		beerMap.setZoom(INITIAL_ZOOM);
-		beerMap.panTo(INITIAL_CENTER);
-		document.getElementById('groupsMode').classList.remove('mode-checked');
-		document.getElementById('pinsMode').classList.add('mode-checked');
-		markerClusters.clearMarkers();
-		showMarkers(google.maps.Animation.DROP);
-		// showMarkers();
-	}
+	// else if (buttonPressed === "reset"){
+	// 	if (selectedMode === 'groups') {
+	// 		showClusters();
+	// 		beerMap.panTo(INITIAL_CENTER);
+	// 		beerMap.setZoom(INITIAL_ZOOM);
+	// 		beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
+	//
+	// 	} else if (selectedMode === 'pins') {
+	// 		beerMap.maxZoom = MAX_ZOOM;
+	// 		beerMap.panTo(INITIAL_CENTER);
+	// 		beerMap.setZoom(INITIAL_ZOOM);
+	//
+	// 		markerClusters.clearMarkers();
+	// 		showMarkers(null);
+	// 	}
+	//
+	// 	if (beerMap.getZoom() > INITIAL_ZOOM) {
+	// 		zoomoutFunc(INITIAL_ZOOM, 100, function() {
+	// 			setTimeout(function() {
+	// 				beerMap.panTo(INITIAL_CENTER)
+	// 			}, 800)
+	// 		})();
+	// 	} else if (beerMap.getZoom() < INITIAL_ZOOM) {
+	// 		zoominFunc(INITIAL_ZOOM, 100, function() {
+	// 			setTimeout(function() {
+	// 				beerMap.panTo(INITIAL_CENTER)
+	// 			}, 800)
+	// 		})();
+	// 	} else {
+	// 		setTimeout(function() {
+	// 			beerMap.panTo(INITIAL_CENTER)
+	// 		}, 100)
+	// 	}
+	//
+	// 	// beerMap.setCenter(INITIAL_CENTER);
+	// 	// resetZindexes();
+	// } else if (buttonPressed === 'back') {
+	// 	// unset back
+	//
+	//
+	// 	markerClusters.maxZoom_ = MAX_ZOOM_CLUSTERS;
+	// 	markerClusters.resetViewport()
+	//
+	// 	beerMap.setZoom(onGroupMode); //todo make it smouth, check for zoom in or out
+	// 	setTimeout(function() {
+	// 			beerMap.panTo(INITIAL_CENTER);
+	// 	}, 200)
+	//
+	// 	beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
+	// 	onGroupMode = 0;
+	//
+	// 	document.getElementById('groupModeCtls').style.display = 'none';
+	// 	document.getElementById('listContainer').style.display = 'block';
+	// 	document.getElementById('mainModeCtls').style.display = 'flex';
+	// 	setVisibleMarkers(true);
+	//
+	//
+	// }
+	// else if (buttonPressed === "small_events"){
+	// 	alert("This button will do something useful in a later tutorial!");
+	// }
+	// else if (buttonPressed === "rainfall"){
+	// 	alert("This button will do something useful in a later tutorial!");
+	// }
+	// else if (buttonPressed === "showGroups" && selectedMode !== 'groups') {
+	// 	selectedMode = "groups";
+	// 	beerMap.setOptions({maxZoom: MAX_ZOOM_CLUSTERS});
+	// 	showClusters();
+	// 	// markerClusters.resetViewport()
+	// 	beerMap.setZoom(INITIAL_ZOOM);
+	// 	beerMap.panTo(INITIAL_CENTER);
+	// 	document.getElementById('groupsMode').classList.add('mode-checked');
+	// 	document.getElementById('pinsMode').classList.remove('mode-checked');
+	//
+	// 	// loadClusters();
+	// }
+	// else if (buttonPressed === "showPins") {
+	// 	selectedMode = "pins";
+	// 	beerMap.maxZoom = MAX_ZOOM;
+	// 	beerMap.setZoom(INITIAL_ZOOM);
+	// 	beerMap.panTo(INITIAL_CENTER);
+	// 	document.getElementById('groupsMode').classList.remove('mode-checked');
+	// 	document.getElementById('pinsMode').classList.add('mode-checked');
+	// 	markerClusters.clearMarkers();
+	// 	showMarkers(google.maps.Animation.DROP);
+	// 	// showMarkers();
+	// }
 	else if (buttonPressed === 'menu') {
 		openIntroModal()
 		// $('#beerInfoModal').modal();
