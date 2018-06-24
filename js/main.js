@@ -60,7 +60,7 @@ var markersLines = [];
 var infoBoxes = [];
 var markersRaw = [];
 
-var curLang = 'gr';
+var curLang = 'en';
 ///////// MAIN /////////////
 window.addEventListener('DOMContentLoaded', function() {
 
@@ -236,11 +236,12 @@ function createAllMarkers() {
 	// set the brews number
 	for (var i=0; i < markersRaw.length; i++) {
 		var data = markersRaw[i];
+		console.log("naaaaaaaaaaaa")
 		var marker = createImageMarker(
 			data.lat,
 			data.log,
 			data.icon,
-			data.name
+			data.name[curLang]
 		)
 		marker.rawData = markersRaw[i];
 		markers.push(marker);
@@ -416,18 +417,20 @@ function showAreaMarkers(type) {
 	}
 }
 
-function showAllMarkers(type, area) {
+function showAllMarkers(type, area, id) {
 	console.log('showAllMarkers()');
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
-			if ( type === 'beers') {
-					// markers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
-					markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
-					markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers,''))
-			} else {
-				// markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
-				markers[i].setLabel(null, '')
-			}
+			markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
+			markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
+			// if ( type === 'beers') {
+			// 		markers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
+			// 		markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
+			//
+			// } else {
+			// 	markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
+			// 	markers[i].setLabel(null, '')
+			// }
 
 			markers[i].setMap(beerMap);
 		}
@@ -548,7 +551,7 @@ function getImageObj(url, size) {
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
-			labelOrigin: new google.maps.Point(25,35),
+			labelOrigin: new google.maps.Point(25,55),
       // scaledSize: new google.maps.Size(60, 88), // short pin
       scaledSize: new google.maps.Size(size, size), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
@@ -579,7 +582,7 @@ function createImageMarker(lat, log, imageUrl, legend, areaLabel) {
       draggable: false,
       shape: shape,
 			clickable: true,
-      // icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE+15),
+      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE+15),
 			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
@@ -1334,45 +1337,12 @@ function onClickListItem(id) {
 	var latLng = new google.maps.LatLng(markers[id].rawData.lat, markers[id].rawData.log)
 
 	closeSearchBox();
-
-
 	document.getElementById('mainModeCtls').style.display = 'none';
 	document.getElementById('listContainer').style.display = 'none';
 	document.getElementById('groupModeCtls').style.display = 'flex';
 
 	hideAreaMarkers();
 
-
-	showAllMarkers(selectedMode, this.rawData.id)
-
-	var bounds = new google.maps.LatLngBounds(this.center_, this.center_);
-	for (var i = 0; i < markers.length; i++) {
-		var marker = markers[i];
-		if (marker.rawData.area === this.rawData.id) {
-			bounds.extend(marker.getPosition());
-		}
-	}
-
-	beerMap.panTo(bounds.getCenter());
-	zoominFunc(beerMap.getZoom() + 3, 100, function() {
-		setTimeout(function() {
-				beerMap.fitBounds(bounds);
-		}, 500)
-	})()
-
-
-
-	return;
-	// clear map
-	// beerMap.maxZoom = MAX_ZOOM;
-	// markerClusters.clearMarkers(); //if group mode
-	setMapMarkers(null);
-
-	// clear controls state
-	// document.getElementById('groupsMode').classList.remove('active');
-	// document.getElementById('pinsMode').classList.remove('active');
-
-	// wait before any step
 	setTimeout(function() {
 
 		var delayZoom = 100;
@@ -1383,30 +1353,16 @@ function onClickListItem(id) {
 		if (beerMap.getZoom() <= endZoomOut) {
 			firstDelay = 10;
 		}
-
-
 		zoomoutFunc(endZoomOut, delayZoom, function() {
 			setTimeout(function() {
 				markers[id].setAnimation(google.maps.Animation.DROP)
 				markers[id].setMap(beerMap);
-
-				// setTimeout(function(){markers[id].setAnimation(null)}, 500)
-
-
 				beerMap.panTo(latLng);
 				setTimeout(function() {
 					zoominFunc(endZoomIn, delayZoom, function() {
 						setTimeout(function() {
-						setInfoModalValues(markers[id]);
+							setInfoModalValues(markers[id]);
 							$('#beerInfoModal').modal();
-							// show markers or groups
-							// setTimeout(function() {
-							// 	if (selectedMode === 'groups') {
-							// 		showClusters();
-							// 	} else {
-							// 		showMarkers(null)
-							// 	}
-							// }, 500)
 						}, 1200)
 					})();
 				}, 1200)
@@ -1418,10 +1374,7 @@ function onClickListItem(id) {
 
 }
 
-function testing() {
-	console.log("ela re file")
 
-}
 function openIntroModal() {
 	return;
 	$('#introModal').modal();
