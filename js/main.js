@@ -1380,6 +1380,7 @@ function zoomoutFunc(endZoomOut, delayZoom, execFun) {
 }
 
 function onClickListItem(id) {
+	document.getElementById('introBtnCol').style.display = 'block';
 
 	var latLng = new google.maps.LatLng(markers[id].rawData.lat, markers[id].rawData.log)
 
