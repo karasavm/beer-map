@@ -322,10 +322,10 @@ function createAreaMarkers(type) {
 
 			beerMap.panTo(bounds.getCenter());
 
-			zoominFunc(beerMap.getZoom() + 3, 100, function() {
+			zoominFunc(beerMap.getZoom() + 2, 100, function() {
 				setTimeout(function() {
 						beerMap.fitBounds(bounds);
-				}, 500)
+				}, 200)
 			})()
 
 
