@@ -74,7 +74,7 @@ body {
 }
 
 .custom-pin {
-  background-image: url('js/gmaps-marker-clusterer-master/images/test9.png');
+  background-image: url('images/introPin2.png.png');
   /* background-image: url('js/gmaps-marker-clusterer-master/images/cm1.png'); */
   background-repeat: no-repeat;
   background-size: 60px;
@@ -266,7 +266,7 @@ body {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 
-    background-color: bg-secondary;
+    /* background-color: bg-secondary; */
 
     background-image: url('images/magnify.png');
     background-size: 30px;

@@ -927,12 +927,12 @@ function getMarkerResizeFactor() {
   var currentZoom = beerMap.getZoom();
 
 
-	if (currentZoom >= 12) return 2;
-  if (currentZoom >= 11) return 1.8;
-  if (currentZoom >= 10) return 1.6;
-	if (currentZoom >= 9) return 1.4;
-	if (currentZoom >= 8) return 1.2;
-	if (currentZoom >= 7) return 1;
+	if (currentZoom >= 12) return 2.2;
+  if (currentZoom >= 11) return 2;
+  if (currentZoom >= 10) return 1.8;
+	if (currentZoom >= 9) return 1.6;
+	if (currentZoom >= 8) return 1.4;
+	if (currentZoom >= 7) return 1.2;
 	if (currentZoom >= 6) return 1;
   return 1;
 }
