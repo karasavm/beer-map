@@ -347,7 +347,7 @@ function createAreaMarkers(type) {
 
 
 			// zoomCtrLocked = true;
-			zoominFunc(beerMap.getZoom() + 4, 100, function() {
+			zoominFunc(beerMap.getZoom() + 2, 100, function() {
 				setTimeout(function() {
 
 						beerMap.fitBounds(bounds);
