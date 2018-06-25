@@ -1,3 +1,7 @@
+.container {
+    max-width: 660px;
+}
+
 html {
   height: 100%;
 }
@@ -262,9 +266,9 @@ body {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 
-    background-color: grey;
+    background-color: bg-secondary;
 
-    background-image: url('images/view-list.png');
+    background-image: url('images/magnify.png');
     background-size: 30px;
     background-position: 10px 10px;
     background-repeat: no-repeat;

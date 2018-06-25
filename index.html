@@ -2,7 +2,7 @@
   <head>
     <!DOCTYPE html>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greek Microbr>eweries</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
     <!-- GOOGLE API -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&sensor=true"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC8Od4Dcf51hvm57_VPgMjkIjjOCSZU5s&language=el&region=GR&sensor=true"></script>
 
     <!-- LIBS -->
     <script src="js/infobox/infobox.js" type="text/javascript"></script>
@@ -220,31 +220,43 @@
     <div id="festival-map"></div>
 
     <div class="container fixed-bottom">
-      <div id="mainModeCtls" class="row justify-content-center">
-        <div class="col pr-0">
-          <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
+      <div id="mainModeCtls" class="row align-items-center">
+        <div class="col-2">
+
         </div>
-        <div class="col no-padding">
+        <div class="col-8 no-padding text-center">
           <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
+
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- <button id='groupsMode' type="button" class="btn btn-lg btn-secondary mode-checked btn-opacity" onclick="handleRequests('showGroups')" lng-key="groupsBtn">:</button>
               <button id='pinsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showPins')" lng-key="pinsBtn">:</button> -->
               <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity _mode-checked" onclick="handleRequests('togleAreas')" lng-key="areasBtn">AREA</button> -->
-              <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" class="btn btn-opacity" onclick="handleRequests('eye')"><i class="fa fa-eye"></i></button>
-              <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
-              <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button>
+
+              <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
+              <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
+
+              <button id='beersMode' class="btn btn-secondary mode-checked btn-opacity px-2 py-0" onclick="handleRequests('showBeers')">
+                   <img src="images/beers.png" width="80" />
+
+              </button>
+
+              <button id='brewsMode' class="btn btn-secondary btn-opacity px-2 py-0" onclick="handleRequests('showBrews')">
+                   <img src="images/brews.png" width="80" />
+
+              </button>
 
             </div>
           </div>
         </div>
-        <div class="col text-right pl-0">
+        <div class="col-2 text-right pl-0">
+          <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" class="btn btn-secondary btn-opacity" onclick="handleRequests('eye')"><i class="fa fa-eye"></i></button>
           <!-- <button id="backBtn" type="button" style="display: block;"
           class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('reset')"><i class="fa fa-arrow-left"></i></button> -->
         </div>
       </div>
 
-      <div id="groupModeCtls" class="row justify-content-center" style="display: none;">
-        <div class="col text-center pr-0">
+      <div id="groupModeCtls" class="row pb-3" style="display: none;">
+        <div class="col text-right">
           <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('back')">BACK</button>
         </div>
       </div>
@@ -280,21 +292,27 @@
 
 
       <div id="listContainer" class="container fixed-top pt-1">
-        <div class="row justify-content-left">
+
+        <div class="row">
           <div class="col">
             <form action="">
-              <input id="searchbox" autocomplete="off" type="text" class="btn-opacity"
+              <input id="searchbox" autocomplete="off" type="text" class="btn-opacity bg-secondary"
                 name="search" placeholder="Search"
                 onkeyup="onKeyupSearcBox()" onfocus="onSearchboxFocus()">
               <button id="searchbox-cancel" type="button"
-              onclick="onSearchBoxClearClick()"
-              name="button"
-              class="btn btn-lg btn-secondary"
+                onclick="onSearchBoxClearClick()"
+                name="button"
+                class="btn btn-lg btn-secondary"
               >
               <i class="fa fa-times"></i>
               </button>
             </form>
           </div>
+
+          <div class="col text-right" id='introBtnCol'>
+            <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
+          </div>
+
         </div>
 
         <div class="row justify-content-center" >
@@ -316,7 +334,6 @@
                 </div>
               </a>
             </div>
-
         </div>
       </div>
     </div>

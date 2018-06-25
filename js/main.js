@@ -12,7 +12,7 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 35;
+var MARKER_CAP_SIZE = 40;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
@@ -168,36 +168,6 @@ function loadbeerMap() {
 
   loadStyledMap();
 
-
-	function preloadImages(array) {
-	  if (!preloadImages.list) {
-	      preloadImages.list = [];
-	  }
-	  var list = preloadImages.list;
-	  for (var i = 0; i < array.length; i++) {
-	      var img = new Image();
-	      img.onload = function() {
-	          var index = list.indexOf(this);
-	          if (index !== -1) {
-	              // remove image from the array once it's loaded
-	              // for memory consumption reasons
-	              list.splice(index, 1);
-	          }
-	      }
-	      list.push(img);
-	      img.src = array[i];
-	  }
-	}
-
-	var images = []
-	for (var i=0; i < markersRaw.length; i++) {
-		images.push( + markersRaw[i].icon)
-	}
-
-	// preloadImages(images)
-
-
-
   var rainMapOverlay = new google.maps.ImageMapType({
    getTileUrl: function(coord, zoom) {
    return 'tiles2' + '/' +zoom+ '/' +coord.x+ '/' + coord.y +'.png';
@@ -301,7 +271,7 @@ function createAllMarkers() {
 function getAreaMarkerLabel(number, text) {
 	console.log('getAreaMarkerLabel()')
 	return {
-		color: 'white',
+		color: '#663100',
 		fontSize: '15px',
 		fontWeight: 'bold',
 		text: number.toString() + ' ' + text,
@@ -318,7 +288,8 @@ function createAreaMarkers(type) {
 			data.latLng.split(',')[0],
 			data.latLng.split(',')[1],
 			'beers.png',
-			data.name)
+			data.name,
+			true)
 		marker.setLabel(
 			getAreaMarkerLabel(areasData[i].beers, "")
 		)
@@ -350,6 +321,7 @@ function createAreaMarkers(type) {
 			}
 
 			beerMap.panTo(bounds.getCenter());
+
 			zoominFunc(beerMap.getZoom() + 3, 100, function() {
 				setTimeout(function() {
 						beerMap.fitBounds(bounds);
@@ -392,36 +364,36 @@ function createAreaMarkers(type) {
 
 
 		// geografika diamerismata
-		var size = MARKER_CAP_SIZE*0.01;
-		var image = {
-	      origin: new google.maps.Point(0, 0),
-	      url: PINS_PATH + 'stala.png',
-				labelOrigin: new google.maps.Point(0,35),
-	      // scaledSize: new google.maps.Size(60, 88), // short pin
-	      scaledSize: new google.maps.Size(size, size), // cap
-	      // anchor: new google.maps.Point(31, 88), // short pin
-	      anchor: new google.maps.Point(size/2, size/2), // cap
-	    };
+		// var size = MARKER_CAP_SIZE*0.01;
+		// var image = {
+	  //     origin: new google.maps.Point(0, 0),
+	  //     url: PINS_PATH + 'stala.png',
+		// 		labelOrigin: new google.maps.Point(0,35),
+	  //     // scaledSize: new google.maps.Size(60, 88), // short pin
+	  //     scaledSize: new google.maps.Size(size, size), // cap
+	  //     // anchor: new google.maps.Point(31, 88), // short pin
+	  //     anchor: new google.maps.Point(size/2, size/2), // cap
+	  //   };
+		//
+		// var areaLabel =  new google.maps.Marker({
+    //   position: new google.maps.LatLng(data.latLng.split(',')[0], data.latLng.split(',')[1]),
+    //   title: '',
+		// 	icon: image,
+    //   animation: null,
+    //   draggable: false,
+		// 	clickable: false,
+		// 	label: {
+		// 			color: '#753b07',
+		// 			fontSize: '12px',
+		// 			fontWeight: 'bold',
+		// 			text:areasData[i].name,
+		// 			fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
+		// 		},
+		// 	// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
+    //   zIndex: ZINDEX_MARKER - 1
+    // });
 
-		var areaLabel =  new google.maps.Marker({
-      position: new google.maps.LatLng(data.latLng.split(',')[0], data.latLng.split(',')[1]),
-      title: '',
-			icon: image,
-      animation: null,
-      draggable: false,
-			clickable: false,
-			label: {
-					color: '#753b07',
-					fontSize: '12px',
-					fontWeight: 'bold',
-					text:areasData[i].name,
-					fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
-				},
-			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
-      zIndex: ZINDEX_MARKER - 1
-    });
-
-		areasLabels.push(areaLabel);
+		// areasLabels.push(areaLabel);
 		// areaLabel.setMap(beerMap)
 
 
@@ -432,7 +404,7 @@ function createAreaMarkers(type) {
 function showAreaMarkers(type) {
 	console.log('showAreaMarkers()')
 	for (var i=0; i < areaMarkers.length; i++) {
-		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
+		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
 
 		areaMarkers[i].setLabel(
 			getAreaMarkerLabel(areasData[i][type], '')
@@ -573,22 +545,33 @@ function convertFromLatLngToPoint(latlng, map, elementContainingMap){
   return [x,y];
 }
 
-function getImageObj(url, size) {
+function getImageObj(url, size, factor) {
+	if (!factor) {
+		factor = 1
+	} else {
+		factor = 1.1
+	}
+	console.log(factor)
 
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
-			labelOrigin: new google.maps.Point(25,55),
+			labelOrigin: new google.maps.Point(size/2,size*factor*1.1),
       // scaledSize: new google.maps.Size(60, 88), // short pin
-      scaledSize: new google.maps.Size(size, size), // cap
+      scaledSize: new google.maps.Size(size, size*factor), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
-      anchor: new google.maps.Point(size/2, size/2), // cap
+      anchor: new google.maps.Point(size/2, size*factor/2), // cap
     };
 
+		image.initHeight = size*factor;
+		image.initWidth = size;
+
+		image.initLabelHeigthFactor = 1.1;
+		image.initLabelWidthFactor = 1/2;
   return image;
 }
 var tempPinCounter = 1;
-function createImageMarker(lat, log, imageUrl, legend, areaLabel) {
+function createImageMarker(lat, log, imageUrl, legend, areaLabel, factor) {
 
     var position = new google.maps.LatLng(lat, log);
 
@@ -609,7 +592,7 @@ function createImageMarker(lat, log, imageUrl, legend, areaLabel) {
       draggable: false,
       shape: shape,
 			clickable: true,
-      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE+15),
+      icon: getImageObj(PINS_PATH + imageUrl, MARKER_CAP_SIZE, factor),
 			// icon: getImageObj('icons/pins/60x60/eza.png', MARKER_CAP_SIZE),
       zIndex: ZINDEX_MARKER
     });
@@ -838,7 +821,7 @@ function closeSearchBox() {
 	document.getElementById("searchbox-cancel").style.display = "none";
 	document.getElementById("searchlist").style.display = "none";
 	searchBox.classList.remove("searchbox-focus");
-	searchbox.style.backgroundImage = "url('images/view-list.png')";
+	// searchbox.style.backgroundImage = "url('images/view-list.png')";
 }
 
 function onKeyupSearcBox() {
@@ -848,12 +831,13 @@ function onKeyupSearcBox() {
 }
 function onSearchboxFocus() {
 
+	document.getElementById('introBtnCol').style.display = 'none';
 	var searchBox = document.getElementById("searchbox");
 
 	if ( !searchBox.classList.contains('searchbox-focus') ) {
 		// fist click on searchBox
 
-		searchbox.style.backgroundImage = "url('images/magnify.png')";
+		// searchbox.style.backgroundImage = "url('images/magnify.png')";
 		searchBox.blur();
 		searchBox.classList.add("searchbox-focus");
 	}
@@ -868,7 +852,6 @@ function onSearchboxFocus() {
 
 function onSearchBoxClearClick() {
 
-
 	console.log("onSearchBoxClearClick");
 	var searchBox = document.getElementById("searchbox");
 
@@ -878,6 +861,9 @@ function onSearchBoxClearClick() {
 	/// and close panel with the second click
 	searchBox.value = '';
 	closeSearchBox();
+	setTimeout(function() {
+		document.getElementById('introBtnCol').style.display = 'block';
+	}, 200);
 	return;
 	/////////////////////////
 
@@ -889,6 +875,8 @@ function onSearchBoxClearClick() {
 		searchBox.focus();
 
 	}
+
+
 }
 
 function openInNewTab(url) {
@@ -933,6 +921,20 @@ function get_new_cap_size() {
 	if (currentZoom >= 7) return MARKER_CAP_SIZE*1.2;
 	if (currentZoom >= 6) return MARKER_CAP_SIZE*1;
   return MARKER_CAP_SIZE;
+}
+
+function getMarkerResizeFactor() {
+  var currentZoom = beerMap.getZoom();
+
+	if (currentZoom >= 13) return 2.4;
+	if (currentZoom >= 12) return 2.2;
+  if (currentZoom >= 11) return 2;
+  if (currentZoom >= 10) return 1.8;
+	if (currentZoom >= 9) return 1.6;
+	if (currentZoom >= 8) return 1.4;
+	if (currentZoom >= 7) return 1.2;
+	if (currentZoom >= 6) return 1;
+  return 1;
 }
 
 function updateMarkersSize() {
@@ -1122,7 +1124,25 @@ function onZoomChanged() {
 	// 	console.log(style)
 	// 	areasLabels[i].setLabel(style)
 	// }
-	console.log(markers)
+
+
+	for (var i=0; i < markers.length; i++) {
+		var icon = markers[i].icon;
+		icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
+		icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
+
+		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
+		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
+	}
+	console.log(areaMarkers)
+	for (var i=0; i < areaMarkers.length; i++) {
+		var icon = areaMarkers[i].icon;
+		icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
+		icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
+
+		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
+		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
+	}
 	return;
 	if ( beerMap.getZoom() >= 8) {
 		if (state !== 'all') {
@@ -1403,7 +1423,7 @@ function onClickListItem(id) {
 
 
 function openIntroModal() {
-	return;
+	// return;
 	$('#introModal').modal();
 
 	document.getElementById("introModalMainBody").addEventListener("touchstart", function(e) {
