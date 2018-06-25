@@ -60,7 +60,7 @@ var markersLines = [];
 var infoBoxes = [];
 var markersRaw = [];
 
-var curLang = 'en';
+var curLang = 'gr';
 ///////// MAIN /////////////
 window.addEventListener('DOMContentLoaded', function() {
 
@@ -72,6 +72,14 @@ window.addEventListener('DOMContentLoaded', function() {
 //When the page loads, the line below calls the function below called 'loadbeerMap' to load up the map.
 google.maps.event.addDomListener(window, 'load', function() {
 	console.log("addDomListener");
+
+	document.getElementById("eyeBtn").addEventListener("touchstart", function(e) {
+		onEyeDown();
+	}, false);
+
+	document.getElementById("eyeBtn").addEventListener("touchend", function(e) {
+		onEyeUp();
+	}, false);
 
 	parseRawData();
 	createAreaMarkers('beers');
@@ -229,8 +237,23 @@ function loadbeerMap() {
 var areaMarkers = [];
 // var areaBrewMarkers = [];
 
+var drop = true;
+function start(marker) {
+	return function() {
+		marker.setMap(beerMap)
+	}
+}
 
+function onEyeDown() {
+	hideAreaMarkers();
+	showAllMarkers();
 
+}
+
+function onEyeUp() {
+	hideAllMarkers();
+	showAreaMarkers(selectedMode);
+}
 function createAllMarkers() {
 	// set the beers number
 	// set the brews number
@@ -243,7 +266,9 @@ function createAllMarkers() {
 			data.icon,
 			data.name[curLang]
 		)
+
 		marker.rawData = markersRaw[i];
+		marker.setLabel(getAreaMarkerLabel(marker.rawData.beers, ''))
 		markers.push(marker);
 
 		google.maps.event.addListener(markers[i], "click", function() {
@@ -421,8 +446,10 @@ function showAllMarkers(type, area, id) {
 	console.log('showAllMarkers()');
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
-			markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
-			markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
+			// markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
+			// markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
+
+			/////////////////////////////////////////
 			// if ( type === 'beers') {
 			// 		markers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
 			// 		markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
@@ -1383,6 +1410,8 @@ function openIntroModal() {
 		closeIntroModal();
 	}, false);
 
+
+
 	// return;
 	var delay = 2000;
 	var allNum = 69;
@@ -1477,6 +1506,8 @@ function resetZindexes() {
 function handleRequests (buttonPressed) {
 	if (buttonPressed === 'showBeers') {
 		selectedMode = 'beers';
+		document.getElementById('beersMode').classList.add('mode-checked')
+		document.getElementById('brewsMode').classList.remove('mode-checked')
 		if (state === 'area' ) {
 			//todo change icon and number in areaMarkers to beers
 			showAreaMarkers('beers')
@@ -1485,6 +1516,8 @@ function handleRequests (buttonPressed) {
 			//todo change icon and number in markers to beers
 		}
 	} else if (buttonPressed === "showBrews") {
+		document.getElementById('beersMode').classList.remove('mode-checked')
+		document.getElementById('brewsMode').classList.add('mode-checked')
 		selectedMode = 'brews';
 		if (state === 'area' ) {
 			//todo change icon and number in areaMarkers to beers
@@ -1496,18 +1529,34 @@ function handleRequests (buttonPressed) {
 	}
 	else if (buttonPressed === "back"){
 
-		console.log('Pressed "back"')
-		beerMap.setZoom(INITIAL_ZOOM);
-		beerMap.panTo(INITIAL_CENTER);
+		console.log('Pressed "back"');
 
-		hideAllMarkers();
-		showAreaMarkers(selectedMode);
+		// initial state
+		// beerMap.setZoom(INITIAL_ZOOM);
+		// beerMap.panTo(INITIAL_CENTER);
+
+
+
+
+		setTimeout(function() {
+			zoominFunc(INITIAL_ZOOM, 100, function() {
+				zoomoutFunc(INITIAL_ZOOM, 100, function() {
+					hideAllMarkers();
+					beerMap.panTo(INITIAL_CENTER);
+					showAreaMarkers(selectedMode);
+				})();
+			})()
+		}, 100)
 
 		document.getElementById('mainModeCtls').style.display = 'flex';
 		document.getElementById('listContainer').style.display = 'block';
 		document.getElementById('groupModeCtls').style.display = 'none';
 
 		onGroupMode = null;
+	}
+	else if (buttonPressed === "eye"){
+		// document.getElementById('eyeBtn').classList.add('mode-checked');
+		// document.getElementById('eyeBtn').classList.remove('active')
 	}
 	// else if (selectedMode === 'pins') {
 	// 		beerMap.maxZoom = MAX_ZOOM;
