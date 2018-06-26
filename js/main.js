@@ -404,13 +404,13 @@ function createAreaMarkers(type) {
 }
 
 function showAreaMarkers(type) {
-	var test = createImageMarker(
-		'41.653312',
-		'21.633184',
-		'greek.png',
-		'test',
-		true)
-	test.setMap(beerMap)
+	// var test = createImageMarker(
+	// 	'41.653312',
+	// 	'21.633184',
+	// 	'greek.png',
+	// 	'test',
+	// 	true)
+	// test.setMap(beerMap)
 	console.log('showAreaMarkers()')
 	for (var i=0; i < areaMarkers.length; i++) {
 		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
