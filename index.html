@@ -29,7 +29,7 @@
 
   </head>
 
-  <body onload="translate()" style="display: none;">
+  <body onload="location.hash='#map';translate()" style="display: none;" onhashchange="onHashChange()">
 
     <!-- Button trigger modal -->
 
@@ -48,7 +48,7 @@
         <div class="modal-content">
           <div class="modal-header">
 
-            <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close modal-close-btn" onclick="window.history.back();" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
 
