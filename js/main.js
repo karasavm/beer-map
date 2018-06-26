@@ -280,6 +280,8 @@ function getAreaMarkerLabel(number, text) {
 }
 var areasLabels = [];
 function createAreaMarkers(type) {
+
+
 	console.log('createAreaMarkers()')
 	for (var i=0; i < areasData.length; i++) {
 		console.log(areasData[i])
@@ -402,6 +404,13 @@ function createAreaMarkers(type) {
 }
 
 function showAreaMarkers(type) {
+	var test = createImageMarker(
+		'41.653312',
+		'21.633184',
+		'greek.png',
+		'test',
+		true)
+	test.setMap(beerMap)
 	console.log('showAreaMarkers()')
 	for (var i=0; i < areaMarkers.length; i++) {
 		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
@@ -556,7 +565,7 @@ function getImageObj(url, size, factor) {
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
-			labelOrigin: new google.maps.Point(size/2,size*factor*1.1),
+			labelOrigin: new google.maps.Point(size/2,size*factor*1.15),
       // scaledSize: new google.maps.Size(60, 88), // short pin
       scaledSize: new google.maps.Size(size, size*factor), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
@@ -566,7 +575,7 @@ function getImageObj(url, size, factor) {
 		image.initHeight = size*factor;
 		image.initWidth = size;
 
-		image.initLabelHeigthFactor = 1.1;
+		image.initLabelHeigthFactor = 1.15;
 		image.initLabelWidthFactor = 1/2;
   return image;
 }
@@ -1353,6 +1362,8 @@ function closeIntroModal() {
 }
 
 
+// window.onbeforeunload = function() { console.log("Your work will be lost.")};
+
 function zoominFunc(endZoomIn, delayZoom, execFun) {
 	return function zoomin() {
 		if (beerMap.getZoom() < endZoomIn) {
@@ -1424,7 +1435,7 @@ function onClickListItem(id) {
 
 
 function openIntroModal() {
-	// return;
+	return;
 	$('#introModal').modal();
 
 	document.getElementById("introModalMainBody").addEventListener("touchstart", function(e) {
