@@ -26,6 +26,7 @@ var PINS_PATH = 'icons/pins/150x150cp/';
 var LOGO_PATH = 'icons/pins/compressed/';
 var zoomCtrLocked = false;
 var onGroupMode = 0;
+var initState = false;
 var on
 var INITIAL_ZOOM = 6;
 var INITIAL_CENTER = new google.maps.LatLng(39.074208, 22.824311999999964);
@@ -63,6 +64,7 @@ var areaMarkersHiden, allMarkersHiden;
 var curLang = 'gr';
 ///////// MAIN /////////////
 var overrideSearchboxHash = false;
+
 function onHashChange () {
 	// if (location.hash !== '#noBack') {
 	// 		console.log("..............",location.hash)
@@ -76,6 +78,7 @@ function onHashChange () {
 	}
 
 	if (location.hash === '#zoomed') {
+
 		console.log("edw")
 		$('#beerInfoModal').modal('hide');
 	}
@@ -337,6 +340,7 @@ function createAreaMarkers(type) {
 
 		google.maps.event.addListener(areaMarkers[i], "click", function() {
 			location.hash = 'zoomed';
+			initState = false;
 			console.log("GroupMode started", this)
 			onGroupMode = {
 				zoom: beerMap.getZoom(),
@@ -732,6 +736,7 @@ function loadMapMarkers (markersRaw, markers){
 function initControlsState() {
 	selectedMode = 'beers';
 	state = 'area';
+	initState = true;
 	showAreaMarkers(selectedMode)
 	// markerClusters.clearMarkers();
 	// showMarkers(selectedType);
@@ -1168,6 +1173,7 @@ function loadClusters() {
 // -------------------------- EVENT HANDLERS -------------
 
 function onZoomChanged() {
+	// initState = false;
 	// return;
   // updateMarkersSize();
 
@@ -1494,8 +1500,9 @@ function openIntroModal() {
 	// return;
 	$('#introModal').modal();
 	location.hash = "#intro";
-	document.getElementById("introModalMainBody").addEventListener("touchstart", function(e) {
-		closeIntroModal();
+	document.getElementById("introModal").addEventListener("touchstart", function(e) {
+		// closeIntroModal();
+		console.log("Touchstart")
 	}, false);
 
 
@@ -1591,17 +1598,21 @@ function resetZindexes() {
 	console.log("Reset z indexed. check guides")
 }
 function backBtnHandle () {
-
+	console.log("kdskjhakjfhakjhfdkjhjkfh")
 	// $('#beerInfoModal').modal();
-	setTimeout(function() {
-		zoominFunc(INITIAL_ZOOM, 100, function() {
-			zoomoutFunc(INITIAL_ZOOM, 100, function() {
-				hideAllMarkers();
-				beerMap.panTo(INITIAL_CENTER);
-				showAreaMarkers(selectedMode);
-			})();
-		})()
-	}, 100)
+	if (!initState) {
+		setTimeout(function() {
+			zoominFunc(INITIAL_ZOOM, 100, function() {
+				zoomoutFunc(INITIAL_ZOOM, 100, function() {
+					hideAllMarkers();
+					beerMap.panTo(INITIAL_CENTER);
+					showAreaMarkers(selectedMode);
+					initState = true;
+				})();
+			})()
+		}, 100)
+
+	}
 
 
 	document.getElementById('mainModeCtls').style.display = 'flex';
