@@ -146,11 +146,11 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="introModal" style="padding-right: 0px!important;background-color:rgba(58, 51, 51, 0.73);"tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
+    <div class="modal fade" onclick="closeIntroModal()" id="introModal" style="padding-right: 0px!important;background-color:rgba(58, 51, 51, 0.73);"tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
       <div class="modal-dialog modal-dialog-centered" role="document" >
         <div class="modal-content intro-modal" >
 
-          <div class="modal-body" onclick="closeIntroModal()" id="introModalMainBody">
+          <div class="modal-body" id="introModalMainBody">
             <div class="container-fluid no-padding">
               <div class="row pb-5">
                 <div class="col no-padding">
@@ -249,17 +249,20 @@
           </div>
         </div>
         <div class="col-2 text-right pl-0">
-          <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" class="btn btn-secondary btn-opacity" onclick="handleRequests('eye')"><i class="fa fa-eye"></i></button>
+          <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()"
+            class="btn btn-secondary btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
+            onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
+          </button>
           <!-- <button id="backBtn" type="button" style="display: block;"
           class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('reset')"><i class="fa fa-arrow-left"></i></button> -->
         </div>
       </div>
 
-      <div id="groupModeCtls" class="row pb-3" style="display: none;">
+      <!-- <div id="groupModeCtls" class="row pb-3" style="display: none;">
         <div class="col text-right">
           <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('back')">BACK</button>
         </div>
-      </div>
+      </div> -->
     </div>
 
 
@@ -289,9 +292,21 @@
 
       </section> -->
 
-
+      <div id="groupModeCtls"class="container fixed-top pt-1" style="display: none;">
+        <div  class="row pb-3" >
+          <div class="col text-left">
+            <button type="button" class="btn btn-secondary btn-opacity btn-lg btn-rectangle" onclick="handleRequests('back')"><i class="fa fa-arrow-left"></i></button>
+          </div>
+        </div>
+      </div>
 
       <div id="listContainer" class="container fixed-top pt-1">
+
+        <div id="groupModeCtls" class="row pb-3" style="display: none;">
+          <div class="col text-left">
+            <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('back')">BACK</button>
+          </div>
+        </div>
 
         <div class="row">
           <div class="col">
@@ -310,7 +325,7 @@
           </div>
 
           <div class="col text-right" id='introBtnCol'>
-            <button type="button" class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
+            <button type="button" class="btn btn-secondary btn-opacity btn-lg btn-rectangle" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
           </div>
 
         </div>

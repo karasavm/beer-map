@@ -59,23 +59,30 @@ var markers = [];
 var markersLines = [];
 var infoBoxes = [];
 var markersRaw = [];
-
+var areaMarkersHiden, allMarkersHiden;
 var curLang = 'gr';
 ///////// MAIN /////////////
-
+var overrideSearchboxHash = false;
 function onHashChange () {
 	// if (location.hash !== '#noBack') {
 	// 		console.log("..............",location.hash)
 	// 		backBtnHandle();
 	// }
-
+	console.log(window.history)
 	if (location.hash === '#map') {
+		closeIntroModal();
+		onSearchBoxClearClick();
 		backBtnHandle();
 	}
 
 	if (location.hash === '#zoomed') {
 		console.log("edw")
 		$('#beerInfoModal').modal('hide');
+	}
+
+	if (location.hash === '#searchbox' && overrideSearchboxHash) {
+		window.history.back();
+		overrideSearchboxHash = false;
 	}
 
 	// if (location.ha)
@@ -258,7 +265,7 @@ function createAllMarkers() {
 	// set the brews number
 	for (var i=0; i < markersRaw.length; i++) {
 		var data = markersRaw[i];
-		console.log("naaaaaaaaaaaa")
+
 		var marker = createImageMarker(
 			data.lat,
 			data.log,
@@ -299,7 +306,7 @@ function createAllMarkers() {
 }
 
 function getAreaMarkerLabel(number, text) {
-	console.log('getAreaMarkerLabel()')
+	// console.log('getAreaMarkerLabel()')
 	return {
 		color: '#663100',
 		fontSize: '15px',
@@ -441,6 +448,7 @@ function showAreaMarkers(type) {
 	// 	'test',
 	// 	true)
 	// test.setMap(beerMap)
+	areaMarkersHiden = false;
 	console.log('showAreaMarkers()')
 	for (var i=0; i < areaMarkers.length; i++) {
 		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
@@ -453,8 +461,11 @@ function showAreaMarkers(type) {
 	}
 }
 
-function showAllMarkers(type, area, id) {
+function showAllMarkers(type, area) {
 	console.log('showAllMarkers()');
+	if (!area) {
+		allMarkersHiden = false;
+	}
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
 			// markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
@@ -478,6 +489,7 @@ function showAllMarkers(type, area, id) {
 
 
 function hideAreaMarkers() {
+	areaMarkersHiden = true;
 	console.log('hideAreaMarkers()')
 	for (var i=0; i < areaMarkers.length; i++) {
 		areaMarkers[i].setMap(null);
@@ -485,6 +497,8 @@ function hideAreaMarkers() {
 }
 console.log('hideAreaMarkers()');
 function hideAllMarkers() {
+	// if (allMarkersHiden) {return;}
+	allMarkersHiden = true;
 	console.log('hideAllMarkers()')
 	for (var i=0; i < markers.length; i++) {
 		markers[i].setMap(null);
@@ -869,7 +883,7 @@ function onKeyupSearcBox() {
 
 }
 function onSearchboxFocus() {
-	
+	window.location.hash = '#searchbox';
 	document.getElementById('introBtnCol').style.display = 'none';
 	var searchBox = document.getElementById("searchbox");
 
@@ -890,6 +904,9 @@ function onSearchboxFocus() {
 
 
 function onSearchBoxClearClick() {
+	if (location.hash === '#searchbox') {
+			window.history.back();
+	}
 
 	console.log("onSearchBoxClearClick");
 	var searchBox = document.getElementById("searchbox");
@@ -1388,6 +1405,10 @@ function loadBanner() {
 
 //
 function closeIntroModal() {
+	if (location.hash === '#intro') {
+			window.history.back();
+	}
+
 	$('#introModal').modal('hide');
 }
 
@@ -1421,8 +1442,10 @@ function zoomoutFunc(endZoomOut, delayZoom, execFun) {
 }
 
 function onClickListItem(id) {
+
 	location.hash = '#zoomed';
-	location.hash = '#modal';
+	overrideSearchboxHash = true;
+
 	document.getElementById('introBtnCol').style.display = 'block';
 
 	var latLng = new google.maps.LatLng(markers[id].rawData.lat, markers[id].rawData.log)
@@ -1454,6 +1477,7 @@ function onClickListItem(id) {
 						setTimeout(function() {
 							setInfoModalValues(markers[id]);
 							$('#beerInfoModal').modal();
+							location.hash = '#modal';
 						}, 1200)
 					})();
 				}, 1200)
@@ -1467,9 +1491,9 @@ function onClickListItem(id) {
 
 
 function openIntroModal() {
-	return;
+	// return;
 	$('#introModal').modal();
-
+	location.hash = "#intro";
 	document.getElementById("introModalMainBody").addEventListener("touchstart", function(e) {
 		closeIntroModal();
 	}, false);
