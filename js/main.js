@@ -273,11 +273,12 @@ function createAllMarkers() {
 			data.lat,
 			data.log,
 			data.icon,
-			data.name[curLang]
+			data.name[curLang],
 		)
 
 		marker.rawData = markersRaw[i];
 		marker.setLabel(getAreaMarkerLabel(marker.rawData.beers, ''))
+
 		markers.push(marker);
 
 		google.maps.event.addListener(markers[i], "click", function() {
@@ -479,19 +480,23 @@ function showAreaMarkers(type, animation) {
 
 }
 
-function showAllMarkers(area, animation) {
+function showAllMarkers(area, animation, noLabel) {
 	console.log('showAllMarkers()');
 
 	// enable animation
 	if (animation) {
 		for (var i=0; i < markers.length; i++) {
 			markers[i].setAnimation(animation);
+			// marker.setLabel(getAreaMarkerLabel(marker.rawData.beers, ''))
+			markers[i].setLabel(null);
 		}
 	}
 
 	// show markers
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
+
+			if (!noLabel) {markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))};
 			markers[i].setMap(beerMap);
 		}
 	}
@@ -1627,7 +1632,7 @@ function handleRequests (buttonPressed) {
 		initState = false;
 
 		hideAreaMarkers()
-		showAllMarkers(null, google.maps.Animation.DROP);
+		showAllMarkers(null, google.maps.Animation.DROP, true);
 
 		document.getElementById('mainModeCtls').style.display = 'none';
 		document.getElementById('listContainer').style.display = 'none';

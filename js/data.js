@@ -77,10 +77,10 @@ var rawData = [
   {id: 66, name: "Noble Men/Noble Men", city: "Athens/Αθήνα", beerNames: "/Noble Men Beer", icon: "", webUrl: "http://www.noblemenbeer.gr/", fbUrl: "", tel: "99999999", type: "client", area: "athens", beers: "1", mapUrl: "https://www.google.com/maps/place/Imittou+190,+Athina+116+36/@37.9629936,23.7395906,17z/data=!3m1!4b1!4m5!3m4!1s0x14a1bd6d0346b8b9:0x2619b29a1a895d55!8m2!3d37.9629936!4d23.7417793"},
   {id: 67, name: "Unibrau Hellas/Unibrau Hellas", city: "Athens/Αθήνα", beerNames: "/Unibar Hellas", icon: "", webUrl: "http://www.unibrau.gr/", fbUrl: "", tel: "99999999", type: "client", area: "athens", beers: "1", mapUrl: "https://www.google.com/maps/place/Unibr%C3%A4u/@38.0278585,23.8515193,17z/data=!3m1!4b1!4m5!3m4!1s0x14a1995e1465d091:0xb7a60f6b6b13a48f!8m2!3d38.0278585!4d23.853708"},
   {id: 68, name: "Valtinger/Valtinger", city: "Kassandreia, Chalkidiki/Κασσανδρεία, Χαλκιδική", beerNames: "/Valtinger", icon: "", webUrl: "", fbUrl: "https://www.facebook.com/valtinger/", tel: "99999999", type: "client", area: "macedonia", beers: "2", mapUrl: "https://www.google.com/maps/place/40%C2%B003'00.1%22N+23%C2%B025'06.0%22E/@40.0490537,23.4132024,16z/data=!4m5!3m4!1s0x0:0x0!8m2!3d40.05004!4d23.41834"},
+
   {id: 69, name: "O.K. Athens/O.K. Athens", city: "Piraeus/Πειραιάς", beerNames: "/OK Athens", icon: "", webUrl: "http://www.okathens.gr/", fbUrl: "", tel: "99999999", type: "client", area: "athens", beers: "3", mapUrl: "https://www.google.com/maps/place/O.K.+Athens+Ltd/@37.9259131,23.6889071,17z/data=!4m12!1m6!3m5!1s0x14a1bc21ccbc905f:0x73b7cc7039631a11!2sO.K.+Athens+Ltd!8m2!3d37.9259131!4d23.6910958!3m4!1s0x14a1bc21ccbc905f:0x73b7cc7039631a11!8m2!3d37.9259131!4d23.6910958"},
 
-
-  ]
+]
 var areasData = [
   {id: 'thrace', pre:"στη ", name: "Θράκη", icon: "area.png", latLng: "41.058051,25.367543"},
   {id: 'macedonia', pre:"στη ", name: "Μακεδονία", icon: "area.png", latLng: "40.679579,22.264438"},
