@@ -83,6 +83,11 @@ function onHashChange () {
 		$('#beerInfoModal').modal('hide');
 	}
 
+	if (location.hash === '#eye') {
+		$('#beerInfoModal').modal('hide');
+	}
+
+
 	if (location.hash === '#searchbox' && overrideSearchboxHash) {
 		window.history.back();
 		overrideSearchboxHash = false;
@@ -113,11 +118,11 @@ google.maps.event.addDomListener(window, 'load', function() {
 	console.log("addDomListener");
 
 	document.getElementById("eyeBtn").addEventListener("touchstart", function(e) {
-		onEyeDown();
+		// onEyeDown();
 	}, false);
 
 	document.getElementById("eyeBtn").addEventListener("touchend", function(e) {
-		onEyeUp();
+		// onEyeUp();
 	}, false);
 
 	parseRawData();
@@ -224,6 +229,7 @@ function loadbeerMap() {
   // 	ters();
   loadBanner();
 	initControlsState();
+
 	showAreaMarkers(selectedMode)
 
 
@@ -254,12 +260,14 @@ function start(marker) {
 }
 
 function onEyeDown() {
+	return;
 	hideAreaMarkers();
 	showAllMarkers();
 
 }
 
 function onEyeUp() {
+	return;
 	hideAllMarkers();
 	showAreaMarkers(selectedMode);
 }
@@ -338,6 +346,8 @@ function createAreaMarkers(type) {
 		marker.rawData = areasData[i];
 		areaMarkers.push(marker);
 
+		// add the double-click event listener
+
 		google.maps.event.addListener(areaMarkers[i], "click", function() {
 			location.hash = 'zoomed';
 			initState = false;
@@ -353,7 +363,7 @@ function createAreaMarkers(type) {
 
 			hideAreaMarkers();
 
-			showAllMarkers(selectedMode, this.rawData.id)
+			showAllMarkers(this.rawData.id)
 
 			var bounds = new google.maps.LatLngBounds(this.center_, this.center_);
 			for (var i = 0; i < markers.length; i++) {
@@ -365,7 +375,7 @@ function createAreaMarkers(type) {
 
 			beerMap.panTo(bounds.getCenter());
 
-			zoominFunc(beerMap.getZoom() + 2, 100, function() {
+			zoominFunc(beerMap.getZoom() + 3, 100, function() {
 				setTimeout(function() {
 						beerMap.fitBounds(bounds);
 				}, 200)
@@ -465,30 +475,32 @@ function showAreaMarkers(type) {
 	}
 }
 
-function showAllMarkers(type, area) {
+function showAllMarkers(area, animation) {
 	console.log('showAllMarkers()');
-	if (!area) {
-		allMarkersHiden = false;
+
+	// enable animation
+	if (animation) {
+		for (var i=0; i < markers.length; i++) {
+			markers[i].setAnimation(animation);
+		}
 	}
+
+	// show markers
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
-			// markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
-			// markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
-
-			/////////////////////////////////////////
-			// if ( type === 'beers') {
-			// 		markers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE+20))
-			// 		markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))
-			//
-			// } else {
-			// 	markers[i].setIcon(getImageObj(PINS_PATH + markers[i].rawData.icon, MARKER_CAP_SIZE+20))
-			// 	markers[i].setLabel(null, '')
-			// }
-
 			markers[i].setMap(beerMap);
 		}
-
 	}
+
+	// switch of animation
+	if (animation) {
+		setTimeout(function() {
+			for (var i=0; i < markers.length; i++) {
+				markers[i].setAnimation(null);
+			}
+		}, 2000)
+	}
+
 }
 
 
@@ -1158,7 +1170,7 @@ function loadClusters() {
 		beerMap.panTo(cluster.center_);
 
 		zoominFunc(MAX_ZOOM_CLUSTERS, 20, function() {
-			console.log("aaaaaaaa", cluster)
+
 			setTimeout(function(){
 					// beerMap.fitBounds(cluster.getBounds())
 			}, 100)
@@ -1206,67 +1218,6 @@ function onZoomChanged() {
 		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
 	}
 	return;
-	if ( beerMap.getZoom() >= 8) {
-		if (state !== 'all') {
-			state = 'all';
-			hideAreaMarkers();
-			showAllMarkers(selectedMode)
-		}
-
-	} else {
-		if (state !== 'area') {
-			state = 'area';
-			hideAllMarkers();
-			showAreaMarkers(selectedMode);
-		}
-
-	}
-	return;
-	var controls = document.getElementById('controls');
-	if (beerMap.getZoom() <= MAX_ZOOM_CLUSTERS) {
-		controls.style.display = 'block';
-	} else {
-		controls.style.display = 'none';
-	}
-	return;
-  var currentZoom = beerMap.getZoom();
-
-  // FROM STAR TO ORIGINAL LOCATION
-  if (currentZoom > STAR_MODE_MAX_ZOOM && isStarMode) { // currentZoom not in star mode && previous mode was start Mode
-    isStarMode = false;
-
-    // remove lines
-    for (var i=0; i < lines.length; i++) {
-      lines[i].setMap(null);
-    }
-
-
-
-    // set oroginal positions to markers
-    for (i=0; i < markersRaw.length; i++) {
-      if (markersRaw[i].latV) { // only if there is apossibility for virtual position
-        var position = new google.maps.LatLng(markersRaw[i].lat, markersRaw[i].log);
-        markers[i].setPosition(position)
-      }
-    }
-  }
-  else if (!isStarMode && currentZoom <= STAR_MODE_MAX_ZOOM) { // previous mode wasnt start mode and now in star mode
-    isStarMode = true;
-    for (i=0; i < markersRaw.length; i++) {
-      if (markersRaw[i].latV) {
-        lat = markersRaw[i].latV;
-        log = markersRaw[i].logV;
-        var position = new google.maps.LatLng(lat, log);
-        markers[i].setPosition(position)
-      }
-    }
-
-    // redraw lines
-    for (i=0; i < lines.length; i++) {
-      lines[i].setMap(beerMap);
-    }
-
-  }
 }
 // ------------------------- MAP STYLE ---------------------
 function loadStyledMap() {
@@ -1423,10 +1374,15 @@ function closeIntroModal() {
 
 function zoominFunc(endZoomIn, delayZoom, execFun) {
 	return function zoomin() {
+
 		if (beerMap.getZoom() < endZoomIn) {
 			console.log("zooming in")
-			beerMap.setZoom(beerMap.getZoom() + 1)
-			setTimeout(zoomin, delayZoom)
+
+			z = google.maps.event.addListener(beerMap, 'zoom_changed', function(event){
+					google.maps.event.removeListener(z);
+					zoomin();
+			});
+			setTimeout(function(){beerMap.setZoom(beerMap.getZoom() + 1)}, delayZoom); // 80ms is what I found to work well on my system -- it might not work well on all systems
 
 		} else {
 			execFun();
@@ -1494,7 +1450,6 @@ function onClickListItem(id) {
 	}, 500)
 
 }
-
 
 function openIntroModal() {
 	// return;
@@ -1598,23 +1553,29 @@ function resetZindexes() {
 	console.log("Reset z indexed. check guides")
 }
 function backBtnHandle () {
-	console.log("kdskjhakjfhakjhfdkjhjkfh")
-	// $('#beerInfoModal').modal();
 	if (!initState) {
 		setTimeout(function() {
-			zoominFunc(INITIAL_ZOOM, 100, function() {
+
+			if (beerMap.getZoom() > INITIAL_ZOOM) {
 				zoomoutFunc(INITIAL_ZOOM, 100, function() {
 					hideAllMarkers();
 					beerMap.panTo(INITIAL_CENTER);
 					showAreaMarkers(selectedMode);
 					initState = true;
 				})();
-			})()
+			} else {
+				zoominFunc(INITIAL_ZOOM, 100, function() {
+					hideAllMarkers();
+					beerMap.panTo(INITIAL_CENTER);
+					showAreaMarkers(selectedMode);
+					initState = true;
+				})();
+			}
 		}, 100)
 
 	}
 
-
+	// show again main controrls
 	document.getElementById('mainModeCtls').style.display = 'flex';
 	document.getElementById('listContainer').style.display = 'block';
 	document.getElementById('groupModeCtls').style.display = 'none';
@@ -1628,9 +1589,9 @@ function handleRequests (buttonPressed) {
 		document.getElementById('brewsMode').classList.remove('mode-checked')
 		if (state === 'area' ) {
 			//todo change icon and number in areaMarkers to beers
-			showAreaMarkers('beers')
+			showAreaMarkers()
 		} else {
-			showAllMarkers('beers')
+			showAllMarkers()
 			//todo change icon and number in markers to beers
 		}
 	} else if (buttonPressed === "showBrews") {
@@ -1639,9 +1600,9 @@ function handleRequests (buttonPressed) {
 		selectedMode = 'brews';
 		if (state === 'area' ) {
 			//todo change icon and number in areaMarkers to beers
-			showAreaMarkers('brews')
+			showAreaMarkers()
 		} else {
-			showAllMarkers('brews')
+			showAllMarkers()
 			//todo change icon and number in markers to beers
 		}
 	}
@@ -1659,6 +1620,15 @@ function handleRequests (buttonPressed) {
 		backBtnHandle();
 	}
 	else if (buttonPressed === "eye"){
+		location.hash = '#eye';
+		initState = false;
+
+		hideAreaMarkers()
+		showAllMarkers(null, google.maps.Animation.DROP);
+
+		document.getElementById('mainModeCtls').style.display = 'none';
+		document.getElementById('listContainer').style.display = 'none';
+		document.getElementById('groupModeCtls').style.display = 'flex';
 		// document.getElementById('eyeBtn').classList.add('mode-checked');
 		// document.getElementById('eyeBtn').classList.remove('active')
 	}
