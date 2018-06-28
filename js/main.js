@@ -17,7 +17,7 @@ var MARKER_CAP_SIZE = 40;
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
 var MAX_ZOOM = 14	;
-var MIN_ZOOM = 6;
+var MIN_ZOOM = 4;
 // var MIN_ZOOM = 2;
 var MAX_ZOOM_CLUSTERS = 7;
 var STAR_MODE_MAX_ZOOM = 9;
@@ -200,6 +200,16 @@ function loadbeerMap() {
 
 	beerMap.addListener('zoom_changed', onZoomChanged);
 
+	beerMap.data.loadGeoJson(
+			'../data.json');
+
+	beerMap.data.setStyle({
+			fillColor: '#ecc080',
+			strokeWeight: 0,
+			strokeColor: '#448CCB',
+			fillOpacity: 1
+	});
+
   loadStyledMap();
 
   var rainMapOverlay = new google.maps.ImageMapType({
@@ -219,6 +229,8 @@ function loadbeerMap() {
   // 	ters();
   loadBanner();
 	initControlsState();
+
+
 
 	setTimeout(function(){
 		showAreaMarkers(selectedMode)
@@ -479,7 +491,13 @@ function showAreaMarkers(type, animation) {
 
 
 }
+function dropMarker(marker, delay) {
 
+	marker.setAnimation(google.maps.Animation.DROP);
+	setTimeout(function() {
+		marker.setMap(beerMap);
+	}, delay)
+}
 function showAllMarkers(area, animation, noLabel) {
 	console.log('showAllMarkers()');
 
@@ -495,9 +513,16 @@ function showAllMarkers(area, animation, noLabel) {
 	// show markers
 	for (var i=0; i < markers.length; i++) {
 		if (!area || (area === markers[i].rawData.area) ) {
-
+			markers[i].setLabel(null);
 			if (!noLabel) {markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers, ''))};
-			markers[i].setMap(beerMap);
+
+			// markers[i].setMap(beerMap);
+			if (animation) {
+					dropMarker(markers[i], Math.floor((Math.random() * 2000) + 1));
+			} else {
+				markers[i].setMap(beerMap);
+			}
+
 		}
 	}
 
