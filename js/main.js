@@ -66,11 +66,6 @@ var curLang = 'gr';
 var overrideSearchboxHash = false;
 
 function onHashChange () {
-	// if (location.hash !== '#noBack') {
-	// 		console.log("..............",location.hash)
-	// 		backBtnHandle();
-	// }
-	console.log(window.history)
 	if (location.hash === '#map') {
 		closeIntroModal();
 		onSearchBoxClearClick();
@@ -92,11 +87,6 @@ function onHashChange () {
 		window.history.back();
 		overrideSearchboxHash = false;
 	}
-
-	// if (location.ha)
-	console.log(location.hash)
-
-	// location.hash = 'noBack';
 
 }
 
@@ -230,7 +220,9 @@ function loadbeerMap() {
   loadBanner();
 	initControlsState();
 
-	showAreaMarkers(selectedMode)
+	setTimeout(function(){
+		showAreaMarkers(selectedMode)
+	}, 1000)
 
 
 
@@ -343,6 +335,7 @@ function createAreaMarkers(type) {
 		marker.setLabel(
 			getAreaMarkerLabel(areasData[i].beers, "")
 		)
+		marker.setAnimation(google.maps.Animation.DROP);
 		marker.rawData = areasData[i];
 		areaMarkers.push(marker);
 
@@ -454,25 +447,36 @@ function createAreaMarkers(type) {
 	}
 }
 
-function showAreaMarkers(type) {
-	// var test = createImageMarker(
-	// 	'41.653312',
-	// 	'21.633184',
-	// 	'greek.png',
-	// 	'test',
-	// 	true)
-	// test.setMap(beerMap)
-	areaMarkersHiden = false;
-	console.log('showAreaMarkers()')
-	for (var i=0; i < areaMarkers.length; i++) {
-		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
+function showAreaMarkers(type, animation) {
 
+
+	console.log('showAreaMarkers()');
+
+
+	for (var i=0; i < areaMarkers.length; i++) {
+		areaMarkers[i].setMap(null);
+		areaMarkers[i].setAnimation(google.maps.Animation.DROP);
+		areaMarkers[i].setIcon(getImageObj(PINS_PATH + type +'.png', MARKER_CAP_SIZE, true))
 		areaMarkers[i].setLabel(
 			getAreaMarkerLabel(areasData[i][type], '')
 		)
-		areaMarkers[i].setMap(beerMap)
-		// areasLabels[i].setMap(beerMap)
+
+		// set valid icon size
+		var icon = areaMarkers[i].icon;
+		icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
+		icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
+
+		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
+		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
 	}
+
+
+	for (var i=0; i < areaMarkers.length; i++) {
+		areaMarkers[i].setMap(beerMap);
+	}
+
+
+
 }
 
 function showAllMarkers(area, animation) {
@@ -544,7 +548,8 @@ function parseRawData() {
 				numberOfBeers: 4, // todo update with excels data
 	      type: rawData[i].type,
 				beers: Number(rawData[i].beers),
-				area: rawData[i].area
+				area: rawData[i].area,
+				beerNames: { 'en': rawData[i].beerNames.toString().split("/")[0], 'gr': rawData[i].beerNames.toString().split("/")[1]},
 	    })
 	  } else {
 
@@ -749,7 +754,10 @@ function initControlsState() {
 	selectedMode = 'beers';
 	state = 'area';
 	initState = true;
-	showAreaMarkers(selectedMode)
+
+	// setTimeout(function(){
+	// 	showAreaMarkers(selectedMode)
+	// }, 10000)
 	// markerClusters.clearMarkers();
 	// showMarkers(selectedType);
 	// beerMap.maxZoom = MAX_ZOOM_CLUSTERS;
@@ -869,7 +877,9 @@ function updateSearchList() {
 		// document.getElementById('searchbox-cancel').style.display = 'inline-block';
 		for (var i=0; i < markersRaw.length; i++) {
 
-			var matches = normalizeKey(markersRaw[i].name[curLang] + markersRaw[i].city[curLang]).search(normalizeKey(key)) != -1;
+			var matches = normalizeKey(
+				markersRaw[i].name[curLang] + markersRaw[i].city[curLang] + markersRaw[i].beerNames[curLang]
+			).search(normalizeKey(key)) != -1;
 
 			if (matches) {
 				document.getElementById("item-" + i.toString()).classList.remove("d-none");
@@ -1187,23 +1197,7 @@ function loadClusters() {
 }
 
 // -------------------------- EVENT HANDLERS -------------
-
-function onZoomChanged() {
-	// initState = false;
-	// return;
-  // updateMarkersSize();
-
-	// increase area areasLabels
-
-	// for (var i=0; i < areasLabels.length; i++) {
-	// 	var style = areasLabels[i].getLabel();
-	// 	console.log(style)
-	// 	style.fontSize = (5+(beerMap.getZoom() - 5)*5).toString()+'px'
-	// 	console.log(style)
-	// 	areasLabels[i].setLabel(style)
-	// }
-
-
+function updataMarkersSize() {
 	for (var i=0; i < markers.length; i++) {
 		var icon = markers[i].icon;
 		icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
@@ -1221,7 +1215,9 @@ function onZoomChanged() {
 		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
 		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
 	}
-	return;
+}
+function onZoomChanged() {
+	updataMarkersSize();
 }
 // ------------------------- MAP STYLE ---------------------
 function loadStyledMap() {
@@ -1410,6 +1406,7 @@ function zoomoutFunc(endZoomOut, delayZoom, execFun) {
 function onClickListItem(id) {
 
 	location.hash = '#zoomed';
+	initState = false;
 	overrideSearchboxHash = true;
 
 	document.getElementById('introBtnCol').style.display = 'block';
@@ -1557,6 +1554,7 @@ function resetZindexes() {
 	console.log("Reset z indexed. check guides")
 }
 function backBtnHandle () {
+
 	if (!initState) {
 		setTimeout(function() {
 
@@ -1564,14 +1562,20 @@ function backBtnHandle () {
 				zoomoutFunc(INITIAL_ZOOM, 100, function() {
 					hideAllMarkers();
 					beerMap.panTo(INITIAL_CENTER);
-					showAreaMarkers(selectedMode);
+					setTimeout(function(){
+						showAreaMarkers(selectedMode)
+					}, 500)
+					// showAreaMarkers(selectedMode);
 					initState = true;
 				})();
 			} else {
 				zoominFunc(INITIAL_ZOOM, 100, function() {
 					hideAllMarkers();
 					beerMap.panTo(INITIAL_CENTER);
-					showAreaMarkers(selectedMode);
+					// showAreaMarkers(selectedMode);
+					setTimeout(function(){
+						showAreaMarkers(selectedMode)
+					}, 500)
 					initState = true;
 				})();
 			}
@@ -1588,26 +1592,21 @@ function backBtnHandle () {
 }
 function handleRequests (buttonPressed) {
 	if (buttonPressed === 'showBeers') {
-		selectedMode = 'beers';
+
 		document.getElementById('beersMode').classList.add('mode-checked')
 		document.getElementById('brewsMode').classList.remove('mode-checked')
-		if (state === 'area' ) {
-			//todo change icon and number in areaMarkers to beers
-			showAreaMarkers()
-		} else {
-			showAllMarkers()
-			//todo change icon and number in markers to beers
+		if (selectedMode !== 'beers') {
+				selectedMode = 'beers';
+				showAreaMarkers(selectedMode, google.maps.Animation.DROP);
 		}
+
+
 	} else if (buttonPressed === "showBrews") {
 		document.getElementById('beersMode').classList.remove('mode-checked')
 		document.getElementById('brewsMode').classList.add('mode-checked')
-		selectedMode = 'brews';
-		if (state === 'area' ) {
-			//todo change icon and number in areaMarkers to beers
-			showAreaMarkers()
-		} else {
-			showAllMarkers()
-			//todo change icon and number in markers to beers
+		if (selectedMode !== 'brews') {
+				selectedMode = 'brews';
+				showAreaMarkers(selectedMode, google.maps.Animation.DROP);
 		}
 	}
 	else if (buttonPressed === "back"){
