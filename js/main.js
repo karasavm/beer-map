@@ -868,7 +868,8 @@ function updateSearchList() {
 	} else {
 		// document.getElementById('searchbox-cancel').style.display = 'inline-block';
 		for (var i=0; i < markersRaw.length; i++) {
-			var matches = markersRaw[i].name[curLang].toLowerCase().search(key.toLowerCase()) != -1;
+
+			var matches = normalizeKey(markersRaw[i].name[curLang] + markersRaw[i].city[curLang]).search(normalizeKey(key)) != -1;
 
 			if (matches) {
 				document.getElementById("item-" + i.toString()).classList.remove("d-none");
@@ -880,6 +881,9 @@ function updateSearchList() {
 		}
 	}
 
+}
+function normalizeKey(key) {
+	return key.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 }
 function closeSearchBox() {
 	var searchBox = document.getElementById("searchbox");
@@ -1452,7 +1456,7 @@ function onClickListItem(id) {
 }
 
 function openIntroModal() {
-	// return;
+	return;
 	$('#introModal').modal();
 	location.hash = "#intro";
 	document.getElementById("introModal").addEventListener("touchstart", function(e) {
