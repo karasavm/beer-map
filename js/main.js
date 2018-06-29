@@ -277,8 +277,12 @@ function loadbeerMap() {
 		setTimeout(function test() {
 			// document.getElementById('controls').style.display = 'block';
 			openIntroModal();
+
+		}, 10);
+
+		setTimeout(function() {
 			setSearchList();
-		}, 1000);
+		}, 4000)
 	});
 
 } // EDN OF loadbeerMap()
