@@ -334,21 +334,31 @@ body {
 /* ******************************************************************************************************/
 
 .mode-checked {
-  background-color: #545b62;
-  border-color: #545b62;
+  background-color: #51331b !important;
+  border-color: #51331b !important;
+  box-shadow: none !important;
 }
 
 /* ****************************************************************/
 
-.bg {
-    /* The image used */
-    background-image: url("../151933374.jpg");
+.bg-color-wood {
+  color: #fff;
+  background-color: #7a4a24;
+  border-color: #7a4a24;
+}
 
-    /* Full height */
-    height: 100%;
+.btn-wood  {
+  color: #fff;
+  background-color: #7a4a24;
+  border-color: #7a4a24;
+}
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.btn-wood:hover {
+  color: #fff;
+  background-color: #643f21;
+  border-color: #643f21;
+}
+
+.btn-wood:focus, ..btn-wood.focus {
+  box-shadow: none;
 }

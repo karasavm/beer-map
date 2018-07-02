@@ -82,13 +82,13 @@ var rawData = [
 
 ]
 var areasData = [
-  {id: 'thrace', pre:"στη ", name: "Θράκη", icon: "area.png", latLng: "41.058051,25.367543"},
-  {id: 'macedonia', pre:"στη ", name: "Μακεδονία", icon: "area.png", latLng: "40.679579,22.264438"},
-  {id: 'thessalia', pre:"στη ", name: "Θεσσαλία", icon: "area.png", latLng: "39.530948,22.231886",},
-  {id: 'epirus', pre:"στην ", name: "Ήπειρος", icon: "area.png", latLng: "39.661701,20.755133"},
-  {id: 'sterea', pre:"στη ", name: "Στερεά Ελλάδα", icon: "area.png", latLng: "38.622582,22.749413"},
+    {id: 'thrace', pre:"στη ", name: "Θράκη", icon: "area.png", latLng: "41.131851, 25.797940"},
+  {id: 'macedonia', pre:"στη ", name: "Μακεδονία", icon: "area.png", latLng: "41.477221, 23.846468"},
+  {id: 'thessalia', pre:"στη ", name: "Θεσσαλία", icon: "area.png", latLng: "40.253343, 22.385824",},
+  {id: 'epirus', pre:"στην ", name: "Ήπειρος", icon: "area.png", latLng: "39.876058, 20.461153"},
+  {id: 'sterea', pre:"στη ", name: "Στερεά Ελλάδα", icon: "area.png", latLng: "38.985686, 22.101383"},
   {id: 'athens', pre:"στην ", name: "Αθήνα", icon: "area.png", latLng: "37.980171,23.726358"},
-  {id: 'pelloponisos', pre:"στην ", name: "Πελοπόννησος", icon: "area.png", latLng: "37.403012,22.364342"},
+  {id: 'pelloponisos', pre:"στην ", name: "Πελοπόννησος", icon: "area.png", latLng: "37.854451, 21.994998"},
   {id: 'creta', pre:"στην ", name: "Κρήτη", icon: "area.png", latLng: "35.229659,24.856523"},
   {id: 'ionio', pre:"στο ", name: "Ιόνιο", icon: "area.png", latLng: "38.814173,19.956799"},
   {id: 'aigaio', pre:"στο ", name: "Αιγαίο", icon: "area.png", latLng: "37.432107,  25.553888"},

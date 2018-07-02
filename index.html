@@ -55,7 +55,7 @@
             <div class="container-fluid">
               <div class="row justify-content-center">
                 <div class="col-">
-                  <img id='infoModalImg' class="img-fluid mx-auto d-block modal-img"  src="icons/pins/vergina.png" alt="Avatar">
+                  <img id='infoModalImg' class="img-fluid mx-auto d-block modal-img"  src="" alt="Avatar">
                 </div>
               </div>
 
@@ -234,25 +234,32 @@
 
               <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
               <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
-
-              <button id='beersMode' class="btn btn-secondary mode-checked btn-opacity px-2 py-0" onclick="handleRequests('showBeers')">
-                   <img src="images/introPin2.png" width="80" />
-
+              <button id='beersMode'
+                class="btn btn-wood mode-checked btn-opacity "
+                onclick="handleRequests('showBeers')">
+                   <!-- <img src="images/beericon.png" width="15" /> -->
+                   ΜΠΥΡΕΣ
               </button>
 
-              <button id='brewsMode' class="btn btn-secondary btn-opacity px-2 py-0" onclick="handleRequests('showBrews')">
-                   <img src="images/introPin3.png" width="80" />
+              <button id='brewsMode' class="btn btn-wood btn-opacity"
+                onclick="handleRequests('showBrews')">
+                   <!-- <img src="images/introPin3.png" width="40" /> -->
+                   ΖΥΘΟΠΟΙΙΕΣ
+              </button>
 
+              <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
+                class="btn btn-wood btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
+                onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
               </button>
 
             </div>
           </div>
         </div>
         <div class="col-2 text-right pl-0">
-          <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
+          <!-- <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
             class="btn btn-secondary btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
             onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
-          </button>
+          </button> -->
           <!-- <button id="backBtn" type="button" style="display: block;"
           class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('reset')"><i class="fa fa-arrow-left"></i></button> -->
         </div>
@@ -295,7 +302,7 @@
       <div id="groupModeCtls"class="container fixed-top pt-1" style="display: none;">
         <div  class="row pb-3" >
           <div class="col text-left">
-            <button type="button" class="btn btn-secondary btn-opacity btn-lg btn-rectangle" onclick="handleRequests('back')"><i class="fa fa-arrow-left"></i></button>
+            <button type="button" class="btn btn-wood btn-opacity btn-lg btn-rectangle" onclick="handleRequests('back')"><i class="fa fa-arrow-left"></i></button>
           </div>
         </div>
       </div>
@@ -311,7 +318,7 @@
         <div class="row">
           <div class="col">
             <form action="">
-              <input id="searchbox" autocomplete="off" type="text" class="btn-opacity bg-secondary"
+              <input id="searchbox" autocomplete="off" type="text" class="btn-opacity bg-color-wood"
                 name="search" placeholder="Search"
                 onkeyup="onKeyupSearcBox()" onfocus="onSearchboxFocus()">
               <button id="searchbox-cancel" type="button"
@@ -325,7 +332,7 @@
           </div>
 
           <div class="col text-right" id='introBtnCol'>
-            <button type="button" class="btn btn-secondary btn-opacity btn-lg btn-rectangle" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
+            <button type="button" class="btn btn-wood btn-opacity btn-lg btn-rectangle" onclick="handleRequests('menu')"><i class="fa fa-info white"></i></button>
           </div>
 
         </div>
@@ -336,7 +343,7 @@
               <a id="templateListItem"  onclick='' class="list-group-item list-group-item-action d-none align-items-center pl-1 pr-1">
 
                 <div class="pr-1">
-                  <img  src="icons/pins/cp200x200cp/trikalwn.png" width="50px" height="50px">
+                  <img  src="" width="50px" height="50px">
                 </div>
                 <div class="flex-fill flex-column align-items-start" style="line-height: 0.9;">
                   <div class="d-flex w-100 justify-content-between">
