@@ -1662,7 +1662,8 @@ function backBtnHandle () {
 		setTimeout(function() {
 			fitBounds(areaMarkers);
 			initState = true;
-			setTimeout(hideAllMarkers, 2000);
+			hideAllMarkers();
+			setTimeout(hideAllMarkers, 1000);
 			showAreaMarkers(selectedMode);
 
 			// if (beerMap.getZoom() > INITIAL_ZOOM) {
