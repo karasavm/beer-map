@@ -16,7 +16,7 @@ var MARKER_CAP_SIZE = 45;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
-var MAX_ZOOM = 13;
+var MAX_ZOOM = 14;
 var MIN_ZOOM = 3;
 // var MIN_ZOOM = 2;
 var MAX_ZOOM_CLUSTERS = 7;
@@ -748,7 +748,7 @@ function getImageObj(url, size, factor) {
 	}
 
 	var vf = 0.82;
-	var hf = 0.2;
+	var hf = 0.19;
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
@@ -1321,7 +1321,7 @@ function updataMarkersSize() {
 			icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
 			icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
 
-			icon.labelOrigin.y = icon.scaledSize.height*1.15;
+			icon.labelOrigin.y = icon.scaledSize.height*1.1;
 			icon.labelOrigin.x = icon.scaledSize.width*0.5;
 		}
 
@@ -1616,13 +1616,16 @@ function openIntroModal() {
 		console.log("Touchstart")
 	}, false);
 
-
+	var beersNum = 0;
+	for (var i=0 ;i < areaMarkers.length; i ++){
+		beersNum += areaMarkers[i].rawData.beers;
+	}
 
 	// return;
 	var delay = 2000;
-	var allNum = 69;
+	var brewsNum = markers.length;
 	var microNum = 47;
-	var clientNum = 235;
+
 
 	function adjustThbFontSize() {
 	    var w = window.innerWidth;
@@ -1667,20 +1670,20 @@ function openIntroModal() {
 	var int1 = setInterval(function() {
 			var num = Number(document.getElementById("allNumber").innerHTML);
 
-			if (num == allNum) {
+			if (num == brewsNum) {
 				window.clearInterval(int1);
 			} else {
 				num = num +1;
 				document.getElementById("allNumber").innerHTML = num.toString();
 			}
 
-	}, delay/allNum)
+	}, delay/brewsNum)
 
 	document.getElementById("clientNumber").innerHTML = 0;
 	var int2 = setInterval(function() {
 			var num = Number(document.getElementById("clientNumber").innerHTML);
 
-			if (num == clientNum) {
+			if (num == beersNum) {
 
 				window.clearInterval(int2);
 			} else {
@@ -1688,7 +1691,7 @@ function openIntroModal() {
 				document.getElementById("clientNumber").innerHTML = num.toString();
 			}
 
-	}, delay/clientNum)
+	}, delay/beersNum)
 
 
 	// document.getElementById("microNumber").innerHTML = 0;
