@@ -12,12 +12,12 @@ var beerMapZoomMin = beerMapZoom;
 
 // -------------------------------------------------
 var ZINDEX_MARKER = 100;
-var MARKER_CAP_SIZE = 40;
+var MARKER_CAP_SIZE = 45;
 
 var MARKER_CAP_HOVER_FACTOR = 7.5;
 
-var MAX_ZOOM = 14	;
-var MIN_ZOOM = 4;
+var MAX_ZOOM = 13;
+var MIN_ZOOM = 3;
 // var MIN_ZOOM = 2;
 var MAX_ZOOM_CLUSTERS = 7;
 var STAR_MODE_MAX_ZOOM = 9;
@@ -28,14 +28,14 @@ var zoomCtrLocked = false;
 var onGroupMode = 0;
 var initState = false;
 var on
-var INITIAL_ZOOM = 6;
+var INITIAL_ZOOM = null;
 var INITIAL_CENTER = new google.maps.LatLng(39.074208, 22.824311999999964);
 // -------------------------------------------------
 //These options configure the setup of the map.
 var beerMapOptions = {
 
 		  center: INITIAL_CENTER,
-        zoom: INITIAL_ZOOM,
+        zoom: MIN_ZOOM,
 		  maxZoom: MAX_ZOOM,
 		  minZoom: MIN_ZOOM,
 		  backgroundColor: 'hsla(0, 0%, 0%, 0)',
@@ -383,8 +383,8 @@ function createAllMarkers() {
 function getAreaMarkerLabel(text) {
 	// console.log('getAreaMarkerLabel()')
 	return {
-		color: '#7d2f1a',
-		fontSize: '17px',
+		color: 'white',
+		fontSize: '15px',
 		fontWeight: 'bold',
 		text: text,
 		fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
@@ -518,7 +518,7 @@ function createAreaMarkers(type) {
 	}
 }
 
-function showAreaMarkers(type, animation) {
+function showAreaMarkers(type, dropTime) {
 
 
 	console.log('showAreaMarkers()');
@@ -548,7 +548,12 @@ function showAreaMarkers(type, animation) {
 
 
 	for (var i=0; i < areaMarkers.length; i++) {
-		areaMarkers[i].setMap(beerMap);
+		if (dropTime) {
+			dropMarker(areaMarkers[i], 100 + 150*i)
+			// dropMarker(areaMarkers[i], Math.floor((Math.random() * dropTime) + 1))
+		} else {
+			areaMarkers[i].setMap(beerMap);
+		}
 	}
 }
 function dropMarker(marker, delay) {
@@ -709,13 +714,21 @@ function convertFromLatLngToPoint(latlng, map, elementContainingMap){
   return [x,y];
 }
 
+function getBounds(markers) {
+	console.log("fiBounds()")
+	var bounds = new google.maps.LatLngBounds(0,0);
+	for (var i = 0; i < markers.length; i++) {
+		var marker = markers[i];
+		bounds.extend(marker.getPosition());
+	}
+	return bounds;
+}
 function fitBounds(markers) {
 	console.log("fitBounds()")
 	var bounds = new google.maps.LatLngBounds(0,0);
 	for (var i = 0; i < markers.length; i++) {
 		var marker = markers[i];
 		bounds.extend(marker.getPosition());
-		beerMap.fitBounds(bounds);
 	}
 	beerMap.panTo(bounds.getCenter());
 	beerMap.fitBounds(bounds);
@@ -734,11 +747,12 @@ function getImageObj(url, size, factor) {
 		factor = 1.1
 	}
 
-
+	var vf = 0.82;
+	var hf = 0.2;
   var image = {
       origin: new google.maps.Point(0, 0),
       url: url,
-			labelOrigin: new google.maps.Point(size/2,size*factor*1.15),
+			labelOrigin: new google.maps.Point(size*hf,size*factor*vf),
       // scaledSize: new google.maps.Size(60, 88), // short pin
       scaledSize: new google.maps.Size(size, size*factor), // cap
       // anchor: new google.maps.Point(31, 88), // short pin
@@ -748,8 +762,8 @@ function getImageObj(url, size, factor) {
 		image.initHeight = size*factor;
 		image.initWidth = size;
 
-		image.initLabelHeigthFactor = 1.15;
-		image.initLabelWidthFactor = 1/2;
+		image.initLabelHeigthFactor = vf;
+		image.initLabelWidthFactor = hf;
   return image;
 }
 var tempPinCounter = 1;
@@ -1109,14 +1123,14 @@ function get_new_cap_size() {
 function getMarkerResizeFactor() {
   var currentZoom = beerMap.getZoom();
 
-
-	if (currentZoom >= 12) return 2;
+	// if (currentZoom >= MAX_ZOOM ) return 0.;
   if (currentZoom >= 11) return 2;
   if (currentZoom >= 10) return 1.8;
 	if (currentZoom >= 9) return 1.6;
 	if (currentZoom >= 8) return 1.4;
 	if (currentZoom >= 7) return 1.2;
 	if (currentZoom >= 6) return 1;
+	if (currentZoom >= 5) return 0.8;
   return 1;
 }
 
@@ -1294,12 +1308,23 @@ function loadClusters() {
 // -------------------------- EVENT HANDLERS -------------
 function updataMarkersSize() {
 	for (var i=0; i < markers.length; i++) {
-		var icon = markers[i].icon;
-		icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
-		icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
 
-		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
-		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
+		if (beerMap.getZoom() === MAX_ZOOM) {
+				markers[i].icon__ = markers[i].icon;
+				markers[i].setIcon(null);
+		} else {
+			if(!markers[i].icon){
+				markers[i].setIcon(markers[i].icon__)
+			}
+
+			var icon = markers[i].icon;
+			icon.scaledSize.width = getMarkerResizeFactor()*icon.initWidth;
+			icon.scaledSize.height = getMarkerResizeFactor()*icon.initHeight;
+
+			icon.labelOrigin.y = icon.scaledSize.height*1.15;
+			icon.labelOrigin.x = icon.scaledSize.width*0.5;
+		}
+
 	}
 
 	for (var i=0; i < areaMarkers.length; i++) {
@@ -1313,6 +1338,7 @@ function updataMarkersSize() {
 }
 function onZoomChanged() {
 	updataMarkersSize();
+
 }
 // ------------------------- MAP STYLE ---------------------
 function loadStyledMap() {
@@ -1459,8 +1485,36 @@ function loadBanner() {
 function closeIntroModal() {
 	console.log("closeIntroModal")
 	if (firstOpen) {
-		showAreaMarkers(selectedMode);
-		firstOpen = false;
+
+
+		setTimeout(function() {
+			var bounds = getBounds(areaMarkers);
+			showAreaMarkers(selectedMode, 2000);
+			// beerMap.panTo(bounds.getCenter());
+
+				// beerMap.setZoom(beerMap.getZoom() + 1);
+			setTimeout(function() {
+					beerMap.fitBounds(bounds);
+					MIN_ZOOM = 4;
+					beerMap.minZoom = 4;
+					INITIAL_ZOOM = beerMap.getZoom();
+					INITIAL_CENTER = beerMap.getCenter();
+					setTimeout(function() {
+						document.getElementById('mainModeCtls').style.display = 'flex';
+						document.getElementById('listContainer').style.display = 'block';
+						document.getElementById('groupModeCtls').style.display = 'none';
+					}, 1000)
+
+
+			},2000)
+
+
+
+
+			// backBtnHandle();
+			firstOpen = false;
+		}, 500)
+
 	}
 	if (location.hash === '#intro') {
 			window.history.back();
@@ -1660,43 +1714,24 @@ function backBtnHandle () {
 
 	if (!initState) {
 		setTimeout(function() {
-			fitBounds(areaMarkers);
-			initState = true;
-			hideAllMarkers();
-			setTimeout(hideAllMarkers, 1000);
-			showAreaMarkers(selectedMode);
+			zoomoutFunc(INITIAL_ZOOM, 100, function() {
+					fitBounds(areaMarkers);
+					initState = true;
+					hideAllMarkers();
+					setTimeout(hideAllMarkers, 1000);
+					showAreaMarkers(selectedMode);
 
-			// if (beerMap.getZoom() > INITIAL_ZOOM) {
-			// 	console.log("to zoom out")
-			// 	zoomoutFunc(INITIAL_ZOOM, 100, function() {
-			// 		hideAllMarkers();
-			// 		beerMap.panTo(INITIAL_CENTER);
-			// 		setTimeout(function(){
-			// 			showAreaMarkers(selectedMode)
-			// 		}, 500)
-			// 		// showAreaMarkers(selectedMode);
-			// 		initState = true;
-			// 	})();
-			// } else {
-			// 	console.log("to zoom in")
-			// 	zoominFunc(INITIAL_ZOOM, 20, function() {
-			// 		hideAllMarkers();
-			// 		beerMap.panTo(INITIAL_CENTER);
-			// 		// showAreaMarkers(selectedMode);
-			// 		setTimeout(function(){
-			// 				showAreaMarkers(selectedMode)
-			// 		}, 500)
-			// 		initState = true;
-			// 	})();
-			// }
+					// show again main controrls
+					document.getElementById('mainModeCtls').style.display = 'flex';
+					document.getElementById('listContainer').style.display = 'block';
+					document.getElementById('groupModeCtls').style.display = 'none';
+
+			})()
 		}, 100)
 
 	}
 
-	// show again main controrls
-	document.getElementById('mainModeCtls').style.display = 'flex';
-	document.getElementById('listContainer').style.display = 'block';
-	document.getElementById('groupModeCtls').style.display = 'none';
+
 
 	onGroupMode = null;
 }
@@ -1709,7 +1744,7 @@ function handleRequests (buttonPressed) {
 		if (selectedMode !== 'beers') {
 				selectedMode = 'beers';
 				hideAllMarkers();
-				showAreaMarkers(selectedMode, google.maps.Animation.DROP);
+				showAreaMarkers(selectedMode);
 		}
 
 
@@ -1719,7 +1754,7 @@ function handleRequests (buttonPressed) {
 		if (selectedMode !== 'brews') {
 				selectedMode = 'brews';
 				hideAllMarkers();
-				showAreaMarkers(selectedMode, google.maps.Animation.DROP);
+				showAreaMarkers(selectedMode);
 		}
 	}
 	else if (buttonPressed === "back"){

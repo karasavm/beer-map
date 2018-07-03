@@ -296,8 +296,9 @@ body {
 .searchbox-focus {
     padding-left: 50px!important;
     width: 98%!important;
-    border-bottom: 2px solid grey!important;
-    background-color: grey!important;
+    border-bottom: 2px solid #643f21!important;
+    /* background-color: #643f21; */
+    /* background-color: grey!important; */
     /* opacity: 0.6; */
 }
 .searchbox-focus::placeholder {
