@@ -95,32 +95,19 @@
 
               <div class="row bg-secondary padding-inherit">
                 <div class="col-">
-                  <h6 class="my-2">beers</h6>
+                  <h6 class="my-2">Beers (DEMO DATA)</h6>
                 </div>
               </div>
 
               <div class="row justify-content-start padding-inherit">
                 <div class="col-">
-                  <ul class="list-unstyled">
-                    <li class="media">
+                  <ul class="list-unstyled" id="beerList">
+                    <li class="media" id="beerItemTemplate">
                       <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
                       <div class="media-body align-self-center">
                         <h6 class="">Demo Beer One 330lt</h6>
                       </div>
                     </li>
-                    <li class="media">
-                      <img class="mr-3 beer-size" src="images/b2.jpg" alt="Generic placeholder image">
-                      <div class="media-body align-self-center">
-                        <h6 class="">Demo Beer Two 330lt</h6>
-                      </div>
-                    </li>
-                    <li class="media">
-                      <img class="mr-3 beer-size" src="images/b3.jpg" alt="Generic placeholder image">
-                      <div class="media-body align-self-center">
-                        <h6 class="">Demo Beer Three 330lt</h6>
-                      </div>
-                    </li>
-
                   </ul>
 
                 </div>
@@ -221,10 +208,10 @@
 
     <div class="container fixed-bottom">
       <div id="mainModeCtls" class="row align-items-center" style="display: none;">
-        <div class="col-2">
+        <div class="col-1">
 
         </div>
-        <div class="col-8 no-padding text-center">
+        <div class="col-10 no-padding text-center">
           <div id="controls" class="btn-group" role="group" aria-label="Button group with nested dropdown" style="padding-bottom: 20px; display: block;">
 
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -234,17 +221,25 @@
 
               <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
               <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
-              <button id='beersMode'
-                class="btn btn-wood mode-checked btn-opacity "
-                onclick="handleRequests('showBeers')">
-                   <!-- <img src="images/beericon.png" width="15" /> -->
-                   ΜΠΥΡΕΣ
-              </button>
+
 
               <button id='brewsMode' class="btn btn-wood btn-opacity"
                 onclick="handleRequests('showBrews')">
                    <!-- <img src="images/introPin3.png" width="40" /> -->
                    ΖΥΘΟΠΟΙΙΕΣ
+              </button>
+
+              <button id='beersMode' style="display: none;"
+                class="btn btn-wood mode-checked btn-opacity "
+                onclick="handleRequests('showBeers')">
+                   <!-- <img src="images/beericon.png" width="15" /> -->
+                   ΜΠΥΡΕΣ
+              </button>
+              
+              <button id='spotsMode' class="btn btn-wood btn-opacity"
+                onclick="handleRequests('showSpots')">
+                   <!-- <img src="images/introPin3.png" width="40" /> -->
+                   ΒΡΕΣ
               </button>
 
               <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
@@ -255,13 +250,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2 text-right pl-0">
-          <!-- <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
-            class="btn btn-secondary btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
-            onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
-          </button> -->
-          <!-- <button id="backBtn" type="button" style="display: block;"
-          class="btn btn-secondary btn-opacity btn-lg" onclick="handleRequests('reset')"><i class="fa fa-arrow-left"></i></button> -->
+        <div class="col-1">
         </div>
       </div>
 

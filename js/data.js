@@ -92,10 +92,24 @@ var areasData = [
   {id: 'vaigaio', pre:"στο ", name: "Βόρειο Αιγαίο", icon: "area.png", latLng: "39.733846,25.087455"},
   {id: 'dodekanisa', pre:"στο ", name: "Δωδεκάνησα", icon: "area.png", latLng: "36.239398,28.003570"},
   {id: 'uknown', pre:"στο ", name: "Άγνωστη τοποθεσία", icon: "area.png", latLng: "36.524706,20.894167"},
-
 ];
 
+var spotsData = [
+  {id: '1', name: 'The Hoppy Pub', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη', mapUrl: 'https://www.google.gr/maps/place/The+Hoppy+Pub/@40.6279367,22.9466444,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83903eba6720f:0x3300c43f3e78c689!8m2!3d40.6279367!4d22.9488331'},
+  {id: '2', name: 'Beer24', area: 'macedonia' , type: 'cava', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Beer24/@40.604535,22.9547286,17z/data=!3m1!4b1!4m5!3m4!1s0x14a838d9b67dd17b:0xac879ade156fb77!8m2!3d40.604535!4d22.9569173'},
+  {id: '3', name: 'Αρχέγονο', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Arch%C3%A9gono/@40.5987989,22.9501946,17z/data=!3m1!4b1!4m5!3m4!1s0x14a8392a19d4dc7d:0xed1429b23352008f!8m2!3d40.5987989!4d22.9523833'},
+  {id: '4', name: 'The Pulp Bar', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/PULP+bar/@40.632094,22.9457868,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83900ce1f444d:0xc343695b700dda5e!8m2!3d40.632094!4d22.9479755'},
+]
 
+
+for (var i=0; i < spotsData.length; i++) {
+
+  var sp = spotsData[i].mapUrl.split("!3d");
+  sp = sp[sp.length-1];
+  spotsData[i].lat = Number(sp.split("!4d")[0]);
+  spotsData[i].log = Number(sp.split("!4d")[1]);
+  spotsData[i].icon = spotsData[i].type + '.png';
+}
 for (var i=0; i < areasData.length; i++) {
 
   var sumBeers = 0;
@@ -108,6 +122,15 @@ for (var i=0; i < areasData.length; i++) {
       sumBeers += Number(rawData[j].beers);
     }
   }
+
+  var sumSpots = 0;
+  for (var j=0; j < spotsData.length; j++) {
+    if (areasData[i].id === spotsData[j].area) {
+      sumSpots ++;
+    }
+  }
+
   areasData[i].beers = sumBeers;
   areasData[i].brews = sumBrews;
+  areasData[i].spots = sumSpots;
 }
