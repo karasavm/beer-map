@@ -222,24 +222,27 @@
               <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
               <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
 
+              <button class="btn disabled" style="color: white; background: grey; opacity:0.6">
+                   ΒΡΕΣ:
+              </button>
 
-              <button id='brewsMode' class="btn btn-wood btn-opacity"
+              <button id='brewsMode' class="btn btn-wood btn-opacity mode-checked"
                 onclick="handleRequests('showBrews')">
                    <!-- <img src="images/introPin3.png" width="40" /> -->
                    ΖΥΘΟΠΟΙΙΕΣ
               </button>
 
               <button id='beersMode' style="display: none;"
-                class="btn btn-wood mode-checked btn-opacity "
+                class="btn btn-wood btn-opacity "
                 onclick="handleRequests('showBeers')">
                    <!-- <img src="images/beericon.png" width="15" /> -->
                    ΜΠΥΡΕΣ
               </button>
-              
+
               <button id='spotsMode' class="btn btn-wood btn-opacity"
                 onclick="handleRequests('showSpots')">
                    <!-- <img src="images/introPin3.png" width="40" /> -->
-                   ΒΡΕΣ
+                   ΜΠΥΡΕΣ
               </button>
 
               <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
