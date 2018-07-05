@@ -76,8 +76,10 @@
                     <i class="fa fa-phone"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item disabled" href="#">demo numbers</a>
                     <a class="dropdown-item" href="#">2310 231231</a>
                     <a class="dropdown-item" href="#">69833420123</a>
+
                   </div>
 
                 </div>
@@ -105,8 +107,20 @@
                     <li class="media" id="beerItemTemplate">
                       <img class="mr-3 beer-size" src="images/b1.jpg" alt="Generic placeholder image">
                       <div class="media-body align-self-center">
-                        <h6 class="">Demo Beer One 330lt</h6>
+                        <div class="row align-items-center">
+                          <div class="col">
+                            <h6 class="">Demo Beer One 330lt</h6>
+                          </div>
+                          <div class="col text-right">
+                            <button type="button" onclick="drinkToggle(event)"class="btn btn-link btn-lg "><i class="fa fa-check-circle" style="color: grey;font-size:30px;"></i></button>
+                          </div>
+                        </div>
+
+                        <!-- <div class="text-right">
+
+                        </div> -->
                       </div>
+
                     </li>
                   </ul>
 
@@ -139,42 +153,54 @@
 
           <div class="modal-body" id="introModalMainBody">
             <div class="container-fluid no-padding">
-              <div class="row pb-5">
+              <div class="row pt-5 pb-1">
                 <div class="col no-padding">
                   <div class="thumbnail" id="allNumberThb">
-                      <img src="images/title.png" class="rounded img-fluid" alt="...">
-
+                      <img src="images/map.png" class="rounded img-fluid" alt="...">
                         <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
                   </div>
                 </div>
               </div>
-              <div class="row pt-4 pb-4"></div>
-              <div class="row pb-5">
-                <div class="col-6 no-padding pt-1">
-                  <div class="thumbnail" id="allNumberThb">
-                      <img src="images/introPin1-a.png" class="rounded img-fluid" alt="...">
-                        <div id="allNumber" class="top-center-l">69</div>
-                        <div class="ampersand">&</div>
-                        <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
-                  </div>
-
-                </div>
-                <div class="col-1 no-padding"></div>
-                <div class="col-5 no-padding">
+              <div class="row pt-1 pb-5"></div>
+              <div class="row pt-1 pb-5"></div>
+              <div class="row pt-5 pb-5"></div>
+              <div class="row pt-5 pb-5"></div>
+              <!-- <div class="row pt-5 pb-5"></div> -->
+              <!-- <div class="row pt-1 pb-5"></div> -->
+              <div class="row pb-4">
+                <div class="col-5 no-padding pt-4">
                   <div class="thumbnail" id="clientThb">
                       <img src="images/introPin2-a.png" class="rounded img-fluid" alt="...">
-                        <div id="clientNumber" class="top-center-r">69</div>
+                        <div id="clientNumber" class="top-center-r">0</div>
+                        <div class="ampersand">ΑΠΟ</div>
                         <!-- <div class="top-center-r" lng-key="introBeers"></div> -->
+                  </div>
+
+
+                </div>
+                <div class="col-2 no-padding"> </div>
+                <div class="col-5 no-padding pt-4">
+                  <div class="thumbnail" id="allNumberThb">
+                      <img src="images/introPin1-a.png" class="rounded img-fluid" alt="...">
+                        <div id="allNumber" class="top-center-l">0</div>
+
+                        <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
                   </div>
                 </div>
               </div>
+              <div class="row pb-5"></div>
+              <div class="row pb-5"></div>
+              <!-- <div class="row pb-5"></div> -->
               <div class="row pb-5">
                 <div class="col text-center">
-                  <h5 style="color: white">Μπορείς να τις βρεις;</h5>
+                  <h5 style="color: white">Βρες τες τώρα!</h5>
                   <br>
                   <button type="button" class="btn btn-wood btn-lg" onclick="closeIntroModal()">ΣΥΝΕΧΕΙΑ</button>
                 </div>
               </div>
+              <div class="row  pb-5"></div>
+
+
             </div>
           </div>
 
@@ -228,7 +254,11 @@
               <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
 
 
-
+              <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
+                class="btn btn-wood btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
+                onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
+              </button>
+              
               <button id='brewsMode' class="btn btn-wood btn-opacity mode-checked"
                 onclick="handleRequests('showBrews')">
                    <!-- <img src="images/introPin3.png" width="40" /> -->
@@ -248,10 +278,7 @@
                    BEERSPOTS
               </button>
 
-              <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"
-                class="btn btn-wood btn-lg btn-rectangle btn-opacity" style="padding-left: 14px;"
-                onclick="handleRequests('eye')"><i class="fa fa-eye"></i>
-              </button>
+
 
             </div>
           </div>

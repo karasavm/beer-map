@@ -384,13 +384,13 @@ function createAllMarkers(markersRaw, markers) {
     })
 	}
 }
-
+var fontSize = 15;
 function getAreaMarkerLabel(text) {
 	// console.log('getAreaMarkerLabel()')
 	return {
 		color: 'white',
-		fontSize: '16	px',
-		fontWeight: 'bold',
+		fontSize: (getMarkerResizeFactor()*fontSize).toString() + 'px',
+		fontWeight: '',
 		text: text,
 		fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"
 	}
@@ -706,7 +706,7 @@ function getImageObj(url, size, factor) {
 		factor = 1.1
 	}
 
-	var vf = 0.82;
+	var vf = 0.84;
 	var hf = 0.19;
   var image = {
       origin: new google.maps.Point(0, 0),
@@ -1077,7 +1077,7 @@ function setInfoModalValues(pin) {
 			var li = document.getElementById("beerItemTemplate").cloneNode(true);
 			li.style.display = 'flex';
 
-			li.getElementsByTagName('h6')[0].innerHTML = pin.rawData.beerNames[curLang][i] + " Lager 330lt";
+			li.getElementsByTagName('h6')[0].innerHTML = pin.rawData.beerNames[curLang][i];// " Lager 330lt";
 		// 	a.getElementsByTagName('img')[0].src = PINS_PATH + markersRaw[i].icon
 			li.setAttribute("id", pin.rawData.id + "-" + i.toString()); // added line
 		// 	a.setAttribute("onclick", "onClickListItem("+i+")")
@@ -1112,6 +1112,7 @@ function get_new_cap_size() {
 }
 
 function getMarkerResizeFactor() {
+	if (!beerMap) {return 1;}
   var currentZoom = beerMap.getZoom();
 
 	// if (currentZoom >= MAX_ZOOM ) return 0.;
@@ -1345,6 +1346,11 @@ function updataMarkersSize() {
 
 		icon.labelOrigin.y = icon.scaledSize.height*icon.initLabelHeigthFactor;
 		icon.labelOrigin.x = icon.scaledSize.width*icon.initLabelWidthFactor;
+
+		var label = areaMarkers[i].getLabel();
+		label.fontSize = (fontSize*getMarkerResizeFactor()).toString() + 'px';
+
+		areaMarkers[i].setLabel(label)
 	}
 }
 function onZoomChanged() {
@@ -1491,7 +1497,16 @@ function loadBanner() {
 //Function that is called when either the 'smaller events', unbrella or the 'reset map' buttons are clicked.
 
 
+function drinkToggle(event) {
 
+	var btn = event.target;
+	if ( btn.style.color === 'green') {
+		btn.style.color = 'grey';
+	} else {
+		btn.style.color = 'green'
+	}
+	;
+}
 //
 function closeIntroModal() {
 	console.log("closeIntroModal")
@@ -1692,7 +1707,7 @@ function openIntroModal() {
 
 
 	document.getElementById("allNumber").innerHTML = 0;
-	var int1 = setInterval(function() {
+	// var int1 = setInterval(function() {
 			var num = Number(document.getElementById("allNumber").innerHTML);
 
 			if (num == brewsNum) {
@@ -1702,10 +1717,11 @@ function openIntroModal() {
 				document.getElementById("allNumber").innerHTML = num.toString();
 			}
 
-	}, delay/brewsNum)
+
+	// }, delay/brewsNum)
 
 	document.getElementById("clientNumber").innerHTML = 0;
-	var int2 = setInterval(function() {
+	// var int2 = setInterval(function() {
 			var num = Number(document.getElementById("clientNumber").innerHTML);
 
 			if (num == beersNum) {
@@ -1716,9 +1732,9 @@ function openIntroModal() {
 				document.getElementById("clientNumber").innerHTML = num.toString();
 			}
 
-	}, delay/beersNum)
-
-
+	// }, delay/beersNum)
+	document.getElementById("allNumber").innerHTML = brewsNum.toString();
+	document.getElementById("clientNumber").innerHTML = beersNum.toString();
 	// document.getElementById("microNumber").innerHTML = 0;
 	// var int3 = setInterval(function() {
 	// 		var num = Number(document.getElementById("microNumber").innerHTML);

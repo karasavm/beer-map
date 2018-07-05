@@ -204,15 +204,16 @@ body {
 
 
 .ampersand {
-  top: 70%;
+  top: 60%;
   position: absolute;
   /* bottom: 22px; */
-  left: 107%;
+  left: 117%;
   z-index: 9;
   transform: translate(-50%, -50%);
   /* font-weight: bold; */
-  font-size: 120%;
+  font-size: 60%;
   color: hsl(39, 58%, 65%);
+  color: white;
   font-family: Verdana;
 
 }
@@ -226,7 +227,7 @@ body {
 }
 
 .top-center-l {
-  top: 69%;
+  top: 75%;
   position: absolute;
   left: 14%;
   transform: translate(-50%, -50%);
