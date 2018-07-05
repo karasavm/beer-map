@@ -133,7 +133,7 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" onclick="closeIntroModal()" id="introModal" style="padding-right: 0px!important;background-color:rgba(58, 51, 51, 0.73);"tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
+    <div class="modal fade"  id="introModal" style="padding-right: 0px!important;background-color:rgba(58, 51, 51, 0.73);"tabindex="-1" role="dialog" aria-labelledby="introModalTitle" aria-hidden="true" >
       <div class="modal-dialog modal-dialog-centered" role="document" >
         <div class="modal-content intro-modal" >
 
@@ -150,10 +150,10 @@
               </div>
               <div class="row pt-4 pb-4"></div>
               <div class="row pb-5">
-                <div class="col-6 no-padding">
+                <div class="col-6 no-padding pt-1">
                   <div class="thumbnail" id="allNumberThb">
-                      <img src="images/introPin1.png" class="rounded img-fluid" alt="...">
-                        <div id="allNumber" class="top-center-l top-center-r">69</div>
+                      <img src="images/introPin1-a.png" class="rounded img-fluid" alt="...">
+                        <div id="allNumber" class="top-center-l">69</div>
                         <div class="ampersand">&</div>
                         <!-- <div class="top-center-r" lng-key="introBrewers"></div> -->
                   </div>
@@ -162,14 +162,19 @@
                 <div class="col-1 no-padding"></div>
                 <div class="col-5 no-padding">
                   <div class="thumbnail" id="clientThb">
-                      <img src="images/introPin2.png" class="rounded img-fluid" width=400 alt="...">
-                        <div id="clientNumber" class="top-center-l">69</div>
+                      <img src="images/introPin2-a.png" class="rounded img-fluid" alt="...">
+                        <div id="clientNumber" class="top-center-r">69</div>
                         <!-- <div class="top-center-r" lng-key="introBeers"></div> -->
                   </div>
                 </div>
               </div>
-              <!-- <div class="row pb-5">
-              </div> -->
+              <div class="row pb-5">
+                <div class="col text-center">
+                  <h5 style="color: white">Μπορείς να τις βρεις;</h5>
+                  <br>
+                  <button type="button" class="btn btn-wood btn-lg" onclick="closeIntroModal()">ΣΥΝΕΧΕΙΑ</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -222,9 +227,7 @@
               <!-- <button id='beersMode' type="button" class="btn btn-secondary btn-opacity mode-checked" onclick="handleRequests('showBeers')" lng-key="beersBtn">:</button>
               <button id='brewsMode' type="button" class="btn btn-secondary btn-opacity" onclick="handleRequests('showBrews')" lng-key="brewsBtn">:</button> -->
 
-              <button class="btn disabled" style="color: brown; background: transparent;">
-                   ΒΡΕΣ:
-              </button>
+
 
               <button id='brewsMode' class="btn btn-wood btn-opacity mode-checked"
                 onclick="handleRequests('showBrews')">
@@ -242,7 +245,7 @@
               <button id='spotsMode' class="btn btn-wood btn-opacity"
                 onclick="handleRequests('showSpots')">
                    <!-- <img src="images/introPin3.png" width="40" /> -->
-                   ΜΠΥΡΕΣ
+                   BEERSPOTS
               </button>
 
               <button id='eyeBtn' onmousedown="onEyeDown()" onmouseup="onEyeUp()" onclick="handleRequests('eye')"

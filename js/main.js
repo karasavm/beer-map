@@ -389,7 +389,7 @@ function getAreaMarkerLabel(text) {
 	// console.log('getAreaMarkerLabel()')
 	return {
 		color: 'white',
-		fontSize: '15px',
+		fontSize: '16	px',
 		fontWeight: 'bold',
 		text: text,
 		fontFamily: "Cursive, Helvetica, Arial, Sans-Serif"

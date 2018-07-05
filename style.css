@@ -171,13 +171,7 @@ body {
   padding: 0;
 }
 
-.thumbnail {
-  /* font-weight: bold; */
-  position: relative;
-  text-align: center;
-  color: white;
-  font-size: 30px;
-}
+
 
 .centered-brewery {
 
@@ -222,22 +216,36 @@ body {
   font-family: Verdana;
 
 }
-
-.top-center-l {
-  top: 100%;
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.thumbnail {
   /* font-weight: bold; */
-  font-size: 130%;
-  color: hsl(39, 58%, 65%);
-  font-family: Cursive;
+  position: relative;
+  text-align: center;
+  color: white;
+  font-size: 50px;
 
 }
 
+.top-center-l {
+  top: 69%;
+  position: absolute;
+  left: 14%;
+  transform: translate(-50%, -50%);
+  /* font-weight: bold; */
+  font-size: 75%;
+  /* color: white; */
+  font-family: Cursive;
+}
+
 .top-center-r {
-  font-size: 100%;
+  top: 85%;
+  position: absolute;
+  left: 18%;
+  transform: translate(-50%, -50%);
+  /* font-weight: bold; */
+  font-size: 60%;
+  font-weight: bold;
+  /* color: white; */
+  font-family: Cursive;
 }
 
 
