@@ -60,7 +60,7 @@ var spotsMarkers = [];
 
 var markersLines = [];
 var infoBoxes = [];
-var markersRaw = [];
+// var markersRaw = [];
 var areaMarkersHiden, allMarkersHiden;
 var curLang = 'gr';
 ///////// MAIN /////////////
@@ -125,6 +125,7 @@ google.maps.event.addDomListener(window, 'load', function() {
 	}, false);
 
 	parseRawData();
+
 	createAreaMarkers('beers');
 	createAllMarkers(markersRaw, markers);
 	createAllMarkers(spotsData, spotsMarkers);
@@ -608,38 +609,7 @@ function hideAllMarkers() {
 }
 
 function parseRawData() {
-	for (var i=0; i < rawData.length; i ++) {
 
-	  if (rawData[i].mapUrl !== '') {
-
-	    var sp = rawData[i].mapUrl.split("!3d");
-
-	    sp = sp[sp.length-1]
-	    markersRaw.push({
-	      id: rawData[i].id.toString(),
-	      name: { 'en': rawData[i].name.toString().split("/")[0], 'gr': rawData[i].name.toString().split("/")[1]},
-				city: { 'en': rawData[i].city.toString().split("/")[0], 'gr': rawData[i].city.toString().split("/")[1]},
-	      lat: Number(sp.split("!4d")[0]),
-	      log: Number(sp.split("!4d")[1]),
-	      icon: rawData[i].icon || "temp.png",
-	      mapUrl: rawData[i].mapUrl,
-	      fbUrl: rawData[i].fbUrl,
-				webUrl: rawData[i].webUrl,
-				tel: rawData[i].tel,
-				yearCreated: '2005', // todo update with excels data
-				numberOfBeers: 4, // todo update with excels data
-	      type: rawData[i].type,
-				beers: Number(rawData[i].beers),
-				area: rawData[i].area,
-				beerNamesKey: { 'en': rawData[i].beerNames.toString().split("/")[0], 'gr': rawData[i].beerNames.toString().split("/")[1]},
-				beerNames: { 'en': rawData[i].beerNames.toString().split("/")[0].split(","), 'gr': rawData[i].beerNames.toString().split("/")[1].split(",")},
-	    })
-	  } else {
-
-	  }
-
-	}
-	console.log(markersRaw)
 }
 function createXMarker(lat, log) {
 
@@ -1528,47 +1498,47 @@ function closeIntroModal() {
 	if (firstOpen) {
 
 			//////    DEBUG MODE
-			var bounds = getBounds(areaMarkers);
-			showAreaMarkers(selectedMode, 2000);
-			beerMap.fitBounds(bounds);
-			MIN_ZOOM = 4;
-			beerMap.minZoom = 4;
-			INITIAL_ZOOM = beerMap.getZoom();
-			INITIAL_CENTER = beerMap.getCenter();
-			document.getElementById('mainModeCtls').style.display = 'flex';
-			document.getElementById('listContainer').style.display = 'block';
-			document.getElementById('groupModeCtls').style.display = 'none';
-			firstOpen = false;
+			// var bounds = getBounds(areaMarkers);
+			// showAreaMarkers(selectedMode, 2000);
+			// beerMap.fitBounds(bounds);
+			// MIN_ZOOM = 4;
+			// beerMap.minZoom = 4;
+			// INITIAL_ZOOM = beerMap.getZoom();
+			// INITIAL_CENTER = beerMap.getCenter();
+			// document.getElementById('mainModeCtls').style.display = 'flex';
+			// document.getElementById('listContainer').style.display = 'block';
+			// document.getElementById('groupModeCtls').style.display = 'none';
+			// firstOpen = false;
 			//////    DEBUG MODE
 
 
-		// setTimeout(function() {
-		// 	var bounds = getBounds(areaMarkers);
-		// 	showAreaMarkers(selectedMode, 2000);
-		// 	// beerMap.panTo(bounds.getCenter());
-		//
-		// 		// beerMap.setZoom(beerMap.getZoom() + 1);
-		// 	setTimeout(function() {
-		// 			beerMap.fitBounds(bounds);
-		// 			MIN_ZOOM = 4;
-		// 			beerMap.minZoom = 4;
-		// 			INITIAL_ZOOM = beerMap.getZoom();
-		// 			INITIAL_CENTER = beerMap.getCenter();
-		// 			setTimeout(function() {
-		// 				document.getElementById('mainModeCtls').style.display = 'flex';
-		// 				document.getElementById('listContainer').style.display = 'block';
-		// 				document.getElementById('groupModeCtls').style.display = 'none';
-		// 			}, 1000)
-		//
-		//
-		// 	},2000)
-		//
-		//
-		//
-		//
-		// 	// backBtnHandle();
-		// 	firstOpen = false;
-		// }, 500)
+		setTimeout(function() {
+			var bounds = getBounds(areaMarkers);
+			showAreaMarkers(selectedMode, 2000);
+			// beerMap.panTo(bounds.getCenter());
+
+				// beerMap.setZoom(beerMap.getZoom() + 1);
+			setTimeout(function() {
+					beerMap.fitBounds(bounds);
+					MIN_ZOOM = 4;
+					beerMap.minZoom = 4;
+					INITIAL_ZOOM = beerMap.getZoom();
+					INITIAL_CENTER = beerMap.getCenter();
+					setTimeout(function() {
+						document.getElementById('mainModeCtls').style.display = 'flex';
+						document.getElementById('listContainer').style.display = 'block';
+						document.getElementById('groupModeCtls').style.display = 'none';
+					}, 1000)
+
+
+			},2000)
+
+
+
+
+			// backBtnHandle();
+			firstOpen = false;
+		}, 500)
 
 	}
 	if (location.hash === '#intro') {

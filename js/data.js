@@ -95,20 +95,75 @@ var areasData = [
 ];
 
 var spotsData = [
-  {id: '1', name: 'The Hoppy Pub', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη', mapUrl: 'https://www.google.gr/maps/place/The+Hoppy+Pub/@40.6279367,22.9466444,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83903eba6720f:0x3300c43f3e78c689!8m2!3d40.6279367!4d22.9488331'},
-  {id: '2', name: 'Beer24', area: 'macedonia' , type: 'cava', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Beer24/@40.604535,22.9547286,17z/data=!3m1!4b1!4m5!3m4!1s0x14a838d9b67dd17b:0xac879ade156fb77!8m2!3d40.604535!4d22.9569173'},
-  {id: '3', name: 'Αρχέγονο', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Arch%C3%A9gono/@40.5987989,22.9501946,17z/data=!3m1!4b1!4m5!3m4!1s0x14a8392a19d4dc7d:0xed1429b23352008f!8m2!3d40.5987989!4d22.9523833'},
-  {id: '4', name: 'The Pulp Bar', area: 'macedonia', type: 'beeraria', beerNames: {'gr': ['Test Lager']}, city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/PULP+bar/@40.632094,22.9457868,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83900ce1f444d:0xc343695b700dda5e!8m2!3d40.632094!4d22.9479755'},
+  {id: '1', name: 'The Hoppy Pub', area: 'macedonia', type: 'beeraria', beers: [{brewId: 1, beerNames: [0]}], city: 'Θεσσαλονίκη', mapUrl: 'https://www.google.gr/maps/place/The+Hoppy+Pub/@40.6279367,22.9466444,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83903eba6720f:0x3300c43f3e78c689!8m2!3d40.6279367!4d22.9488331'},
+  {id: '2', name: 'Beer24', area: 'macedonia' , type: 'cava', beers: [{brewId: 2, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Beer24/@40.604535,22.9547286,17z/data=!3m1!4b1!4m5!3m4!1s0x14a838d9b67dd17b:0xac879ade156fb77!8m2!3d40.604535!4d22.9569173'},
+  {id: '3', name: 'Αρχέγονο', area: 'macedonia', type: 'beeraria', beers: [{brewId: 3, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Arch%C3%A9gono/@40.5987989,22.9501946,17z/data=!3m1!4b1!4m5!3m4!1s0x14a8392a19d4dc7d:0xed1429b23352008f!8m2!3d40.5987989!4d22.9523833'},
+  {id: '4', name: 'The Pulp Bar', area: 'macedonia', type: 'beeraria', beers: [{brewId: 4, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/PULP+bar/@40.632094,22.9457868,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83900ce1f444d:0xc343695b700dda5e!8m2!3d40.632094!4d22.9479755'},
 ]
 
+for (var i=0; i < rawData.length; i ++) {
+
+  if (rawData[i].mapUrl !== '') {
+
+    var sp = rawData[i].mapUrl.split("!3d");
+
+    sp = sp[sp.length-1]
+    markersRaw.push({
+      id: rawData[i].id.toString(),
+      name: { 'en': rawData[i].name.toString().split("/")[0], 'gr': rawData[i].name.toString().split("/")[1]},
+      city: { 'en': rawData[i].city.toString().split("/")[0], 'gr': rawData[i].city.toString().split("/")[1]},
+      lat: Number(sp.split("!4d")[0]),
+      log: Number(sp.split("!4d")[1]),
+      icon: rawData[i].icon || "temp.png",
+      mapUrl: rawData[i].mapUrl,
+      fbUrl: rawData[i].fbUrl,
+      webUrl: rawData[i].webUrl,
+      tel: rawData[i].tel,
+      yearCreated: '2005', // todo update with excels data
+      numberOfBeers: 4, // todo update with excels data
+      type: rawData[i].type,
+      beers: Number(rawData[i].beers),
+      area: rawData[i].area,
+      beerNamesKey: { 'en': rawData[i].beerNames.toString().split("/")[0], 'gr': rawData[i].beerNames.toString().split("/")[1]},
+      beerNames: { 'en': rawData[i].beerNames.toString().split("/")[0].split(","), 'gr': rawData[i].beerNames.toString().split("/")[1].split(",")},
+    })
+  } else {
+
+  }
+
+}
 
 for (var i=0; i < spotsData.length; i++) {
-
   var sp = spotsData[i].mapUrl.split("!3d");
   sp = sp[sp.length-1];
   spotsData[i].lat = Number(sp.split("!4d")[0]);
   spotsData[i].log = Number(sp.split("!4d")[1]);
+
   spotsData[i].icon = spotsData[i].type + '.png';
+  spotsData[i].beerNames = {'gr': [], 'en': []};
+  for (j=0; j < spotsData[i].beers.length; j++ ) {
+    var brew = spotsData[i].beers[j];
+
+
+    for (var k=0; k < brew.beerNames.length; k++) {
+      for(var l=0; l < markersRaw.length; l++){
+        if (markersRaw[l].id == brew.brewId) {
+            spotsData[i].beerNames['gr'].push(
+            markersRaw[l].beerNames['gr'][brew.beerNames[k]]
+          )
+          // todo change second gr to en
+            spotsData[i].beerNames['en'].push(
+            markersRaw[l].beerNames['gr'][brew.beerNames[k]]
+          )
+          break;
+        }
+      }
+    }
+  }
+
+
+
+
 }
 for (var i=0; i < areasData.length; i++) {
 
