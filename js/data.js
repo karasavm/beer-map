@@ -100,6 +100,9 @@ var spotsData = [
   {id: '2', name: 'Beer24', area: 'macedonia' , type: 'cava', beers: [{brewId: 2, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Beer24/@40.604535,22.9547286,17z/data=!3m1!4b1!4m5!3m4!1s0x14a838d9b67dd17b:0xac879ade156fb77!8m2!3d40.604535!4d22.9569173'},
   {id: '3', name: 'Αρχέγονο', area: 'macedonia', type: 'beeraria', beers: [{brewId: 3, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Arch%C3%A9gono/@40.5987989,22.9501946,17z/data=!3m1!4b1!4m5!3m4!1s0x14a8392a19d4dc7d:0xed1429b23352008f!8m2!3d40.5987989!4d22.9523833'},
   {id: '4', name: 'The Pulp Bar', area: 'macedonia', type: 'beeraria', beers: [{brewId: 4, beerNames: [0]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/PULP+bar/@40.632094,22.9457868,17z/data=!3m1!4b1!4m5!3m4!1s0x14a83900ce1f444d:0xc343695b700dda5e!8m2!3d40.632094!4d22.9479755'},
+  {id: '5', name: 'Αύγουστος Bar', area: 'macedonia', type: 'beeraria', beers: [{brewId: 20, beerNames: [0,1,2]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/%22%CE%91%CF%8D%CE%B3%CE%BF%CF%85%CF%83%CF%84%CE%BF%CF%82%22+Bar/@40.6019923,22.9509546,15z/data=!4m5!3m4!1s0x0:0xf13336cf42be6008!8m2!3d40.6019923!4d22.9509546'},
+  {id: '6', name: 'Cava ROTONDA', area: 'macedonia', type: 'cava', beers: [{brewId: 20, beerNames: [0,1,2]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.com/maps/place/CAVA+ROTONDA/@40.6335753,22.9499422,17z/data=!3m1!4b1!4m5!3m4!1s0x14a839aaa30f8761:0x5f216aee1293168b!8m2!3d40.6335712!4d22.9521309'},
+  {id: '7', name: 'Cava Biladeri', area: 'macedonia', type: 'cava', beers: [{brewId: 41, beerNames: [0,1]}], city: 'Θεσσαλονίκη',  mapUrl: 'https://www.google.gr/maps/place/Verikoukis+Konstantinos/@40.6177868,22.9483796,13.74z/data=!4m8!1m2!2m1!1scava!3m4!1s0x0:0x9821bb8abbe6eb21!8m2!3d40.6196533!4d22.9695582'},
 ]
 
 for (var i=0; i < rawData.length; i ++) {
@@ -128,10 +131,15 @@ for (var i=0; i < rawData.length; i ++) {
       beerNamesKey: { 'en': rawData[i].beerNames.toString().split("/")[0], 'gr': rawData[i].beerNames.toString().split("/")[1]},
       beerNames: { 'en': rawData[i].beerNames.toString().split("/")[0].split(","), 'gr': rawData[i].beerNames.toString().split("/")[1].split(",")},
     })
+    var diff = markersRaw[i].beers - markersRaw[i].beerNames['gr'].length
+    if (diff > 0) {
+      for (var j=0; j < diff; j++) {
+
+        markersRaw[i].beerNames['gr'].push('Demo Beer '+ j + 1);
+      }
+    }
   } else {
-
   }
-
 }
 
 for (var i=0; i < spotsData.length; i++) {

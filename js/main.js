@@ -400,6 +400,7 @@ function createAreaMarkers(type) {
 
 
 	console.log('createAreaMarkers()')
+
 	for (var i=0; i < areasData.length; i++) {
 		var data = areasData[i];
 		var marker = createImageMarker(
@@ -531,6 +532,9 @@ function showAreaMarkers(type, dropTime) {
 
 
 	for (var i=0; i < areaMarkers.length; i++) {
+		if (areasData[i][type] === 0){
+			continue;
+		}
 		if (dropTime) {
 			dropMarker(areaMarkers[i], 100 + 150*i)
 			// dropMarker(areaMarkers[i], Math.floor((Math.random() * dropTime) + 1))
