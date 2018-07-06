@@ -231,19 +231,19 @@ body {
   position: absolute;
   left: 14%;
   transform: translate(-50%, -50%);
-  /* font-weight: bold; */
-  font-size: 75%;
+  font-weight: bold;
+  font-size: 52%;
   /* color: white; */
   font-family: Cursive;
 }
 
 .top-center-r {
-  top: 85%;
+  top: 83%;
   position: absolute;
-  left: 18%;
+  left: 19%;
   transform: translate(-50%, -50%);
   /* font-weight: bold; */
-  font-size: 60%;
+  font-size: 55%;
   font-weight: bold;
   /* color: white; */
   font-family: Cursive;
