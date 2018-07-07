@@ -8,19 +8,14 @@ router.get('', function(req, res, next) {
 router.post('/', function(req, res, next) {
 
 
-  var output = {
-    "ip": "2a02:214b:822e:a200:485b:fb2a:461a:c730",
-    "city": "Thessaloniki"
-  };
-  const content = JSON.stringify(output);
 
-
-
+  console.log('POST')
   fs.readFile('votes.json', function (err, data) {
 
     var json = JSON.parse(data)
-    json.push(output)
-    console.log('File parsed', json)
+    req.body.timestamp = (new Date()).toUTCString()
+    json.push(req.body)
+    console.log(json)
     fs.writeFile("votes.json", JSON.stringify(json), 'utf8', function (err) {
         if (err) {
             return console.log(err);

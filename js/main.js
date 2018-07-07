@@ -299,6 +299,8 @@ function loadbeerMap() {
 
 
 	google.maps.event.addListenerOnce(beerMap, 'idle', function(){
+
+
     // do something only the first time the map is loaded
 
 		// document.getElementById('controls').style.display = 'block';
@@ -563,8 +565,25 @@ function showAllMarkers(markers, area, animation, noLabel) {
 	}
 
 	// show markers
+	var festIds = [4, 9, 10, 11, 13, 20, 22, 27, 37, 43, 47];
+	var check = false;
+	if (area == -1) {check = true; area = null}
 	for (var i=0; i < markers.length; i++) {
+		if (check) {
+			console.log('--1111', i)
+			var found = false;
+			for (j=0; j < festIds.length;j++) {
+				if (festIds[j]-1==i) {
+					console.log('found')
+					found = true;
+					break;
+				}
+
+			}
+			if (!found) {console.log("continur"); continue;}
+		}
 		if (!area || (area === markers[i].rawData.area) ) {
+			console.log("mpike")
 			markers[i].setLabel(null);
 			if (!noLabel && selectedMode !== "spots") {markers[i].setLabel(getAreaMarkerLabel(markers[i].rawData.beers.toString() + ' ' + languages[curLang]['words']['beersLabel']))};
 			if (selectedMode === 'spots') {
@@ -1533,30 +1552,26 @@ function drinkToggle(event,n) {
 		}
 	}
 
-	$.getJSON('https://ipapi.co/json/', function(data) {
-
+		$.getJSON('https://ipapi.co/json/', function(data) {
 		var li = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
 		var results = {
 			ip: data.ip,
 			city: data.city,
 			country: data.country,
-			beerId: li
+			longitude: data.longitude,
+			latitude: data.latitude,
+			beerId: li.getAttribute('id')
 		}
 	  console.log(JSON.stringify(data, null, 2));
-		// $.postJSON(, function(data) {
-		// 	console.log('post', data)
-		// })
 
 		$.ajax({
 		    type: 'POST',
 		    url: 'http://138.68.180.1:3000/api',
-		    data: JSON.stringify (data),
+		    data: JSON.stringify (results),
 		    success: function(data) { alert('Vote Confirmed'); },
 		    contentType: "application/json",
 		    dataType: 'json'
 		});
-
-
 	});
 
 
@@ -1569,47 +1584,47 @@ function closeIntroModal() {
 	if (firstOpen) {
 
 			//////    DEBUG MODE
-			var bounds = getBounds(areaMarkers);
-			showAreaMarkers(selectedMode, 2000);
-			beerMap.fitBounds(bounds);
-			MIN_ZOOM = 4;
-			beerMap.minZoom = 4;
-			INITIAL_ZOOM = beerMap.getZoom();
-			INITIAL_CENTER = beerMap.getCenter();
-			document.getElementById('mainModeCtls').style.display = 'flex';
-			document.getElementById('listContainer').style.display = 'block';
-			document.getElementById('groupModeCtls').style.display = 'none';
-			firstOpen = false;
+			// var bounds = getBounds(areaMarkers);
+			// showAreaMarkers(selectedMode, 2000);
+			// beerMap.fitBounds(bounds);
+			// MIN_ZOOM = 4;
+			// beerMap.minZoom = 4;
+			// INITIAL_ZOOM = beerMap.getZoom();
+			// INITIAL_CENTER = beerMap.getCenter();
+			// document.getElementById('mainModeCtls').style.display = 'flex';
+			// document.getElementById('listContainer').style.display = 'block';
+			// document.getElementById('groupModeCtls').style.display = 'none';
+			// firstOpen = false;
 			//////    DEBUG MODE
 
 
-		// setTimeout(function() {
-		// 	var bounds = getBounds(areaMarkers);
-		// 	showAreaMarkers(selectedMode, 2000);
-		// 	// beerMap.panTo(bounds.getCenter());
-		//
-		// 		// beerMap.setZoom(beerMap.getZoom() + 1);
-		// 	setTimeout(function() {
-		// 			beerMap.fitBounds(bounds);
-		// 			MIN_ZOOM = 4;
-		// 			beerMap.minZoom = 4;
-		// 			INITIAL_ZOOM = beerMap.getZoom();
-		// 			INITIAL_CENTER = beerMap.getCenter();
-		// 			setTimeout(function() {
-		// 				document.getElementById('mainModeCtls').style.display = 'flex';
-		// 				document.getElementById('listContainer').style.display = 'block';
-		// 				document.getElementById('groupModeCtls').style.display = 'none';
-		// 			}, 1000)
-		//
-		//
-		// 	},2000)
-		//
-		//
-		//
-		//
-		// 	// backBtnHandle();
-		// 	firstOpen = false;
-		// }, 500)
+		setTimeout(function() {
+			var bounds = getBounds(areaMarkers);
+			showAreaMarkers(selectedMode, 2000);
+			// beerMap.panTo(bounds.getCenter());
+
+				// beerMap.setZoom(beerMap.getZoom() + 1);
+			setTimeout(function() {
+					beerMap.fitBounds(bounds);
+					MIN_ZOOM = 4;
+					beerMap.minZoom = 4;
+					INITIAL_ZOOM = beerMap.getZoom();
+					INITIAL_CENTER = beerMap.getCenter();
+					setTimeout(function() {
+						document.getElementById('mainModeCtls').style.display = 'flex';
+						document.getElementById('listContainer').style.display = 'block';
+						document.getElementById('groupModeCtls').style.display = 'none';
+					}, 1000)
+
+
+			},2000)
+
+
+
+
+			// backBtnHandle();
+			firstOpen = false;
+		}, 500)
 
 	}
 	if (location.hash === '#intro') {
@@ -1888,7 +1903,7 @@ function handleRequests (buttonPressed) {
 		initState = false;
 
 		hideAreaMarkers()
-		showAllMarkers(markers, null, google.maps.Animation.DROP, true);
+		showAllMarkers(markers, -1, google.maps.Animation.DROP, true);
 
 		document.getElementById('mainModeCtls').style.display = 'none';
 		document.getElementById('listContainer').style.display = 'none';
