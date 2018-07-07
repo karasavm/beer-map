@@ -2,4 +2,5 @@
 
 ai/
 beers_raw/
-node_modules/
+votingrest/node_modules/
+votingrest/votes.json
