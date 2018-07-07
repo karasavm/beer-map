@@ -1548,13 +1548,13 @@ function drinkToggle(event,n) {
 		// })
 
 		$.ajax({
-    type: 'POST',
-    url: 'http://localhost:3030/api',
-    data: data, // or JSON.stringify ({name: 'jonas'}),
-    success: function(data) { alert('data: ' + data); },
-    contentType: "application/json",
-    dataType: 'json'
-});
+		    type: 'POST',
+		    url: 'http://138.68.180.1:3000/api',
+		    data: JSON.stringify (data),
+		    success: function(data) { alert('Vote Confirmed'); },
+		    contentType: "application/json",
+		    dataType: 'json'
+		});
 
 
 	});
@@ -1564,15 +1564,7 @@ function drinkToggle(event,n) {
 }
 //
 function closeIntroModal() {
-	$.ajax({
-		type: 'POST',
-		url: 'http://localhost:3000/api',
-		data: {data:'data'}, // or JSON.stringify ({name: 'jonas'}),
-		success: function(data) { alert('data: ' + data); },
-		contentType: "application/json",
-		dataType: 'json'
-	});
-	return;
+
 	console.log("closeIntroModal")
 	if (firstOpen) {
 
