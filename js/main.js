@@ -1500,64 +1500,124 @@ function loadBanner() {
 
 //Function that is called when either the 'smaller events', unbrella or the 'reset map' buttons are clicked.
 
+// $ = jQuery;
+function drinkToggle(event,n) {
 
-function drinkToggle(event) {
-
+	var cl = 'rgb(236, 159, 37)';
 	var btn = event.target;
-	if ( btn.style.color === 'green') {
-		btn.style.color = 'grey';
-	} else {
-		btn.style.color = 'green'
+	var col = event.target.parentElement.parentElement.getElementsByTagName('i');
+	// console.log(event.target.parentElement)
+
+	var voted = 0
+	for (var i=0 ; i < col.length; i ++) {
+		console.log(col[i].style.color)
+		if (col[i].style.color === cl) {
+			voted++;
+		}
 	}
-	;
+
+	console.log(voted);
+	for (var i=0 ; i < col.length; i ++) {
+		console.log(i,n)
+
+		if (voted == n) {
+			col[i].style.color = 'grey';
+			continue;
+		}
+
+		if (i+1 <= n) {
+			console.log("mpike")
+			col[i].style.color = cl;
+		} else {
+			col[i].style.color = 'grey';
+		}
+	}
+
+	$.getJSON('https://ipapi.co/json/', function(data) {
+
+		var li = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+		var results = {
+			ip: data.ip,
+			city: data.city,
+			country: data.country,
+			beerId: li
+		}
+	  console.log(JSON.stringify(data, null, 2));
+		// $.postJSON(, function(data) {
+		// 	console.log('post', data)
+		// })
+
+		$.ajax({
+    type: 'POST',
+    url: 'http://localhost:3030/api',
+    data: data, // or JSON.stringify ({name: 'jonas'}),
+    success: function(data) { alert('data: ' + data); },
+    contentType: "application/json",
+    dataType: 'json'
+});
+
+
+	});
+
+
+
 }
 //
 function closeIntroModal() {
+	$.ajax({
+		type: 'POST',
+		url: 'http://localhost:3000/api',
+		data: {data:'data'}, // or JSON.stringify ({name: 'jonas'}),
+		success: function(data) { alert('data: ' + data); },
+		contentType: "application/json",
+		dataType: 'json'
+	});
+	return;
 	console.log("closeIntroModal")
 	if (firstOpen) {
 
 			//////    DEBUG MODE
-			// var bounds = getBounds(areaMarkers);
-			// showAreaMarkers(selectedMode, 2000);
-			// beerMap.fitBounds(bounds);
-			// MIN_ZOOM = 4;
-			// beerMap.minZoom = 4;
-			// INITIAL_ZOOM = beerMap.getZoom();
-			// INITIAL_CENTER = beerMap.getCenter();
-			// document.getElementById('mainModeCtls').style.display = 'flex';
-			// document.getElementById('listContainer').style.display = 'block';
-			// document.getElementById('groupModeCtls').style.display = 'none';
-			// firstOpen = false;
+			var bounds = getBounds(areaMarkers);
+			showAreaMarkers(selectedMode, 2000);
+			beerMap.fitBounds(bounds);
+			MIN_ZOOM = 4;
+			beerMap.minZoom = 4;
+			INITIAL_ZOOM = beerMap.getZoom();
+			INITIAL_CENTER = beerMap.getCenter();
+			document.getElementById('mainModeCtls').style.display = 'flex';
+			document.getElementById('listContainer').style.display = 'block';
+			document.getElementById('groupModeCtls').style.display = 'none';
+			firstOpen = false;
 			//////    DEBUG MODE
 
 
-		setTimeout(function() {
-			var bounds = getBounds(areaMarkers);
-			showAreaMarkers(selectedMode, 2000);
-			// beerMap.panTo(bounds.getCenter());
-
-				// beerMap.setZoom(beerMap.getZoom() + 1);
-			setTimeout(function() {
-					beerMap.fitBounds(bounds);
-					MIN_ZOOM = 4;
-					beerMap.minZoom = 4;
-					INITIAL_ZOOM = beerMap.getZoom();
-					INITIAL_CENTER = beerMap.getCenter();
-					setTimeout(function() {
-						document.getElementById('mainModeCtls').style.display = 'flex';
-						document.getElementById('listContainer').style.display = 'block';
-						document.getElementById('groupModeCtls').style.display = 'none';
-					}, 1000)
-
-
-			},2000)
-
-
-
-
-			// backBtnHandle();
-			firstOpen = false;
-		}, 500)
+		// setTimeout(function() {
+		// 	var bounds = getBounds(areaMarkers);
+		// 	showAreaMarkers(selectedMode, 2000);
+		// 	// beerMap.panTo(bounds.getCenter());
+		//
+		// 		// beerMap.setZoom(beerMap.getZoom() + 1);
+		// 	setTimeout(function() {
+		// 			beerMap.fitBounds(bounds);
+		// 			MIN_ZOOM = 4;
+		// 			beerMap.minZoom = 4;
+		// 			INITIAL_ZOOM = beerMap.getZoom();
+		// 			INITIAL_CENTER = beerMap.getCenter();
+		// 			setTimeout(function() {
+		// 				document.getElementById('mainModeCtls').style.display = 'flex';
+		// 				document.getElementById('listContainer').style.display = 'block';
+		// 				document.getElementById('groupModeCtls').style.display = 'none';
+		// 			}, 1000)
+		//
+		//
+		// 	},2000)
+		//
+		//
+		//
+		//
+		// 	// backBtnHandle();
+		// 	firstOpen = false;
+		// }, 500)
 
 	}
 	if (location.hash === '#intro') {
